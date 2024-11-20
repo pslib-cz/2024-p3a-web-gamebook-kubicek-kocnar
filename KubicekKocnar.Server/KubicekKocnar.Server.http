@@ -1,0 +1,6 @@
+@KubicekKocnar.Server_HostAddress = http://localhost:5195
+
+GET {{KubicekKocnar.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
