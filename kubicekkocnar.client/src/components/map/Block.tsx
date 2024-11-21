@@ -35,7 +35,7 @@ const Block = ({block, onClick} : BlockProps) => {
         raycaster.setFromCamera(mouse, camera);
 
         const intersects = raycaster.intersectObject(meshRef.current);
-        console.log(intersects);
+        // console.log(intersects);
         if (intersects.length > 0) {
           const faceIndex = intersects[0].face?.materialIndex;
           if (faceIndex !== undefined) {
