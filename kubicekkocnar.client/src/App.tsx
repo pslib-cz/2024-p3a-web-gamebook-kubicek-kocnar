@@ -6,14 +6,14 @@ import * as THREE from 'three';
 
 function App() {
     
-  const sceneRef = React.useRef<THREE.Scene | null>(null);
+  const [scene, setScene] = React.useState<THREE.Scene | null>(null);
   
     return (
       <div className='canvas'>
 
 
-        <Canvas onCreated={({ scene }) => (sceneRef.current = scene)}>
-            <MapRenderer scene={sceneRef}/>
+        <Canvas onCreated={(state) => {console.log(state); setScene(state.scene)}}>
+            {scene && <MapRenderer scene={scene}/>}
             {/* <h1 id="tableLabel">Weather forecast</h1>
             <p>This component demonstrates fetching data from the server.</p>
             {contents} */}

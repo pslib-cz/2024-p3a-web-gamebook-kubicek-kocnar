@@ -8,15 +8,43 @@ import * as THREE from 'three';
 import { useThree } from '@react-three/fiber';
 
 import Player from '../Player';
+import MapRender from '../../lib/MapRender';
 
 // TODO: unify mesh creating in Block and in MapRenderer
 // TODO: add a way to remove blocks
 // TODO: fix face detection / new position calculation
 
-const App = ({scene} : {scene : any}) => {
+const MapRenderer = ({scene} : {scene : THREE.Scene}) => {
+
+    console.log("Rerendering MapRenderer");
+
+    const handleMapPointerDown = (event: MouseEvent) => {
+      //get the block that was clicked
+      const mouse = new THREE.Vector2();
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(mouse, camera);
+
+      const intersects = raycaster.intersectObjects(scene.children);
+      if (intersects.length > 0) {
+        const faceIndex = intersects[0].faceIndex;
+        console.log(intersects[0]);
+        
+        if (faceIndex !== undefined) {
+          const distance = intersects[0].distance;
+          console.log(`V2: Mouse button down on cube ${intersects[0].object.id}, face ${MapRender.translateFaceIndex(faceIndex||0)}, faceIndex ${faceIndex||0} distance ${distance}`);
+        }
+      }
+    }
 
     const map3D = React.useRef<BlockType[]>(
       [
+        {
+          position: [0, 10, 0],
+          blockId: 100
+        },
         {
           position: [-1, -1, 0],
           blockId: 1
@@ -52,43 +80,33 @@ const App = ({scene} : {scene : any}) => {
         {
           position: [1, 1, 0],
           blockId: 9
-        },
-        {
-          position: [-1, -1, 1],
-          blockId: 1
-        },
-        {
-          position: [-1, 0, 1],
-          blockId: 2
-        },
-        {
-          position: [-1, 1, 1],
-          blockId: 3
-        },
-        {
-          position: [-1, -1, 2],
-          blockId: 1
-        },
-        {
-          position: [-1, 0, 2],
-          blockId: 2
-        },
-        {
-          position: [-1, 1, 2],
-          blockId: 3
-        },
+        }
       ]);
 
       const { gl, camera } = useThree();
 
     const blocksToRender = React.useRef<BlockType[]>([]);
+
+    console.log(scene);
+
+    const MapRenderer = new MapRender(scene);
+
+    map3D.current.forEach((block) => MapRenderer.addBlock(block));
+
+    gl.domElement.addEventListener('pointerdown', handleMapPointerDown);
+
+    
+    
+    
+    
+    
   
     const handleBlockClick = (blockId: number, face: BlockFace, distance: number) => {
         console.log(`Mouse button down on cube ${blockId}, face ${BlockFace[face]}, distance ${distance}`);
         
-        let clickedBlock = map3D.current.find(block => block.blockId === blockId);
+        let clickedBlock: BlockType | THREE.Object3D | undefined = map3D.current.find(block => block.blockId === blockId);
 
-        if (!clickedBlock) clickedBlock = scene.current.children.find((child: any) => child.userData.blockId === blockId);
+        if (!clickedBlock) clickedBlock = scene.children.find((child: any) => child.userData.blockId === blockId);
 
         if (!clickedBlock)
         {
@@ -127,7 +145,7 @@ const App = ({scene} : {scene : any}) => {
 
     useFrame(() => {
       // This will trigger a re-render only for the Three.js scene, not React
-      if (scene.current) {
+      if (scene) {
 
         blocksToRender.current.forEach((block) => {
           const blockMesh = new THREE.Mesh(
@@ -141,7 +159,7 @@ const App = ({scene} : {scene : any}) => {
           gl.domElement.addEventListener('pointerdown', handlePointerDownWrapper);
           blockMesh.userData.handlePointerDownWrapper = handlePointerDownWrapper;
           
-          scene.current.add(blockMesh);
+          scene.add(blockMesh);
         });
 
         blocksToRender.current = [];
@@ -156,12 +174,8 @@ const App = ({scene} : {scene : any}) => {
         <axesHelper args={[20]} /> // x = red, y = green, z = blue
 
         <Player />
-
-        {map3D.current.map((block, index) => (
-          <Block key={index} block={block} onClick={handleBlockClick} />
-        ))}
       </>
     );
   };
 
-  export default App;
+  export default MapRenderer;

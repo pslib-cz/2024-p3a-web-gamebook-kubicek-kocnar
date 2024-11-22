@@ -63,6 +63,7 @@ const Block = ({block, onClick} : BlockProps) => {
     <mesh 
       ref={meshRef} 
       position={block.position}
+      name='Obstacle'
       >
       <boxGeometry args={[1, 1, 1]} />
       {textures.map((texture, index) => (

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, MutableRefObject } from 'react';
+import { useRef, useState, useEffect, MutableRefObject } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -10,7 +10,7 @@ type KeysState = {
 };
 
 function Player() {
-  const playerRef: MutableRefObject<THREE.Mesh | undefined> = useRef();
+  const playerRef: MutableRefObject<THREE.Mesh | null> = useRef(null);
   const [keys, setKeys] = useState<KeysState>({ w: false, a: false, s: false, d: false });
   const speed = 0.1;
 
@@ -50,14 +50,14 @@ function Player() {
     const obstacles = scene.children
       .filter((child) => child.name === 'Obstacle')
       .map((obstacle) => new THREE.Box3().setFromObject(obstacle));
-
+    
     if (detectCollision(playerBox, obstacles)) {
       player.position.copy(previousPosition); // Revert to the previous position on collision
     }
   });
 
   return (
-    <mesh ref={playerRef} position={[0, 0.5, 0]}>
+    <mesh ref={playerRef} position={[5, 0.5, 0]} name='Player'>
       <boxGeometry args={[1, 1, 1]} />
       <meshStandardMaterial color="green" />
     </mesh>
