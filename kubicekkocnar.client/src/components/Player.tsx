@@ -48,18 +48,20 @@ function Player() {
     // Collision detection
     const playerBox = new THREE.Box3().setFromObject(player);
     const obstacles = scene.children
-      .filter((child) => child.name === 'Obstacle')
+      .filter((child) => child.name.includes('block'))
       .map((obstacle) => new THREE.Box3().setFromObject(obstacle));
     
     if (detectCollision(playerBox, obstacles)) {
       player.position.copy(previousPosition); // Revert to the previous position on collision
+      //shift the player to the side
+      
     }
   });
 
   return (
-    <mesh ref={playerRef} position={[5, 0.5, 0]} name='Player'>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="green" />
+    <mesh ref={playerRef} position={[5, 1.001, 0]} name='Player'>
+      <boxGeometry args={[0.5, 0.998, 0.5]} />
+      <meshStandardMaterial color={0x88ff00} />
     </mesh>
   );
 }

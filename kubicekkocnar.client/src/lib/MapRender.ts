@@ -23,10 +23,14 @@ class MapRender {
             } else
             block.material = new THREE.MeshBasicMaterial({ color: 0xde7c26 });
         }
+        if (!block.blockId) {
+            block.blockId = 10000 + this.blocks.length;
+        }
         const blockMesh = new THREE.Mesh(
             new THREE.BoxGeometry(1,1,1),
             block.material,
         );
+        blockMesh.name = `block block-${block.blockId}`;
         blockMesh.position.set(block.position[0], block.position[1], block.position[2]);
         block.mesh = blockMesh;
         this.blocks.push(block);
@@ -35,7 +39,7 @@ class MapRender {
 
     public removeBlock(block: BlockType) {
         console.log("Removing block", block);
-        const index = this.blocks.indexOf(block);
+        const index = this.blocks.findIndex(block => block.blockId === block.blockId);
         if (index > -1) {
             this.scene.remove(block.mesh as THREE.Mesh);
             this.blocks.splice(index, 1);
