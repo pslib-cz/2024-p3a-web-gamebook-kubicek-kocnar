@@ -32,3 +32,8 @@ button {
     left: 0;
     z-index: 2000;
 }
+
+img {
+  width: 100%;
+  display: block;
+}

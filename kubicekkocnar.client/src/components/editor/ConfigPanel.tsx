@@ -22,15 +22,31 @@ const ConfigPanel: React.FC = () => {
             <button className="toggle-button" onClick={togglePanel}>
                 {isOpen ? <MaterialSymbol icon='chevron_right' size={24}/> : <MaterialSymbol icon='chevron_left' size={24}/>}
             </button>
-            <h3>
-                {blockState.mesh?.geometry.type} {blockState.blockId}
-            </h3>
-            <p>
-                Name: {blockState.mesh?.name}
-            </p>
-            <p>
-                Position: {blockState.position[0]}, {blockState.position[1]}, {blockState.position[2]}
-            </p>
+            <div>
+              <h3>
+                  {blockState.mesh?.geometry.type} {blockState.blockId}
+              </h3>
+              <p>
+                  Name: {blockState.mesh?.name}
+              </p>
+              <p>
+                  Position: {blockState.position[0]}, {blockState.position[1]}, {blockState.position[2]}
+              </p>
+              <div>
+                  <h4>Textures</h4>
+                  <div className="textures">
+                    {blockState.texture?.sides?.map((side, index) => (
+                      <div
+                      key={index} 
+                      className="texture" 
+                      >
+                        <p>Side: {index}</p>
+                        <img src={side.url} alt={`texture ${index}`}/>
+                      </div>
+                    ))}
+                  </div>
+              </div>
+            </div>
         </div>
     );
 };

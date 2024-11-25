@@ -1,11 +1,11 @@
 interface BlockSideTexture {
-    id: string;
+    // id: string;
     name: string;
     url: string;
 }
 
 interface BlockTexture {
-    id: string;
+    // id: string;
     sides: BlockSideTexture[]; // 6 sides, order: top, bottom, left, right, front, back
 }
 
