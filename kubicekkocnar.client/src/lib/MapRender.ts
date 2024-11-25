@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import BlockType from '../types/Block';
 
 const textureLoader = new THREE.TextureLoader();
+textureLoader.setCrossOrigin('anonymous');
 
 class MapRender {
 
@@ -23,8 +24,23 @@ class MapRender {
         
         if (block.material === undefined) {
             if (block.texture !== undefined) {
-                const textures = block.texture.sides.map(side => new THREE.MeshStandardMaterial({ map: textureLoader.load(side.url) }));
-                block.material = textures;
+                if (block.texture.sides.length === 1) {
+                    const texture = block.texture.sides[0];
+                    const loadedTexture = textureLoader.load(texture.url);
+                    loadedTexture.minFilter = THREE.NearestFilter;
+                    // render the texture without any smoothing - pixelated
+                    loadedTexture.magFilter = THREE.NearestFilter;
+                    block.material = new THREE.MeshStandardMaterial({ map: loadedTexture });
+                } else {
+                    const textures = block.texture.sides.map(side => {
+                        const loadedTexture = textureLoader.load(side.url);
+                        loadedTexture.minFilter = THREE.NearestFilter;
+                        // render the texture without any smoothing - pixelated
+                        loadedTexture.magFilter = THREE.NearestFilter;
+                        return new THREE.MeshStandardMaterial({ map: loadedTexture, blendSrc: THREE.OneFactor });
+                    });
+                    block.material = textures;
+                }
             } else
             block.material = new THREE.MeshStandardMaterial({ color: 0xde7c26 });
         }
@@ -57,30 +73,9 @@ class MapRender {
         this.addBlock(block);
     }
 
-    public static translateFaceIndex(faceIndex: number) : string {
-        // each side of the cube has 2 triangles, translating the face index to the side of the cube
-        switch (faceIndex) {
-            case 0:
-            case 1:
-                return "right";
-            case 2:
-            case 3:
-                return "back";
-            case 4:
-            case 5:
-                return "top";
-            case 6:
-            case 7:
-                return "bottom";
-            case 8:
-            case 9:
-                return "front";
-            case 10:
-            case 11:
-                return "back";
-            default:
-                return "unknown";
-        }
+    public static translateTextureSide(sideIndex: number) : string {
+        const sides = ['Left (x+)', 'Right (x-)', 'Top (y+)', 'Bottom (y-)', 'Front (z+)', 'Back (z-)'];
+        return sides[sideIndex];
     }
 
 }

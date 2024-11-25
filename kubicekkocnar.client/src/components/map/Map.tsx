@@ -68,12 +68,12 @@ const Map = React.memo(({scene} : {scene : THREE.Scene}) => {
           const newBlock = { 
               position: [newPos.x, newPos.y, newPos.z],
               texture: { sides: [
-                { url: 'https://cdn.midjourney.com/068c3502-d972-477e-a167-c3d8179f2ca3/grid_0_640_N.webp' },
-                { url: 'https://cdn.midjourney.com/068c3502-d972-477e-a167-c3d8179f2ca3/grid_0_640_N.webp' },
-                { url: 'https://cdn.midjourney.com/068c3502-d972-477e-a167-c3d8179f2ca3/grid_0_640_N.webp' },
-                { url: 'https://cdn.midjourney.com/068c3502-d972-477e-a167-c3d8179f2ca3/grid_0_640_N.webp' },
-                { url: 'https://cdn.midjourney.com/068c3502-d972-477e-a167-c3d8179f2ca3/grid_0_640_N.webp' },
-                { url: 'https://cdn.midjourney.com/068c3502-d972-477e-a167-c3d8179f2ca3/grid_0_640_N.webp' },
+                { url: 'https://i.ibb.co/9WpcyH5/texture-empty.png' },
+                { url: 'https://i.ibb.co/9WpcyH5/texture-empty.png' },
+                { url: 'https://i.ibb.co/9WpcyH5/texture-empty.png' },
+                { url: 'https://i.ibb.co/9WpcyH5/texture-empty.png' },
+                { url: 'https://i.ibb.co/9WpcyH5/texture-empty.png' },
+                { url: 'https://i.ibb.co/9WpcyH5/texture-empty.png' },
               ] },
             } as BlockType;
           mapRender.addBlock(newBlock);
