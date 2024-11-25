@@ -1,14 +1,14 @@
 .configpanel {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    padding: 1rem;
-    z-index: 1000;
-    background: rgba(0, 0, 0, 0.2);
-    translate: 0;
-    transition: translate 0.3s ease-in-out;
-    max-width: 20vw;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  padding: 1rem;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.2);
+  translate: 0;
+  transition: translate 0.3s ease-in-out;
+  max-width: 20vw;
 }
 
 .configpanel--closed {

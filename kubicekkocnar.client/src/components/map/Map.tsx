@@ -9,10 +9,6 @@ import MapRender from '../../lib/MapRender';
 import { AppContext } from '../AppContextProvider';
 import { Tool } from '../editor/ToolBar';
 
-// TODO: unify mesh creating in Block and in MapRenderer
-// TODO: add a way to remove blocks
-// TODO: fix face detection / new position calculation
-
 const Map = ({scene} : {scene : THREE.Scene}) => {
 
   const { tool, setBlock } = useContext(AppContext);
@@ -43,7 +39,17 @@ const Map = ({scene} : {scene : THREE.Scene}) => {
           } case Tool.Add: { 
             if (intersects[0].face?.normal === undefined) return;
             const newPos = intersects[0].object.position.clone().add(intersects[0].face?.normal);
-            const newBlock = { position: [newPos.x, newPos.y, newPos.z] } as BlockType;
+            const newBlock = { 
+              position: [newPos.x, newPos.y, newPos.z],
+              texture: { sides: [
+                { url: 'https://cdn.midjourney.com/068c3502-d972-477e-a167-c3d8179f2ca3/grid_0_640_N.webp' },
+                { url: 'https://cdn.midjourney.com/068c3502-d972-477e-a167-c3d8179f2ca3/grid_0_640_N.webp' },
+                { url: 'https://cdn.midjourney.com/068c3502-d972-477e-a167-c3d8179f2ca3/grid_0_640_N.webp' },
+                { url: 'https://cdn.midjourney.com/068c3502-d972-477e-a167-c3d8179f2ca3/grid_0_640_N.webp' },
+                { url: 'https://cdn.midjourney.com/068c3502-d972-477e-a167-c3d8179f2ca3/grid_0_640_N.webp' },
+                { url: 'https://cdn.midjourney.com/068c3502-d972-477e-a167-c3d8179f2ca3/grid_0_640_N.webp' },
+              ] },
+            } as BlockType;
             mapRender.addBlock(newBlock);
             break; 
           } case Tool.Remove: {
