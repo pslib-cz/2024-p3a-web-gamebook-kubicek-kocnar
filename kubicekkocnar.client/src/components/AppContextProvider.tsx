@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useRef, useState } from "react";
+import React, { MutableRefObject, useRef, useState, useMemo } from "react";
 import { Tool } from "./editor/ToolBar";
 import Block from "../types/Block";
 
@@ -35,10 +35,14 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
     const setBlock = (newBlock: Block) => {
         block.current = newBlock;
         setBlockState(newBlock);
-    }
+    };
+
+    const contextValue = useMemo(() => ({
+        tool, setTool, toolState, block, blockState, setBlock
+    }), [toolState, blockState]);
 
     return (
-        <AppContext.Provider value={{tool, setTool, toolState, block, blockState, setBlock}}>
+        <AppContext.Provider value={contextValue}>
             {children}
         </AppContext.Provider>
     );

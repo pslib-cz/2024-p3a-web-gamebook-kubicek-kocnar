@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import '../../styles/ConfigPanel.css';
 import { MaterialSymbol } from 'react-material-symbols';
 import { AppContext } from '../AppContextProvider';
@@ -11,6 +11,11 @@ const ConfigPanel: React.FC = () => {
     const togglePanel = () => {
         setIsOpen(!isOpen);
     };
+
+    useEffect(() => {
+        // This effect will run whenever blockState changes
+        console.log("Selected block changed:", blockState);
+    }, [blockState]);
 
     return (
         <div className={`configpanel ${isOpen ? 'configpanel--open' : 'configpanel--closed'}`}>

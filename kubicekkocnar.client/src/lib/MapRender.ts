@@ -15,13 +15,18 @@ class MapRender {
     }
 
     public addBlock(block: BlockType) {
-        console.log("Adding block", block);
+        // if the blockId exists in this.blocks, we dont add it
+        if (this.blocks.find(b => b.blockId === block.blockId)) {
+            console.log("Block already exists");
+            return;
+        }
+        
         if (block.material === undefined) {
             if (block.texture !== undefined) {
-                const textures = block.texture.sides.map(side => new THREE.MeshBasicMaterial({ map: textureLoader.load(side.url) }));
+                const textures = block.texture.sides.map(side => new THREE.MeshStandardMaterial({ map: textureLoader.load(side.url) }));
                 block.material = textures;
             } else
-            block.material = new THREE.MeshBasicMaterial({ color: 0xde7c26 });
+            block.material = new THREE.MeshStandardMaterial({ color: 0xde7c26 });
         }
         if (!block.blockId) {
             block.blockId = 10000 + this.blocks.length;
@@ -33,14 +38,15 @@ class MapRender {
         blockMesh.name = `block block-${block.blockId}`;
         blockMesh.position.set(block.position[0], block.position[1], block.position[2]);
         block.mesh = blockMesh;
+        console.log("ADD", block);
         this.blocks.push(block);
-        this.scene.add(blockMesh);
+        this.scene.add(block.mesh);
     }
 
     public removeBlock(block: BlockType) {
-        console.log("Removing block", block);
-        const index = this.blocks.findIndex(block => block.blockId === block.blockId);
+        const index = this.blocks.findIndex(b => b.blockId === block.blockId);
         if (index > -1) {
+            console.log('RM '+index, block);
             this.scene.remove(block.mesh as THREE.Mesh);
             this.blocks.splice(index, 1);
         }

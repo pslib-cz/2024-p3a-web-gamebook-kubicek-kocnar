@@ -54,7 +54,7 @@ function Player() {
     if (detectCollision(playerBox, obstacles)) {
       player.position.copy(previousPosition); // Revert to the previous position on collision
       //shift the player to the side
-      
+
     }
   });
 
