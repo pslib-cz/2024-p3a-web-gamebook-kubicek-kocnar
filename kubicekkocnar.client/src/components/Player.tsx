@@ -3,21 +3,23 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 type KeysState = {
-  w: boolean;
-  a: boolean;
-  s: boolean;
-  d: boolean;
+  KeyW: boolean;
+  KeyA: boolean;
+  KeyS: boolean;
+  KeyD: boolean;
+  Space: boolean;
 };
 
 function Player() {
   const playerRef: MutableRefObject<THREE.Mesh | null> = useRef(null);
-  const [keys, setKeys] = useState<KeysState>({ w: false, a: false, s: false, d: false });
+  const [keys, setKeys] = useState<KeysState>({ KeyW: false, KeyA: false, KeyS: false, KeyD: false, Space: false });
   const speed = 0.1;
 
   // Update keys state
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => setKeys((prev) => ({ ...prev, [e.key]: true }));
-    const handleKeyUp = (e: KeyboardEvent) => setKeys((prev) => ({ ...prev, [e.key]: false }));
+    const handleKeyDown = (e: KeyboardEvent) => {console.log(e); setKeys((prev) => ({ ...prev, [e.code]: true }))};
+    const handleKeyUp = (e: KeyboardEvent) => setKeys((prev) => ({ ...prev, [e.code]: false }));
+    
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
 
@@ -40,10 +42,11 @@ function Player() {
     const previousPosition = player.position.clone();
 
     // Movement logic
-    if (keys.w) player.position.z -= speed;
-    if (keys.s) player.position.z += speed;
-    if (keys.a) player.position.x -= speed;
-    if (keys.d) player.position.x += speed;
+    if (keys.KeyW) player.position.z -= speed;
+    if (keys.KeyS) player.position.z += speed;
+    if (keys.KeyA) player.position.x -= speed;
+    if (keys.KeyD) player.position.x += speed;
+    if (keys.Space) player.position.y += speed;
 
     // Collision detection
     const playerBox = new THREE.Box3().setFromObject(player);
@@ -54,13 +57,28 @@ function Player() {
     if (detectCollision(playerBox, obstacles)) {
       player.position.copy(previousPosition); // Revert to the previous position on collision
       //shift the player to the side
+    }
+  });
 
+  //Gravity
+  useFrame(({ scene }) => {
+    const player = playerRef.current;
+    if (!player) return;
+
+    player.position.y -= 0.05;
+
+    const playerBox = new THREE.Box3().setFromObject(player);
+    const obstacles = scene.children
+      .filter((child) => child.name.includes('block'))
+      .map((obstacle) => new THREE.Box3().setFromObject(obstacle));
+    if (detectCollision(playerBox, obstacles)) {
+      player.position.y += 0.05;
     }
   });
 
   return (
-    <mesh ref={playerRef} position={[5, 1.001, 0]} name='Player'>
-      <boxGeometry args={[0.5, 0.998, 0.5]} />
+    <mesh ref={playerRef} position={[0, 1.5, 0]} name='Player'>
+      <boxGeometry args={[0.6, 1.8, 0.6]} />
       <meshStandardMaterial color={0x88ff00} />
     </mesh>
   );
