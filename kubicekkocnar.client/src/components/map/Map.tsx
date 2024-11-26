@@ -107,7 +107,39 @@ const Map = React.memo(({scene} : {scene : THREE.Scene}) => {
       {
         position: [0, 0, 0],
         blockId: 1
-      }
+      },
+      {
+        position: [0, 0, 1],
+        blockId: 2
+      },
+      {
+        position: [0, 0, -1],
+        blockId: 3
+      },
+      {
+        position: [1, 0, 0],
+        blockId: 4
+      },
+      {
+        position: [-1, 0, 0],
+        blockId: 5
+      },
+      {
+        position: [-2, 0, 0],
+        blockId: 6
+      },
+      {
+        position: [-3, 0, 0],
+        blockId: 7   
+      },
+      {
+        position: [-4, 0, 0],
+        blockId: 8
+      },
+      {
+        position: [-4, 1, 0],
+        blockId: 9
+      },
     ];
     map3D.forEach((block) => mapRender.addBlock(block));
     console.log(scene);
@@ -129,6 +161,7 @@ const Map = React.memo(({scene} : {scene : THREE.Scene}) => {
           <edgesGeometry attach="geometry" args={[new THREE.BoxGeometry(1, 1, 1)]} />
           <lineBasicMaterial attach="material" color="yellow" />
         </lineSegments>
+
         <mesh position={[0, 0, 0]}>
           
           <meshStandardMaterial color={0x00ff00} />
