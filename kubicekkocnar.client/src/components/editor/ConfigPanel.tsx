@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import '../../styles/ConfigPanel.css';
 import { MaterialSymbol } from 'react-material-symbols';
 import { AppContext } from '../AppContextProvider';
+import MapRender from '../../lib/MapRender';
 
 const ConfigPanel: React.FC = () => {
 
@@ -11,6 +12,11 @@ const ConfigPanel: React.FC = () => {
     const togglePanel = () => {
         setIsOpen(!isOpen);
     };
+
+    useEffect(() => {
+        // This effect will run whenever blockState changes
+        console.log("Selected block changed:", blockState);
+    }, [blockState]);
 
     return (
         <div className={`configpanel ${isOpen ? 'configpanel--open' : 'configpanel--closed'}`}>
@@ -29,14 +35,14 @@ const ConfigPanel: React.FC = () => {
               </p>
               <div>
                   <h4>Textures</h4>
-                  <div className="textures">
+                  <div className="configpanel__textures">
                     {blockState.texture?.sides?.map((side, index) => (
                       <div
                       key={index} 
-                      className="texture" 
+                      className="configpanel__texture" 
                       >
-                        <p>Side: {index}</p>
-                        <img src={side.url} alt={`texture ${index}`}/>
+                        <img className='configpanel__texture__image' src={side.url} alt={`texture ${index}`}/>
+                        <p className='configpanel__texture__side'>{MapRender.translateTextureSide(index)}</p>
                       </div>
                     ))}
                   </div>

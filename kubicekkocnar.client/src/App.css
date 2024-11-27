@@ -24,6 +24,15 @@ button {
     font-size: 16px;
 }
 
+.stats {
+    position: fixed;
+    bottom: 0 !important;
+    top: auto !important;
+    height: min-content;
+    left: 0;
+    z-index: 2000;
+}
+
 img {
   width: 100%;
   display: block;
