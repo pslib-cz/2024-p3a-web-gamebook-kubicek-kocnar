@@ -2,13 +2,13 @@
 {
     public class Level
     {
-        public int Id { get; set; }
+        public uint LevelId { get; set; }
 
         public required string Name { get; set; }
 
         public string? Description { get; set; }
 
-        public Level? NextLevel { get; set; }
+        public uint? NextLevel { get; set; }
 
         public List<PlacedBlock>? Blocks { get; set; }
 

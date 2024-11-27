@@ -2,8 +2,8 @@
 {
     public class Texture
     {
-        public int Id { get; set; }
+        public uint TextureId { get; set; }
 
-        public byte[] src { get; set; }
+        public required byte[] src { get; set; }
     }
 }

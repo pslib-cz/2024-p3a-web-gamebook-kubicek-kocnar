@@ -2,17 +2,17 @@
 {
     public class Block
     {
-        public int Id { get; set; }
+        public uint BlockId { get; set; }
 
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
-        public Texture texture0 { get; set; }
-        public Texture texture1 { get; set; }
-        public Texture texture2 { get; set; }
-        public Texture texture3 { get; set; }
-        public Texture texture4 { get; set; }
-        public Texture texture5 { get; set; }
+        public uint? Texture0 { get; set; }
+        public uint? Texture1 { get; set; }
+        public uint? Texture2 { get; set; }
+        public uint? Texture3 { get; set; }
+        public uint? Texture4 { get; set; }
+        public uint? Texture5 { get; set; }
 
-        public string attributes { get; set; }
+        public string Attributes { get; set; } = "";
     }
 }
