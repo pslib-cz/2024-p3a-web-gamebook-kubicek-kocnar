@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KubicekKocnar.Server.Data;
 using KubicekKocnar.Server.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace KubicekKocnar.Server.Controllers
 {
@@ -72,6 +73,38 @@ namespace KubicekKocnar.Server.Controllers
 
             return NoContent();
         }
+
+        // PATCH: api/Levels/5
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchLevel(uint id, [FromBody] JsonPatchDocument<Level> patchDoc) {
+            if (patchDoc == null) {
+                return BadRequest();
+            }
+
+            var level = await _context.Levels.FindAsync(id);
+            if (level == null) {
+                return NotFound();
+            }
+
+            patchDoc.ApplyTo(level, (error) => ModelState.AddModelError(error.AffectedObject.ToString(), error.ErrorMessage));
+
+            if (!ModelState.IsValid) {
+                return BadRequest(ModelState);
+            }
+
+            try {
+                await _context.SaveChangesAsync();
+            } catch (DbUpdateConcurrencyException) {
+                if (!LevelExists(id)) {
+                    return NotFound();
+                } else {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
 
         // POST: api/Levels
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
