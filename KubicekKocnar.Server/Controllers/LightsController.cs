@@ -13,47 +13,47 @@ namespace KubicekKocnar.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LevelsController : ControllerBase
+    public class LightsController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public LevelsController(AppDbContext context)
+        public LightsController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Levels
+        // GET: api/Lights
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Level>>> GetLevels()
+        public async Task<ActionResult<IEnumerable<Light>>> GetLights()
         {
-            return await _context.Levels.ToListAsync();
+            return await _context.Lights.ToListAsync();
         }
 
-        // GET: api/Levels/5
+        // GET: api/Lights/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Level>> GetLevel(uint id)
+        public async Task<ActionResult<Light>> GetLight(int id)
         {
-            var level = await _context.Levels.FindAsync(id);
+            var light = await _context.Lights.FindAsync(id);
 
-            if (level == null)
+            if (light == null)
             {
                 return NotFound();
             }
 
-            return level;
+            return light;
         }
 
-        // PUT: api/Levels/5
+        // PUT: api/Lights/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLevel(uint id, Level level)
+        public async Task<IActionResult> PutLight(int id, Light light)
         {
-            if (id != level.LevelId)
+            if (id != light.LightId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(level).State = EntityState.Modified;
+            _context.Entry(light).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +61,7 @@ namespace KubicekKocnar.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LevelExists(id))
+                if (!LightExists(id))
                 {
                     return NotFound();
                 }
@@ -74,17 +74,28 @@ namespace KubicekKocnar.Server.Controllers
             return NoContent();
         }
 
-        // PATCH: api/Levels/5 using JsonPatch;
+        // POST: api/Lights
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Light>> PostLight(Light light)
+        {
+            _context.Lights.Add(light);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetLight", new { id = light.LightId }, light);
+        }
+
+        // PATCH : api/Lights/5 using JsonPatchDocument
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchLevel(uint id, [FromBody] JsonPatchDocument<Level> patchDoc) {
+        public async Task<IActionResult> PatchLight(int id, [FromBody] JsonPatchDocument<Light> patchDoc) {
             if (patchDoc == null) {
                 return BadRequest();
             }
-            var level = await _context.Levels.FindAsync(id);
-            if (level == null) {
+            var light = await _context.Lights.FindAsync(id);
+            if (light == null) {
                 return NotFound();
             }
-            patchDoc.ApplyTo(level, ModelState);
+            patchDoc.ApplyTo(light, ModelState);
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
             }
@@ -92,38 +103,25 @@ namespace KubicekKocnar.Server.Controllers
             return NoContent();
         }
 
-
-
-        // POST: api/Levels
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Level>> PostLevel(Level level)
-        {
-            _context.Levels.Add(level);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetLevel", new { id = level.LevelId }, level);
-        }
-
-        // DELETE: api/Levels/5
+        // DELETE: api/Lights/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLevel(uint id)
+        public async Task<IActionResult> DeleteLight(int id)
         {
-            var level = await _context.Levels.FindAsync(id);
-            if (level == null)
+            var light = await _context.Lights.FindAsync(id);
+            if (light == null)
             {
                 return NotFound();
             }
 
-            _context.Levels.Remove(level);
+            _context.Lights.Remove(light);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool LevelExists(uint id)
+        private bool LightExists(int id)
         {
-            return _context.Levels.Any(e => e.LevelId == id);
+            return _context.Lights.Any(e => e.LightId == id);
         }
     }
 }

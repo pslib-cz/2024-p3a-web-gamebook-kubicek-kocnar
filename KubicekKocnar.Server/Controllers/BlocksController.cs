@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KubicekKocnar.Server.Data;
 using KubicekKocnar.Server.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace KubicekKocnar.Server.Controllers
 {
@@ -72,6 +73,22 @@ namespace KubicekKocnar.Server.Controllers
 
             return NoContent();
         }
+
+        // PATCH: api/Blocks/5 using JsonPatchDocument
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchBlock(uint id, [FromBody] JsonPatchDocument<Block> patch) {
+            var block = await _context.Blocks.FindAsync(id);
+            if (block == null) {
+                return NotFound();
+            }
+            patch.ApplyTo(block, ModelState);
+            if (!ModelState.IsValid) {
+                return BadRequest(ModelState);
+            }
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
 
         // POST: api/Blocks
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

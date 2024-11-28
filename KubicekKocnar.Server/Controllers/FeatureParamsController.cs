@@ -47,7 +47,7 @@ namespace KubicekKocnar.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFeatureParams(uint id, FeatureParams featureParams)
         {
-            if (id != featureParams.Id)
+            if (id != featureParams.FeatureId)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace KubicekKocnar.Server.Controllers
             _context.FeatureParams.Add(featureParams);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetFeatureParams", new { id = featureParams.Id }, featureParams);
+            return CreatedAtAction("GetFeatureParams", new { id = featureParams.FeatureId }, featureParams);
         }
 
         // DELETE: api/FeatureParams/5
@@ -102,7 +102,7 @@ namespace KubicekKocnar.Server.Controllers
 
         private bool FeatureParamsExists(uint id)
         {
-            return _context.FeatureParams.Any(e => e.Id == id);
+            return _context.FeatureParams.Any(e => e.FeatureId == id);
         }
     }
 }

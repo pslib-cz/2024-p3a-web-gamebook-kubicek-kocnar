@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KubicekKocnar.Server.Data;
 using KubicekKocnar.Server.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace KubicekKocnar.Server.Controllers
 {
@@ -70,6 +71,24 @@ namespace KubicekKocnar.Server.Controllers
                 }
             }
 
+            return NoContent();
+        }
+
+        // PATCH api/PlacedBlocks/5 using JsonPatchDocument
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchPlacedBlock(uint id, JsonPatchDocument<PlacedBlock> patchDoc) {
+            if (patchDoc == null) {
+                return BadRequest();
+            }
+            var placedBlock = await _context.PlacedBlocks.FindAsync(id);
+            if (placedBlock == null) {
+                return NotFound();
+            }
+            patchDoc.ApplyTo(placedBlock, ModelState);
+            if (!TryValidateModel(placedBlock)) {
+                return ValidationProblem(ModelState);
+            }
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 

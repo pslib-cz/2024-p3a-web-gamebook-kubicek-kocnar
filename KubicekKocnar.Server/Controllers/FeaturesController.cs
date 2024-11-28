@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KubicekKocnar.Server.Data;
 using KubicekKocnar.Server.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace KubicekKocnar.Server.Controllers
 {
@@ -70,6 +71,24 @@ namespace KubicekKocnar.Server.Controllers
                 }
             }
 
+            return NoContent();
+        }
+
+        // PATCH: api/Features/5 using JsonPatchDocument
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchFeature(uint id, [FromBody] JsonPatchDocument<Feature> patchDoc) {
+            if (patchDoc == null) {
+                return BadRequest();
+            }
+            var feature = await _context.Features.FindAsync(id);
+            if (feature == null) {
+                return NotFound();
+            }
+            patchDoc.ApplyTo(feature, ModelState);
+            if (!TryValidateModel(feature)) {
+                return ValidationProblem(ModelState);
+            }
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 

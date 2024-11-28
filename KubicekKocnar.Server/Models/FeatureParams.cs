@@ -2,7 +2,7 @@
 {
     public class FeatureParams
     {
-        public uint Id { get; set; }
+        public uint FeatureId { get; set; }
 
         public required string Key { get; set; }
 
