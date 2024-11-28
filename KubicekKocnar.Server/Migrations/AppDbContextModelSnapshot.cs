@@ -18,60 +18,48 @@ namespace KubicekKocnar.Server.Migrations
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.Block", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<uint>("BlockId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Attributes")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("attributes")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("texture0Id")
+                    b.Property<uint?>("Texture0")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("texture1Id")
+                    b.Property<uint?>("Texture1")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("texture2Id")
+                    b.Property<uint?>("Texture2")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("texture3Id")
+                    b.Property<uint?>("Texture3")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("texture4Id")
+                    b.Property<uint?>("Texture4")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("texture5Id")
+                    b.Property<uint?>("Texture5")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("texture0Id");
-
-                    b.HasIndex("texture1Id");
-
-                    b.HasIndex("texture2Id");
-
-                    b.HasIndex("texture3Id");
-
-                    b.HasIndex("texture4Id");
-
-                    b.HasIndex("texture5Id");
+                    b.HasKey("BlockId");
 
                     b.ToTable("Blocks");
                 });
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.Feature", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<uint>("FeatureId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Type")
+                    b.Property<uint>("Type")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("X")
@@ -83,18 +71,18 @@ namespace KubicekKocnar.Server.Migrations
                     b.Property<int>("Z")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("FeatureId");
 
                     b.ToTable("Features");
                 });
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.FeatureParams", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<uint>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("FeatureId")
+                    b.Property<uint?>("FeatureId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Key")
@@ -114,7 +102,7 @@ namespace KubicekKocnar.Server.Migrations
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.Level", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<uint>("LevelId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -125,23 +113,27 @@ namespace KubicekKocnar.Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("NextLevelId")
+                    b.Property<uint?>("NextLevel")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("NextLevelId");
+                    b.HasKey("LevelId");
 
                     b.ToTable("Levels");
                 });
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.Light", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("LightId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("LevelId")
+                    b.Property<uint>("Color")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Intensity")
+                        .HasColumnType("REAL");
+
+                    b.Property<uint?>("LevelId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("X")
@@ -153,14 +145,7 @@ namespace KubicekKocnar.Server.Migrations
                     b.Property<int>("Z")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("color")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<float>("intensity")
-                        .HasColumnType("REAL");
-
-                    b.HasKey("Id");
+                    b.HasKey("LightId");
 
                     b.HasIndex("LevelId");
 
@@ -169,14 +154,14 @@ namespace KubicekKocnar.Server.Migrations
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.PlacedBlock", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<uint>("PlacedBlockId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BlockId")
+                    b.Property<uint?>("Block")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("LevelId")
+                    b.Property<uint?>("LevelId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("X")
@@ -188,9 +173,7 @@ namespace KubicekKocnar.Server.Migrations
                     b.Property<int>("Z")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("BlockId");
+                    b.HasKey("PlacedBlockId");
 
                     b.HasIndex("LevelId");
 
@@ -199,7 +182,7 @@ namespace KubicekKocnar.Server.Migrations
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.Texture", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<uint>("TextureId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -207,60 +190,9 @@ namespace KubicekKocnar.Server.Migrations
                         .IsRequired()
                         .HasColumnType("BLOB");
 
-                    b.HasKey("Id");
+                    b.HasKey("TextureId");
 
                     b.ToTable("Textures");
-                });
-
-            modelBuilder.Entity("KubicekKocnar.Server.Models.Block", b =>
-                {
-                    b.HasOne("KubicekKocnar.Server.Models.Texture", "texture0")
-                        .WithMany()
-                        .HasForeignKey("texture0Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("KubicekKocnar.Server.Models.Texture", "texture1")
-                        .WithMany()
-                        .HasForeignKey("texture1Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("KubicekKocnar.Server.Models.Texture", "texture2")
-                        .WithMany()
-                        .HasForeignKey("texture2Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("KubicekKocnar.Server.Models.Texture", "texture3")
-                        .WithMany()
-                        .HasForeignKey("texture3Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("KubicekKocnar.Server.Models.Texture", "texture4")
-                        .WithMany()
-                        .HasForeignKey("texture4Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("KubicekKocnar.Server.Models.Texture", "texture5")
-                        .WithMany()
-                        .HasForeignKey("texture5Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("texture0");
-
-                    b.Navigation("texture1");
-
-                    b.Navigation("texture2");
-
-                    b.Navigation("texture3");
-
-                    b.Navigation("texture4");
-
-                    b.Navigation("texture5");
                 });
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.FeatureParams", b =>
@@ -268,15 +200,6 @@ namespace KubicekKocnar.Server.Migrations
                     b.HasOne("KubicekKocnar.Server.Models.Feature", null)
                         .WithMany("params_")
                         .HasForeignKey("FeatureId");
-                });
-
-            modelBuilder.Entity("KubicekKocnar.Server.Models.Level", b =>
-                {
-                    b.HasOne("KubicekKocnar.Server.Models.Level", "NextLevel")
-                        .WithMany()
-                        .HasForeignKey("NextLevelId");
-
-                    b.Navigation("NextLevel");
                 });
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.Light", b =>
@@ -288,17 +211,9 @@ namespace KubicekKocnar.Server.Migrations
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.PlacedBlock", b =>
                 {
-                    b.HasOne("KubicekKocnar.Server.Models.Block", "Block")
-                        .WithMany()
-                        .HasForeignKey("BlockId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("KubicekKocnar.Server.Models.Level", null)
                         .WithMany("Blocks")
                         .HasForeignKey("LevelId");
-
-                    b.Navigation("Block");
                 });
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.Feature", b =>
