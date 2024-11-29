@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KubicekKocnar.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241129173245_west1")]
-    partial class west1
+    [Migration("20241129174851_west3")]
+    partial class west3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
