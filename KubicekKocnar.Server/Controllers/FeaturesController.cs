@@ -85,6 +85,31 @@ namespace KubicekKocnar.Server.Controllers
                 return NotFound();
             }
             patchDoc.ApplyTo(feature, ModelState);
+            /*foreach (var operation in patchDoc.Operations)
+            {
+                if (operation.path.StartsWith("/params/", StringComparison.OrdinalIgnoreCase))
+                    
+                {
+                    var key = operation.path.Substring(8); // Získáme "test" z "/params/test"
+                    Console.WriteLine(key);
+                    Console.WriteLine(operation.op);
+                    Console.WriteLine(operation.value);
+                    if (operation.op.Equals("replace", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Console.WriteLine(feature.Params[key]);
+                        feature.Params[key] = operation.value?.ToString() ?? string.Empty;
+                        Console.WriteLine(feature.Params[key]);
+                    }
+                    else if (operation.op.Equals("remove", StringComparison.OrdinalIgnoreCase))
+                    {
+                        feature.Params.Remove(key);
+                    }
+                    else if (operation.op.Equals("add", StringComparison.OrdinalIgnoreCase))
+                    {
+                        feature.Params[key] = operation.value?.ToString() ?? string.Empty;
+                    }
+                }
+            }*/
             if (!TryValidateModel(feature)) {
                 return ValidationProblem(ModelState);
             }
