@@ -8,7 +8,7 @@ import Player from '../Player';
 import MapRender from '../../lib/MapRender';
 import { AppContext } from '../AppContextProvider';
 import { Tool } from '../editor/ToolBar';
-import { Level } from '../../types/Level';
+import Level from '../../types/Level';
 
 // React.memo(
 const Map = ({scene, level} : {scene : THREE.Scene, level : Level}) => {
@@ -63,7 +63,7 @@ const Map = ({scene, level} : {scene : THREE.Scene, level : Level}) => {
     if (intersects.length > 0) {
       switch (tool.current) {
         case Tool.Mouse: {
-          const selectedBlock = mapRender.blocks.find((block) => block.position[0] === intersects[0].object.position.x && block.position[1] === intersects[0].object.position.y && block.position[2] === intersects[0].object.position.z);
+          const selectedBlock = mapRender.blocks.find(block => block.mesh === intersects[0].object);
           if (selectedBlock) setBlock(selectedBlock);
           scene.getObjectByName("selectioncube")?.position.set(intersects[0].object.position.x, intersects[0].object.position.y, intersects[0].object.position.z);
           break;
@@ -71,20 +71,20 @@ const Map = ({scene, level} : {scene : THREE.Scene, level : Level}) => {
           if (intersects[0].face?.normal === undefined) return;
           const newPos = intersects[0].object.position.clone().add(intersects[0].face?.normal);
           const newBlock = { 
-              position: [newPos.x, newPos.y, newPos.z],
-              texture: { sides: [
+              position: newPos,
+              /*texture: { sides: [
                 { url: 'https://i.ibb.co/9WpcyH5/texture-empty.png' },
                 { url: 'https://i.ibb.co/9WpcyH5/texture-empty.png' },
                 { url: 'https://i.ibb.co/9WpcyH5/texture-empty.png' },
                 { url: 'https://i.ibb.co/9WpcyH5/texture-empty.png' },
                 { url: 'https://i.ibb.co/9WpcyH5/texture-empty.png' },
                 { url: 'https://i.ibb.co/9WpcyH5/texture-empty.png' },
-              ] },
+              ] },*/
             } as BlockType;
           mapRender.addBlock(newBlock);
           break; 
         } case Tool.Remove: {
-          const block = mapRender.blocks.find(block => block.position[0] === intersects[0].object.position.x && block.position[1] === intersects[0].object.position.y && block.position[2] === intersects[0].object.position.z);
+          const block = mapRender.blocks.find(block => block.mesh === intersects[0].object);
           if (block) {
             mapRender.removeBlock(block);
           }

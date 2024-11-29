@@ -5,7 +5,7 @@
 namespace KubicekKocnar.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class init1 : Migration
+    public partial class north : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,7 +39,8 @@ namespace KubicekKocnar.Server.Migrations
                     X = table.Column<int>(type: "INTEGER", nullable: false),
                     Y = table.Column<int>(type: "INTEGER", nullable: false),
                     Z = table.Column<int>(type: "INTEGER", nullable: false),
-                    Type = table.Column<uint>(type: "INTEGER", nullable: false)
+                    Type = table.Column<uint>(type: "INTEGER", nullable: false),
+                    Params = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,7 +55,7 @@ namespace KubicekKocnar.Server.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
-                    NextLevel = table.Column<uint>(type: "INTEGER", nullable: true)
+                    NextLevelId = table.Column<uint>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -72,27 +73,6 @@ namespace KubicekKocnar.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Textures", x => x.TextureId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FeatureParams",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    FeatureId = table.Column<uint>(type: "INTEGER", nullable: false),
-                    Key = table.Column<string>(type: "TEXT", nullable: false),
-                    Value = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FeatureParams", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FeatureParams_Features_FeatureId",
-                        column: x => x.FeatureId,
-                        principalTable: "Features",
-                        principalColumn: "FeatureId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -141,11 +121,6 @@ namespace KubicekKocnar.Server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeatureParams_FeatureId",
-                table: "FeatureParams",
-                column: "FeatureId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Lights_LevelId",
                 table: "Lights",
                 column: "LevelId");
@@ -163,7 +138,7 @@ namespace KubicekKocnar.Server.Migrations
                 name: "Blocks");
 
             migrationBuilder.DropTable(
-                name: "FeatureParams");
+                name: "Features");
 
             migrationBuilder.DropTable(
                 name: "Lights");
@@ -173,9 +148,6 @@ namespace KubicekKocnar.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "Textures");
-
-            migrationBuilder.DropTable(
-                name: "Features");
 
             migrationBuilder.DropTable(
                 name: "Levels");

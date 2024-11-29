@@ -1,12 +1,7 @@
-interface BlockSideTexture {
+interface Texture {
     // id: string;
-    name: string;
+    textureId: string;
     url: string;
 }
 
-interface BlockTexture {
-    // id: string;
-    sides: BlockSideTexture[]; // 6 sides, order: top, bottom, left, right, front, back
-}
-
-export default BlockTexture;
+export default Texture;

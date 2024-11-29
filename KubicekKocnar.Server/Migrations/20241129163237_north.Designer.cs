@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KubicekKocnar.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241129075114_AddFeatureWithJsonParams")]
-    partial class AddFeatureWithJsonParams
+    [Migration("20241129163237_north")]
+    partial class north
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,7 +96,7 @@ namespace KubicekKocnar.Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<uint?>("NextLevel")
+                    b.Property<uint?>("NextLevelId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("LevelId");
