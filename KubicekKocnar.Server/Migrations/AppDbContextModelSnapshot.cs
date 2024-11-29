@@ -66,14 +66,14 @@ namespace KubicekKocnar.Server.Migrations
                     b.Property<uint>("Type")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("X")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("X")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("Y")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Y")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("Z")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Z")
+                        .HasColumnType("REAL");
 
                     b.HasKey("FeatureId");
 
@@ -144,14 +144,14 @@ namespace KubicekKocnar.Server.Migrations
                     b.Property<uint?>("LevelId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("X")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("X")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("Y")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Y")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("Z")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Z")
+                        .HasColumnType("REAL");
 
                     b.HasKey("PlacedBlockId");
 

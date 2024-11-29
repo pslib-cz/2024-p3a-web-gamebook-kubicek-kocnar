@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KubicekKocnar.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241129163237_north")]
-    partial class north
+    [Migration("20241129173245_west1")]
+    partial class west1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,14 +69,14 @@ namespace KubicekKocnar.Server.Migrations
                     b.Property<uint>("Type")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("X")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("X")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("Y")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Y")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("Z")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Z")
+                        .HasColumnType("REAL");
 
                     b.HasKey("FeatureId");
 
@@ -147,14 +147,14 @@ namespace KubicekKocnar.Server.Migrations
                     b.Property<uint?>("LevelId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("X")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("X")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("Y")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Y")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("Z")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Z")
+                        .HasColumnType("REAL");
 
                     b.HasKey("PlacedBlockId");
 
