@@ -1,9 +1,12 @@
 import Block from "./Block"
 
-export interface Level
+interface Level
 {
   levelId: number,
   name: string,
-  description: string
+  description: string,
+  nextLevel: number,
   blocks: Block[]
 }
+
+export default Level
