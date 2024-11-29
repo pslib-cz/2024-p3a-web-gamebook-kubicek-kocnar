@@ -31,17 +31,17 @@ const ConfigPanel: React.FC = () => {
                   Name: {blockState.mesh?.name}
               </p>
               <p>
-                  Position: {blockState.position[0]}, {blockState.position[1]}, {blockState.position[2]}
+                  Position: {blockState.position.x}, {blockState.position.y}, {blockState.position.z}
               </p>
               <div>
                   <h4>Textures</h4>
                   <div className="configpanel__textures">
-                    {blockState.texture?.sides?.map((side, index) => (
+                    {[blockState?.texture0, blockState?.texture1, blockState?.texture2, blockState?.texture3, blockState?.texture4, blockState?.texture5].map((side, index) => (
                       <div
                       key={index} 
                       className="configpanel__texture" 
                       >
-                        <img className='configpanel__texture__image' src={side.url} alt={`texture ${index}`}/>
+                        <img className='configpanel__texture__image' src={side?.url} alt={`texture ${index}`}/>
                         <p className='configpanel__texture__side'>{MapRender.translateTextureSide(index)}</p>
                       </div>
                     ))}

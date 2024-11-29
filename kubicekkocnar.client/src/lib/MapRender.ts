@@ -23,23 +23,19 @@ class MapRender {
         }
         
         if (block.material === undefined) {
-            if (block.texture !== undefined) {
-                if (block.texture.sides.length === 1) {
-                    const texture = block.texture.sides[0];
-                    const loadedTexture = textureLoader.load(texture.url);
+            if (block.texture1 !== undefined) {
+                if (!block.texture5) {
+                    const loadedTexture = textureLoader.load(block.texture1.url);
                     loadedTexture.minFilter = THREE.NearestFilter;
-                    // render the texture without any smoothing - pixelated
                     loadedTexture.magFilter = THREE.NearestFilter;
                     block.material = new THREE.MeshStandardMaterial({ map: loadedTexture });
                 } else {
-                    const textures = block.texture.sides.map(side => {
-                        const loadedTexture = textureLoader.load(side.url);
+                    block.material = [block.texture0, block.texture1, block.texture2, block.texture3, block.texture4, block.texture5].map(texture => {
+                        const loadedTexture = textureLoader.load(texture?.url || '');
                         loadedTexture.minFilter = THREE.NearestFilter;
-                        // render the texture without any smoothing - pixelated
                         loadedTexture.magFilter = THREE.NearestFilter;
                         return new THREE.MeshStandardMaterial({ map: loadedTexture, blendSrc: THREE.OneFactor });
-                    });
-                    block.material = textures;
+                    });;
                 }
             } else
             block.material = new THREE.MeshStandardMaterial({ color: 0xde7c26 });
@@ -52,7 +48,7 @@ class MapRender {
             block.material,
         );
         blockMesh.name = `block block-${block.blockId}`;
-        blockMesh.position.set(block.position[0], block.position[1], block.position[2]);
+        blockMesh.position.set(block.position.x, block.position.y, block.position.z);
         block.mesh = blockMesh;
         console.log("ADD", block);
         this.blocks.push(block);
