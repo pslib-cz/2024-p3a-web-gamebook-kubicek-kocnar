@@ -8,14 +8,13 @@ namespace KubicekKocnar.Server.Models
     {
         public uint FeatureId { get; set; }
 
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Z { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
 
         // interpretted as an Enum clientside - no need to actually define it here
         public uint Type { get; set; }
 
-        [NotMapped]
         public Dictionary<string, string> Params { get; set; } = new();
     }
 }
