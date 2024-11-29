@@ -1,5 +1,7 @@
 ﻿using KubicekKocnar.Server.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Text.Json;
 
 namespace KubicekKocnar.Server.Data
 {
@@ -11,7 +13,6 @@ namespace KubicekKocnar.Server.Data
         public DbSet<Level> Levels { get; set; }
         public DbSet<PlacedBlock> PlacedBlocks { get; set; }
         public DbSet<Light> Lights { get; set; }
-        public DbSet<FeatureParams> FeatureParams { get; set; }
         public DbSet<Feature> Features { get; set; }
         public DbSet<Texture> Textures { get; set; }
 
@@ -23,7 +24,17 @@ namespace KubicekKocnar.Server.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            var dictionaryToJsonConverter = new ValueConverter<Dictionary<string, string>, string>(
+                v => JsonSerializer.Serialize(v ?? new Dictionary<string, string>(), (JsonSerializerOptions)null), // Pokud je `null`, uloží prázdný JSON
+                v => string.IsNullOrEmpty(v)
+                    ? new Dictionary<string, string>() // Pokud je hodnota prázdná nebo `null`, vrátí prázdný slovník
+                    : JsonSerializer.Deserialize<Dictionary<string, string>>(v, (JsonSerializerOptions)null) // Jinak deserializuje
+            );
+
+            modelBuilder.Entity<Feature>()
+               .Property(f => f.Params)
+               .HasConversion(dictionaryToJsonConverter)
+               .HasColumnType("text");
         }
     }
 }

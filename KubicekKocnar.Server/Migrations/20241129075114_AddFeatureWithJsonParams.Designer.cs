@@ -2,6 +2,7 @@
 using KubicekKocnar.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KubicekKocnar.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241129075114_AddFeatureWithJsonParams")]
+    partial class AddFeatureWithJsonParams
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
@@ -80,33 +83,6 @@ namespace KubicekKocnar.Server.Migrations
                     b.ToTable("Features");
                 });
 
-<<<<<<< HEAD
-            modelBuilder.Entity("KubicekKocnar.Server.Models.FeatureParams", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<uint>("FeatureId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FeatureId");
-
-                    b.ToTable("FeatureParams");
-                });
-
-=======
->>>>>>> 720ddfa7a8e9094040149e53600741b25c3b7505
             modelBuilder.Entity("KubicekKocnar.Server.Models.Level", b =>
                 {
                     b.Property<uint>("LevelId")
@@ -202,18 +178,6 @@ namespace KubicekKocnar.Server.Migrations
                     b.ToTable("Textures");
                 });
 
-<<<<<<< HEAD
-            modelBuilder.Entity("KubicekKocnar.Server.Models.FeatureParams", b =>
-                {
-                    b.HasOne("KubicekKocnar.Server.Models.Feature", null)
-                        .WithMany("params_")
-                        .HasForeignKey("FeatureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-=======
->>>>>>> 720ddfa7a8e9094040149e53600741b25c3b7505
             modelBuilder.Entity("KubicekKocnar.Server.Models.Light", b =>
                 {
                     b.HasOne("KubicekKocnar.Server.Models.Level", null)
