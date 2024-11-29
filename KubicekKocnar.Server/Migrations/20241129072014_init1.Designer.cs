@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KubicekKocnar.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241128194450_init")]
-    partial class init
+    [Migration("20241129072014_init1")]
+    partial class init1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -81,11 +81,11 @@ namespace KubicekKocnar.Server.Migrations
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.FeatureParams", b =>
                 {
-                    b.Property<uint>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<uint?>("FeatureId")
+                    b.Property<uint>("FeatureId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Key")
@@ -202,7 +202,9 @@ namespace KubicekKocnar.Server.Migrations
                 {
                     b.HasOne("KubicekKocnar.Server.Models.Feature", null)
                         .WithMany("params_")
-                        .HasForeignKey("FeatureId");
+                        .HasForeignKey("FeatureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.Light", b =>

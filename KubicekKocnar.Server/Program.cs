@@ -5,6 +5,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+// CORS
+builder.Services.AddCors(options =>
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin =>
+            new Uri(origin).IsLoopback
+        );
+    })
+);
+
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=app.db"));
 
 builder.Services.AddControllers()
@@ -14,6 +24,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// CORS
+app.UseCors(x =>
+    x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin =>
+        new Uri(origin).IsLoopback
+    )
+);
 
 app.UseDefaultFiles();
 app.UseStaticFiles();

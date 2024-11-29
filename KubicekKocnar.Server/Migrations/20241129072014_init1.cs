@@ -5,7 +5,7 @@
 namespace KubicekKocnar.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class init1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -78,11 +78,11 @@ namespace KubicekKocnar.Server.Migrations
                 name: "FeatureParams",
                 columns: table => new
                 {
-                    Id = table.Column<uint>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    FeatureId = table.Column<uint>(type: "INTEGER", nullable: false),
                     Key = table.Column<string>(type: "TEXT", nullable: false),
-                    Value = table.Column<string>(type: "TEXT", nullable: false),
-                    FeatureId = table.Column<uint>(type: "INTEGER", nullable: true)
+                    Value = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -91,7 +91,8 @@ namespace KubicekKocnar.Server.Migrations
                         name: "FK_FeatureParams_Features_FeatureId",
                         column: x => x.FeatureId,
                         principalTable: "Features",
-                        principalColumn: "FeatureId");
+                        principalColumn: "FeatureId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

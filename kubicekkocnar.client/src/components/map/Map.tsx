@@ -8,8 +8,13 @@ import Player from '../Player';
 import MapRender from '../../lib/MapRender';
 import { AppContext } from '../AppContextProvider';
 import { Tool } from '../editor/ToolBar';
+import { Level } from '../../types/Level';
 
-const Map = React.memo(({scene} : {scene : THREE.Scene}) => {
+// React.memo(
+const Map = ({scene, level} : {scene : THREE.Scene, level : Level}) => {
+
+  console.log("Loading level");
+  console.log(level);
 
   const { tool, setBlock } = useContext(AppContext);
   const threeRef = React.useRef(useThree());
@@ -102,46 +107,8 @@ const Map = React.memo(({scene} : {scene : THREE.Scene}) => {
 
   useEffect(() => {
     console.log("MapRenderer mounted");
-    // initial map setup
-    const map3D: BlockType[] = [
-      {
-        position: [0, 0, 0],
-        blockId: 1
-      },
-      {
-        position: [0, 0, 1],
-        blockId: 2
-      },
-      {
-        position: [0, 0, -1],
-        blockId: 3
-      },
-      {
-        position: [1, 0, 0],
-        blockId: 4
-      },
-      {
-        position: [-1, 0, 0],
-        blockId: 5
-      },
-      {
-        position: [-2, 0, 0],
-        blockId: 6
-      },
-      {
-        position: [-3, 0, 0],
-        blockId: 7   
-      },
-      {
-        position: [-4, 0, 0],
-        blockId: 8
-      },
-      {
-        position: [-4, 1, 0],
-        blockId: 9
-      },
-    ];
-    map3D.forEach((block) => mapRender.addBlock(block));
+
+    level.blocks.forEach((block) => mapRender.addBlock(block));
     console.log(scene);
   }, [mapRender, scene]);
 
@@ -170,6 +137,6 @@ const Map = React.memo(({scene} : {scene : THREE.Scene}) => {
       </>
     );
   //never rerender :D
-}, () => true);
+}//); , () => true
 
   export default Map;
