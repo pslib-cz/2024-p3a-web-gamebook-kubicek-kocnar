@@ -43,13 +43,13 @@ class MapRender {
         if (!block.blockId) {
             block.blockId = 10000 + this.blocks.length;
         }
-        const blockMesh = new THREE.Mesh(
+        block.mesh = new THREE.Mesh(
             new THREE.BoxGeometry(1,1,1),
             block.material,
         );
-        blockMesh.name = `block block-${block.blockId}`;
-        blockMesh.position.set(block.position.x, block.position.y, block.position.z);
-        block.mesh = blockMesh;
+        block.mesh
+        block.mesh.u = `block block-${block.blockId}`;
+        block.mesh.position.set(block.position?.x, block.position?.y, block.position?.z);
         console.log("ADD", block);
         this.blocks.push(block);
         this.scene.add(block.mesh);

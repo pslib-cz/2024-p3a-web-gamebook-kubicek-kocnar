@@ -30,39 +30,39 @@ function App() {
 
 const map3D: Block[] = [
   {
-    position: [0, 0, 0],
+    position: new THREE.Vector3(0, 0, 0),
     blockId: 1
   },
   {
-    position: [0, 0, 1],
+    position: new THREE.Vector3(0, 0, 1),
     blockId: 2
   },
   {
-    position: [0, 0, -1],
+    position: new THREE.Vector3(0, 0, -1),
     blockId: 3
   },
   {
-    position: [1, 0, 0],
+    position: new THREE.Vector3(1, 0, 0),
     blockId: 4
   },
   {
-    position: [-1, 0, 0],
+    position: new THREE.Vector3(-1, 0, 0),
     blockId: 5
   },
   {
-    position: [-2, 0, 0],
+    position: new THREE.Vector3(-2, 0, 0),
     blockId: 6
   },
   {
-    position: [-3, 0, 0],
+    position: new THREE.Vector3(-3, 0, 0),
     blockId: 7   
   },
   {
-    position: [-4, 0, 0],
+    position: new THREE.Vector3(-4, 0, 0),
     blockId: 8
   },
   {
-    position: [-4, 1, 0],
+    position: new THREE.Vector3(-4, 1, 0),
     blockId: 9
   },
 ];

@@ -1,27 +1,22 @@
 import Texture from "./Texture";
-import * as THREE from 'three';
+import { Material } from 'three';
 
+// a Block is a type referenced in the PlacedBlock type
+// used to define the properties of a rendered block in the game
 interface Block {
     blockId: number;
-    position: THREE.Vector3;
-    material?: THREE.Material | THREE.Material[];
-    mesh?: THREE.Mesh;
-    texture0: Texture;
-    texture1: Texture | undefined;
-    texture2: Texture | undefined;
-    texture3: Texture | undefined;
-    texture4: Texture | undefined;
-    texture5: Texture | undefined;
-}
+    name: string;
 
-interface PlacedBlock {
-    placedBlockId: number;
-    blockId: number;
-    block: Block;
-    level: number;
-    x: number;
-    y: number
-    z: number;
-} 
+    attributes: string[]; //works like classes in HTML -> needs conversion from [server] string to [client] string[]
+    
+    material?: Material | Material[]; // asigned once the first block of this type is added to the scene
+
+    texture0?: Texture; // when only texture0 is set, it is used for all sides 
+    texture1?: Texture;
+    texture2?: Texture;
+    texture3?: Texture;
+    texture4?: Texture;
+    texture5?: Texture; // when texture5 is set, all textures are used for each side
+}
 
 export default Block;

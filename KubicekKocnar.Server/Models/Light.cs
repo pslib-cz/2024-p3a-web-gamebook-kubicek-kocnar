@@ -4,7 +4,7 @@ namespace KubicekKocnar.Server.Models
 {
     public class Light
     {
-        public int LightId { get; set; }
+        public uint LightId { get; set; }
 
         public int X { get; set; }
         public int Y { get; set; }
@@ -13,5 +13,7 @@ namespace KubicekKocnar.Server.Models
         public uint Color { get; set; } = 0xffffff;
 
         public double Intensity { get; set; } = 1;
+
+        public uint LevelId { get; set; }
     }
 }
