@@ -10,8 +10,12 @@
 
         public uint? NextLevelId { get; set; }
 
+        public Game? Game { get; set; }
+
         public List<PlacedBlock>? Blocks { get; set; }
 
         public List<Light>? Lights { get; set; }
+
+        public List<Feature>? Features { get; set; }
     }
 }

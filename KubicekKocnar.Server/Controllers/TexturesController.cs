@@ -29,22 +29,16 @@ namespace KubicekKocnar.Server.Controllers
             return await _context.Textures.ToListAsync();
         }
 
-        // GET: api/Textures/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Texture>> GetTexture(uint id)
         {
             var texture = await _context.Textures.FindAsync(id);
 
-            if (texture == null)
-            {
-                return NotFound();
-            }
+            if (texture == null) return NotFound();
 
             return texture;
         }
 
-        // PUT: api/Textures/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTexture(uint id, Texture texture)
         {
@@ -74,7 +68,6 @@ namespace KubicekKocnar.Server.Controllers
             return NoContent();
         }
 
-        // PATCH api/Textures/5 using JsonPatchDocument
         [HttpPatch("{id}")]
         public async Task<IActionResult> PatchTexture(uint id, [FromBody] JsonPatchDocument<Texture> patchDoc) {
             if (patchDoc == null) {
@@ -92,8 +85,6 @@ namespace KubicekKocnar.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Textures
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Texture>> PostTexture(Texture texture)
         {
@@ -103,7 +94,6 @@ namespace KubicekKocnar.Server.Controllers
             return CreatedAtAction("GetTexture", new { id = texture.TextureId }, texture);
         }
 
-        // DELETE: api/Textures/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTexture(uint id)
         {

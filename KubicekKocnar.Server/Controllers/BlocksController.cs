@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using KubicekKocnar.Server.Data;
 using KubicekKocnar.Server.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KubicekKocnar.Server.Controllers
 {
@@ -29,7 +30,6 @@ namespace KubicekKocnar.Server.Controllers
             return await _context.Blocks.ToListAsync();
         }
 
-        // GET: api/Blocks/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Block>> GetBlock(uint id)
         {
@@ -43,8 +43,6 @@ namespace KubicekKocnar.Server.Controllers
             return block;
         }
 
-        // PUT: api/Blocks/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBlock(uint id, Block block)
         {
@@ -90,8 +88,6 @@ namespace KubicekKocnar.Server.Controllers
         }
 
 
-        // POST: api/Blocks
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Block>> PostBlock(Block block)
         {
@@ -101,8 +97,8 @@ namespace KubicekKocnar.Server.Controllers
             return CreatedAtAction("GetBlock", new { id = block.BlockId }, block);
         }
 
-        // DELETE: api/Blocks/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteBlock(uint id)
         {
             var block = await _context.Blocks.FindAsync(id);
