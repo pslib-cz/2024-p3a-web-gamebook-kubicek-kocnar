@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace KubicekKocnar.Server.Models
 {
@@ -9,6 +10,7 @@ namespace KubicekKocnar.Server.Models
         public required Block Block { get; set; }
         public uint BlockId { get; set; }
 
+        [JsonIgnore]
         public required Level Level { get; set; }
         public uint LevelId { get; set; }
 

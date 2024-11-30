@@ -7,46 +7,42 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KubicekKocnar.Server.Data;
 using KubicekKocnar.Server.Models;
-using Microsoft.AspNetCore.JsonPatch;
 
 namespace KubicekKocnar.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LevelsController : ControllerBase
+    public class Levels1Controller : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public LevelsController(AppDbContext context)
+        public Levels1Controller(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Levels
-        [HttpGet]
+        // GET: api/Levels1
+        /*[HttpGet]
         public async Task<ActionResult<IEnumerable<Level>>> GetLevels()
         {
-            return await _context.Levels.ToListAsync();
-        }
+            return await _context.Levels.Include(s => s.Game).ToListAsync();
+        }*/
 
-        // GET: api/Levels/5
-        [HttpGet("{id}")]
+        // GET: api/Levels1/5
+        /*[HttpGet("{id}")]
         public async Task<ActionResult<Level>> GetLevel(uint id)
         {
-            var level = await _context.Levels.Include(Game => Game.Game).Where(x => x.LevelId == id).FirstOrDefaultAsync();
+            var level = await _context.Levels.Include(s => s.Game).Where(x => x.LevelId == id).FirstOrDefaultAsync();
 
             if (level == null)
             {
                 return NotFound();
             }
 
-            level.Game.Levels = null;
-            return Ok(level);
+            return level;
+        }*/
 
-            //return level;
-        }
-
-        // PUT: api/Levels/5
+        // PUT: api/Levels1/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLevel(uint id, Level level)
@@ -77,27 +73,7 @@ namespace KubicekKocnar.Server.Controllers
             return NoContent();
         }
 
-        // PATCH: api/Levels/5 using JsonPatch;
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchLevel(uint id, [FromBody] JsonPatchDocument<Level> patchDoc) {
-            if (patchDoc == null) {
-                return BadRequest();
-            }
-            var level = await _context.Levels.FindAsync(id);
-            if (level == null) {
-                return NotFound();
-            }
-            patchDoc.ApplyTo(level, ModelState);
-            if (!ModelState.IsValid) {
-                return BadRequest(ModelState);
-            }
-            await _context.SaveChangesAsync();
-            return NoContent();
-        }
-
-
-
-        // POST: api/Levels
+        // POST: api/Levels1
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Level>> PostLevel(Level level)
@@ -108,7 +84,7 @@ namespace KubicekKocnar.Server.Controllers
             return CreatedAtAction("GetLevel", new { id = level.LevelId }, level);
         }
 
-        // DELETE: api/Levels/5
+        // DELETE: api/Levels1/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLevel(uint id)
         {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Build.Framework;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace KubicekKocnar.Server.Models
 {
@@ -15,6 +16,7 @@ namespace KubicekKocnar.Server.Models
         // interpretted as an Enum clientside - no need to actually define it here
         public uint Type { get; set; }
 
+        [JsonIgnore]
         public required Level Level { get; set; }
         public uint LevelId { get; set; }
 

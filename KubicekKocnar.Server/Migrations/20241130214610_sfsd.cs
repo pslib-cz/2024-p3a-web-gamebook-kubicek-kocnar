@@ -57,12 +57,12 @@ namespace KubicekKocnar.Server.Migrations
                     BlockId = table.Column<uint>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Texture0 = table.Column<uint>(type: "INTEGER", nullable: true),
-                    Texture1 = table.Column<uint>(type: "INTEGER", nullable: true),
-                    Texture2 = table.Column<uint>(type: "INTEGER", nullable: true),
-                    Texture3 = table.Column<uint>(type: "INTEGER", nullable: true),
-                    Texture4 = table.Column<uint>(type: "INTEGER", nullable: true),
-                    Texture5 = table.Column<uint>(type: "INTEGER", nullable: true),
+                    Texture0Id = table.Column<uint>(type: "INTEGER", nullable: true),
+                    Texture1Id = table.Column<uint>(type: "INTEGER", nullable: true),
+                    Texture2Id = table.Column<uint>(type: "INTEGER", nullable: true),
+                    Texture3Id = table.Column<uint>(type: "INTEGER", nullable: true),
+                    Texture4Id = table.Column<uint>(type: "INTEGER", nullable: true),
+                    Texture5Id = table.Column<uint>(type: "INTEGER", nullable: true),
                     Attributes = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -106,17 +106,18 @@ namespace KubicekKocnar.Server.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
-                    AuthorId = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: true),
                     Published = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Games", x => x.GameId);
                     table.ForeignKey(
-                        name: "FK_Games_AspNetUsers_AuthorId",
-                        column: x => x.AuthorId,
+                        name: "FK_Games_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -152,7 +153,7 @@ namespace KubicekKocnar.Server.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     NextLevelId = table.Column<uint>(type: "INTEGER", nullable: true),
-                    GameId = table.Column<uint>(type: "INTEGER", nullable: true)
+                    GameId = table.Column<uint>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -161,7 +162,8 @@ namespace KubicekKocnar.Server.Migrations
                         name: "FK_Levels_Games_GameId",
                         column: x => x.GameId,
                         principalTable: "Games",
-                        principalColumn: "GameId");
+                        principalColumn: "GameId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -174,37 +176,14 @@ namespace KubicekKocnar.Server.Migrations
                     Y = table.Column<double>(type: "REAL", nullable: false),
                     Z = table.Column<double>(type: "REAL", nullable: false),
                     Type = table.Column<uint>(type: "INTEGER", nullable: false),
-                    Params = table.Column<string>(type: "text", nullable: false),
-                    LevelId = table.Column<uint>(type: "INTEGER", nullable: true)
+                    LevelId = table.Column<uint>(type: "INTEGER", nullable: false),
+                    Params = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Features", x => x.FeatureId);
                     table.ForeignKey(
                         name: "FK_Features_Levels_LevelId",
-                        column: x => x.LevelId,
-                        principalTable: "Levels",
-                        principalColumn: "LevelId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Lights",
-                columns: table => new
-                {
-                    LightId = table.Column<uint>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    X = table.Column<int>(type: "INTEGER", nullable: false),
-                    Y = table.Column<int>(type: "INTEGER", nullable: false),
-                    Z = table.Column<int>(type: "INTEGER", nullable: false),
-                    Color = table.Column<uint>(type: "INTEGER", nullable: false),
-                    Intensity = table.Column<double>(type: "REAL", nullable: false),
-                    LevelId = table.Column<uint>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Lights", x => x.LightId);
-                    table.ForeignKey(
-                        name: "FK_Lights_Levels_LevelId",
                         column: x => x.LevelId,
                         principalTable: "Levels",
                         principalColumn: "LevelId",
@@ -217,20 +196,27 @@ namespace KubicekKocnar.Server.Migrations
                 {
                     PlacedBlockId = table.Column<uint>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Block = table.Column<uint>(type: "INTEGER", nullable: true),
+                    BlockId = table.Column<uint>(type: "INTEGER", nullable: false),
+                    LevelId = table.Column<uint>(type: "INTEGER", nullable: false),
                     X = table.Column<double>(type: "REAL", nullable: false),
                     Y = table.Column<double>(type: "REAL", nullable: false),
-                    Z = table.Column<double>(type: "REAL", nullable: false),
-                    LevelId = table.Column<uint>(type: "INTEGER", nullable: true)
+                    Z = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PlacedBlocks", x => x.PlacedBlockId);
                     table.ForeignKey(
+                        name: "FK_PlacedBlocks_Blocks_BlockId",
+                        column: x => x.BlockId,
+                        principalTable: "Blocks",
+                        principalColumn: "BlockId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_PlacedBlocks_Levels_LevelId",
                         column: x => x.LevelId,
                         principalTable: "Levels",
-                        principalColumn: "LevelId");
+                        principalColumn: "LevelId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -239,9 +225,9 @@ namespace KubicekKocnar.Server.Migrations
                 column: "LevelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Games_AuthorId",
+                name: "IX_Games_UserId",
                 table: "Games",
-                column: "AuthorId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Levels_GameId",
@@ -249,9 +235,9 @@ namespace KubicekKocnar.Server.Migrations
                 column: "GameId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lights_LevelId",
-                table: "Lights",
-                column: "LevelId");
+                name: "IX_PlacedBlocks_BlockId",
+                table: "PlacedBlocks",
+                column: "BlockId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlacedBlocks_LevelId",
@@ -268,13 +254,7 @@ namespace KubicekKocnar.Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Blocks");
-
-            migrationBuilder.DropTable(
                 name: "Features");
-
-            migrationBuilder.DropTable(
-                name: "Lights");
 
             migrationBuilder.DropTable(
                 name: "PlacedBlocks");
@@ -287,6 +267,9 @@ namespace KubicekKocnar.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserClaims");
+
+            migrationBuilder.DropTable(
+                name: "Blocks");
 
             migrationBuilder.DropTable(
                 name: "Levels");

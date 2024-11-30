@@ -95,27 +95,30 @@ namespace KubicekKocnar.Server.Controllers
         [HttpGet("{id}/Levels")]
         public async Task<ActionResult<IEnumerable<Level>>> GetLevels(uint id)
         {
-            var game = await _context.Games.FindAsync(id);
+            //var game = await _context.Games.FindAsync(id);
 
-            if (game == null) return NotFound();
+            //if (game == null) return NotFound();
+                       
 
-            return Ok(game.Levels);
+            return Ok(_context.Levels.Where(l => l.GameId == id));
         }
 
         // POST: api/Games/5/Levels
         [HttpPost("{id}/Levels")]
-        public async Task<ActionResult<Level>> PostLevel(uint id, Level level)
+        public async Task<ActionResult<Level>> PostLevel(uint id, string name)
         {
             var game = await _context.Games.FindAsync(id);
 
             if (game == null) return NotFound();
 
-            await _context.Entry(game).Collection(g => g.Levels).LoadAsync();
+            //await _context.Entry(game).Collection(g => g.Levels).LoadAsync();
 
-            game.Levels.Add(level);
+            game.Levels.Add(new Level { Name = name });
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLevel", new { id = level.LevelId }, level);
+            return Ok();
+
+            //return CreatedAtAction("GetLevel", new { id = level.LevelId }, level);
         }
 
         // DELETE: api/Games/5/Levels/5

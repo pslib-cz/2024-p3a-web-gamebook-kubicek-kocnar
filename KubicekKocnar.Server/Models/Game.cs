@@ -1,4 +1,6 @@
-﻿namespace KubicekKocnar.Server.Models
+﻿using System.Text.Json.Serialization;
+
+namespace KubicekKocnar.Server.Models
 {
     public class Game
     {
@@ -8,10 +10,11 @@
         public string Description { get; set; } = "";
 
         public User? Author { get; set; }
-        public uint? AuthorId { get; set; }
+        public string? UserId { get; set; }
 
         public bool Published { get; set; }
 
-        public required ICollection<Level> Levels { get; set; }
+        //[JsonIgnore]
+        public ICollection<Level> Levels { get; set; } = new List<Level>();
     }
 }

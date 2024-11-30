@@ -1,4 +1,6 @@
-﻿namespace KubicekKocnar.Server.Models
+﻿using System.Text.Json.Serialization;
+
+namespace KubicekKocnar.Server.Models
 {
     public class Level
     {
@@ -10,11 +12,16 @@
 
         public uint? NextLevelId { get; set; }
 
-        public Game? Game { get; set; }
-        public uint? GameId { get; set; }
 
-        public required ICollection<PlacedBlock> Blocks { get; set; }
+        [JsonIgnore]
+        public Game? Game { get; set; } = null;
+        
 
-        public required ICollection<Feature> Features { get; set; }
+        public uint GameId { get; set; }
+        
+
+        public ICollection<PlacedBlock> Blocks { get; set; } = new List<PlacedBlock>();
+
+        public ICollection<Feature> Features { get; set; } = new List<Feature>();
     }
 }

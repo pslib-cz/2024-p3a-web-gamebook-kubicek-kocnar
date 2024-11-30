@@ -31,22 +31,22 @@ namespace KubicekKocnar.Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<uint?>("Texture0")
+                    b.Property<uint?>("Texture0Id")
                         .HasColumnType("INTEGER");
 
-                    b.Property<uint?>("Texture1")
+                    b.Property<uint?>("Texture1Id")
                         .HasColumnType("INTEGER");
 
-                    b.Property<uint?>("Texture2")
+                    b.Property<uint?>("Texture2Id")
                         .HasColumnType("INTEGER");
 
-                    b.Property<uint?>("Texture3")
+                    b.Property<uint?>("Texture3Id")
                         .HasColumnType("INTEGER");
 
-                    b.Property<uint?>("Texture4")
+                    b.Property<uint?>("Texture4Id")
                         .HasColumnType("INTEGER");
 
-                    b.Property<uint?>("Texture5")
+                    b.Property<uint?>("Texture5Id")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("BlockId");
@@ -60,7 +60,7 @@ namespace KubicekKocnar.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<uint?>("LevelId")
+                    b.Property<uint>("LevelId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Params")
@@ -92,9 +92,6 @@ namespace KubicekKocnar.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("AuthorId")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -106,9 +103,12 @@ namespace KubicekKocnar.Server.Migrations
                     b.Property<bool>("Published")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("GameId");
 
-                    b.HasIndex("AuthorId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Games");
                 });
@@ -122,7 +122,7 @@ namespace KubicekKocnar.Server.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<uint?>("GameId")
+                    b.Property<uint>("GameId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -139,47 +139,16 @@ namespace KubicekKocnar.Server.Migrations
                     b.ToTable("Levels");
                 });
 
-            modelBuilder.Entity("KubicekKocnar.Server.Models.Light", b =>
-                {
-                    b.Property<uint>("LightId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<uint>("Color")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<double>("Intensity")
-                        .HasColumnType("REAL");
-
-                    b.Property<uint>("LevelId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("X")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Y")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Z")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("LightId");
-
-                    b.HasIndex("LevelId");
-
-                    b.ToTable("Lights");
-                });
-
             modelBuilder.Entity("KubicekKocnar.Server.Models.PlacedBlock", b =>
                 {
                     b.Property<uint>("PlacedBlockId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<uint?>("Block")
+                    b.Property<uint>("BlockId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<uint?>("LevelId")
+                    b.Property<uint>("LevelId")
                         .HasColumnType("INTEGER");
 
                     b.Property<double>("X")
@@ -192,6 +161,8 @@ namespace KubicekKocnar.Server.Migrations
                         .HasColumnType("REAL");
 
                     b.HasKey("PlacedBlockId");
+
+                    b.HasIndex("BlockId");
 
                     b.HasIndex("LevelId");
 
@@ -321,43 +292,51 @@ namespace KubicekKocnar.Server.Migrations
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.Feature", b =>
                 {
-                    b.HasOne("KubicekKocnar.Server.Models.Level", null)
+                    b.HasOne("KubicekKocnar.Server.Models.Level", "Level")
                         .WithMany("Features")
-                        .HasForeignKey("LevelId");
+                        .HasForeignKey("LevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Level");
                 });
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.Game", b =>
                 {
                     b.HasOne("KubicekKocnar.Server.Models.User", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId");
+                        .WithMany("Games")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Author");
                 });
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.Level", b =>
                 {
-                    b.HasOne("KubicekKocnar.Server.Models.Game", "Game")
+                    b.HasOne("KubicekKocnar.Server.Models.Game", null)
                         .WithMany("Levels")
-                        .HasForeignKey("GameId");
-
-                    b.Navigation("Game");
-                });
-
-            modelBuilder.Entity("KubicekKocnar.Server.Models.Light", b =>
-                {
-                    b.HasOne("KubicekKocnar.Server.Models.Level", null)
-                        .WithMany("Lights")
-                        .HasForeignKey("LevelId")
+                        .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.PlacedBlock", b =>
                 {
-                    b.HasOne("KubicekKocnar.Server.Models.Level", null)
+                    b.HasOne("KubicekKocnar.Server.Models.Block", "Block")
+                        .WithMany("PlacedBlocks")
+                        .HasForeignKey("BlockId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("KubicekKocnar.Server.Models.Level", "Level")
                         .WithMany("Blocks")
-                        .HasForeignKey("LevelId");
+                        .HasForeignKey("LevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Block");
+
+                    b.Navigation("Level");
                 });
 
             modelBuilder.Entity("RoleUser", b =>
@@ -375,6 +354,11 @@ namespace KubicekKocnar.Server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("KubicekKocnar.Server.Models.Block", b =>
+                {
+                    b.Navigation("PlacedBlocks");
+                });
+
             modelBuilder.Entity("KubicekKocnar.Server.Models.Game", b =>
                 {
                     b.Navigation("Levels");
@@ -385,8 +369,11 @@ namespace KubicekKocnar.Server.Migrations
                     b.Navigation("Blocks");
 
                     b.Navigation("Features");
+                });
 
-                    b.Navigation("Lights");
+            modelBuilder.Entity("KubicekKocnar.Server.Models.User", b =>
+                {
+                    b.Navigation("Games");
                 });
 #pragma warning restore 612, 618
         }

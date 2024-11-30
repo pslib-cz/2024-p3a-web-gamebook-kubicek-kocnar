@@ -45,14 +45,16 @@ namespace KubicekKocnar.Server.Data
             modelBuilder.Entity<Game>()
                 .HasOne(g => g.Author)
                 .WithMany(u => u.Games)
-                .HasForeignKey(g => g.AuthorId)
+                .HasForeignKey(g => g.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            /*
             modelBuilder.Entity<Level>()
                 .HasOne(l => l.Game)
                 .WithMany(g => g.Levels)
                 .HasForeignKey(l => l.GameId)
                 .OnDelete(DeleteBehavior.Cascade);
+            */
 
             modelBuilder.Entity<PlacedBlock>()
                 .HasOne(pb => pb.Level)
