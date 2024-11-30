@@ -1,23 +1,23 @@
 import React, { MutableRefObject, useRef, useState, useMemo } from "react";
 import { Tool } from "./editor/ToolBar";
-import Block from "../types/Block";
+import PlacedBlock from "../types/PlacedBlock";
 
 interface AppContextType {
     tool: MutableRefObject<Tool>;
     toolState: Tool;
     setTool: (tool: Tool) => void;
-    block: MutableRefObject<Block>;
-    setBlock: (block: Block) => void;
-    blockState: Block;
+    block: MutableRefObject<PlacedBlock|null>;
+    setBlock: (block: PlacedBlock) => void;
+    blockState: PlacedBlock|null;
 }
 
 const defaultContext: AppContextType = {
     tool: {current: Tool.Mouse},
     toolState: Tool.Mouse,
     setTool: () => {},
-    block: {current: {blockId: 0, position: [0, 0, 0]}},
+    block: {current: null},
     setBlock: () => {},
-    blockState: {blockId: 0, position: [0, 0, 0]}
+    blockState: null
 };
 
 const AppContext = React.createContext<AppContextType>(defaultContext);
@@ -30,9 +30,10 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
         setToolState(newTool);
     };
 
-    const block = useRef<Block>({blockId: 0, position: [0, 0, 0]});
-    const [blockState, setBlockState] = useState<Block>({blockId: 0, position: [0, 0, 0]});
-    const setBlock = (newBlock: Block) => {
+    const block = useRef<PlacedBlock>(null);
+    const [blockState, setBlockState] = useState<PlacedBlock|null>(null);
+    const setBlock = (newBlock: PlacedBlock) => {
+        //@ts-expect-error idk what's wrong here
         block.current = newBlock;
         setBlockState(newBlock);
     };

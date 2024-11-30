@@ -12,7 +12,7 @@ interface Level
   gameId: number,
   game: Game; // gameReference -> needs to be set on client from gameId
 
-  blocks?: PlacedBlock[]
+  blocks: PlacedBlock[]
 }
 
 export default Level

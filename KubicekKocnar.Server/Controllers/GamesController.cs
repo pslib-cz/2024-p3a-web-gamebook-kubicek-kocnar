@@ -171,7 +171,7 @@ namespace KubicekKocnar.Server.Controllers
 
             if (level == null) return NotFound();
 
-            return level.Blocks;
+            return Ok(level.Blocks);
         }
 
         // POST: api/Games/5/Levels/5/Blocks
@@ -253,7 +253,7 @@ namespace KubicekKocnar.Server.Controllers
 
             if (level == null) return NotFound();
 
-            return level.Features;
+            return Ok(level.Features);
         }
 
         // POST: api/Games/5/Levels/5/Features

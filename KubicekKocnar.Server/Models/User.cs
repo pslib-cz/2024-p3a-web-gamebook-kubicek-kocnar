@@ -11,5 +11,7 @@ namespace KubicekKocnar.Server.Models
 
         [JsonIgnore]
         public ICollection<Role>? Roles { get; set; }
+
+        public ICollection<Game>? Games { get; set; }
     }
 }

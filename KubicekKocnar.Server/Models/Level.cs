@@ -11,11 +11,10 @@
         public uint? NextLevelId { get; set; }
 
         public Game? Game { get; set; }
+        public uint? GameId { get; set; }
 
-        public List<PlacedBlock>? Blocks { get; set; }
+        public required ICollection<PlacedBlock> Blocks { get; set; }
 
-        public List<Light>? Lights { get; set; }
-
-        public List<Feature>? Features { get; set; }
+        public required ICollection<Feature> Features { get; set; }
     }
 }

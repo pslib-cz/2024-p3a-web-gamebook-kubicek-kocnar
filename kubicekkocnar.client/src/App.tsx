@@ -11,8 +11,7 @@ import 'react-material-symbols/outlined';
 import ConfigPanel from './components/editor/ConfigPanel';
 import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom';
 import { LevelMenu } from './LevelMenu';
-import Block from './types/Block';
-import { Level } from './types/Level';
+import Level from './types/Level';
 
 function App() {
   return (
@@ -28,68 +27,18 @@ function App() {
     );
 }
 
-const map3D: Block[] = [
-  {
-    position: new THREE.Vector3(0, 0, 0),
-    blockId: 1
-  },
-  {
-    position: new THREE.Vector3(0, 0, 1),
-    blockId: 2
-  },
-  {
-    position: new THREE.Vector3(0, 0, -1),
-    blockId: 3
-  },
-  {
-    position: new THREE.Vector3(1, 0, 0),
-    blockId: 4
-  },
-  {
-    position: new THREE.Vector3(-1, 0, 0),
-    blockId: 5
-  },
-  {
-    position: new THREE.Vector3(-2, 0, 0),
-    blockId: 6
-  },
-  {
-    position: new THREE.Vector3(-3, 0, 0),
-    blockId: 7   
-  },
-  {
-    position: new THREE.Vector3(-4, 0, 0),
-    blockId: 8
-  },
-  {
-    position: new THREE.Vector3(-4, 1, 0),
-    blockId: 9
-  },
-];
-
 function LevelEditor()
 {
   const { id } = useParams();
   const [scene, setScene] = useState<THREE.Scene | null>(null);
 
-  const demoLevel = {
-    name: "demo",
-    blocks: map3D
-  } as Level
 
-
-  const [level_, setLevel] = useState<Level>(demoLevel);
+  const [level_, setLevel] = useState<Level|null>(null);
 
   React.useEffect(() => {
     console.log("Level ID:", id);
-    
-    if (id == null)
-    {
-      setLevel(demoLevel);
-      return;
-    }
 
-    const endpoint = 'https://localhost:7097/api/Levels/';
+    const endpoint = 'https://localhost:7097/api/Games/1/Levels/';
   
     async function fetchLevel() {
 
@@ -125,7 +74,7 @@ function LevelEditor()
       <ConfigPanel/>
       <div className='canvas'>
       <Canvas onCreated={(state) => {console.log(state); setScene(state.scene)}}>
-        {scene && <Map scene={scene} level={level_}/>}
+        {scene && level_ && <Map scene={scene} level={level_}/>}
       </Canvas>
       </div>
     </AppContextProvider>

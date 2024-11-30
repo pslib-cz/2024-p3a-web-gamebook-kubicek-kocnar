@@ -15,7 +15,6 @@ namespace KubicekKocnar.Server.Data
         public DbSet<Block> Blocks { get; set; }
         public DbSet<Level> Levels { get; set; }
         public DbSet<PlacedBlock> PlacedBlocks { get; set; }
-        public DbSet<Light> Lights { get; set; }
         public DbSet<Feature> Features { get; set; }
         public DbSet<Texture> Textures { get; set; }
 
@@ -42,6 +41,78 @@ namespace KubicekKocnar.Server.Data
                .Property(f => f.Params)
                .HasConversion(dictionaryToJsonConverter)
                .HasColumnType("text");
+
+            modelBuilder.Entity<Game>()
+                .HasOne(g => g.Author)
+                .WithMany(u => u.Games)
+                .HasForeignKey(g => g.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Level>()
+                .HasOne(l => l.Game)
+                .WithMany(g => g.Levels)
+                .HasForeignKey(l => l.GameId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PlacedBlock>()
+                .HasOne(pb => pb.Level)
+                .WithMany(l => l.Blocks)
+                .HasForeignKey(pb => pb.LevelId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PlacedBlock>()
+                .HasOne(pb => pb.Block)
+                .WithMany(b => b.PlacedBlocks)
+                .HasForeignKey(pb => pb.BlockId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Feature>()
+                .HasOne(f => f.Level)
+                .WithMany(l => l.Features)
+                .HasForeignKey(f => f.LevelId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            /*modelBuilder.Entity<Texture>()
+                .HasMany(t => t.Blocks)
+                .WithOne(b => b.Texture0)
+                .HasForeignKey(b => b.Texture0Id)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Texture>()
+                .HasMany(t => t.Blocks)
+                .WithOne(b => b.Texture1)
+                .HasForeignKey(b => b.Texture1Id)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Texture>()
+                .HasMany(t => t.Blocks)
+                .WithOne(b => b.Texture2)
+                .HasForeignKey(b => b.Texture2Id)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Texture>()
+                .HasMany(t => t.Blocks)
+                .WithOne(b => b.Texture3)
+                .HasForeignKey(b => b.Texture3Id)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Texture>()
+                .HasMany(t => t.Blocks)
+                .WithOne(b => b.Texture4)
+                .HasForeignKey(b => b.Texture4Id)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Texture>()
+                .HasMany(t => t.Blocks)
+                .WithOne(b => b.Texture5)
+                .HasForeignKey(b => b.Texture5Id)
+                .OnDelete(DeleteBehavior.SetNull);*/
+
+
+
+
+
+
 
             /*var adminRoleId = Guid.NewGuid().ToString();
             var authorRoleId = Guid.NewGuid().ToString();

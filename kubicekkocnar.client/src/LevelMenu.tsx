@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Level } from "./types/Level";
+import Level from "./types/Level";
 import { useForm } from "react-hook-form";
 
 export function LevelMenu()
 {
-	const endpoint = 'https://localhost:7097/api/Levels';
+	const endpoint = 'https://localhost:7097/api/Games/1/Levels';
 
 	const [levels_, setLevels] = useState<Level[]>();
 

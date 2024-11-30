@@ -6,13 +6,22 @@
 
         public required string Name { get; set; }
 
-        public uint? Texture0 { get; set; }
-        public uint? Texture1 { get; set; }
-        public uint? Texture2 { get; set; }
-        public uint? Texture3 { get; set; }
-        public uint? Texture4 { get; set; }
-        public uint? Texture5 { get; set; }
+        public uint? Texture0Id { get; set; }
+        public Texture? Texture0 { get; set; }
+        public uint? Texture1Id { get; set; }
+        public Texture? Texture1 { get; set; }
+        public uint? Texture2Id { get; set; }
+        public Texture? Texture2 { get; set; }
+        public uint? Texture3Id { get; set; }
+        public Texture? Texture3 { get; set; }
+        public uint? Texture4Id { get; set; }
+        public Texture? Texture4 { get; set; }
+        public uint? Texture5Id { get; set; }
+        public Texture? Texture5 { get; set; }
 
-        public string Attributes { get; set; } = "";
+        public required string Attributes { get; set; } = "";
+
+        public required ICollection<PlacedBlock> PlacedBlocks { get; set; }
+
     }
 }

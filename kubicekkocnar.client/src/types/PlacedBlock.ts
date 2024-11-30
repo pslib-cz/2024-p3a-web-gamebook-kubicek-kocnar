@@ -17,7 +17,7 @@ interface PlacedBlock {
 
     mesh?: Mesh; // the rendered mesh of the block -> set when rendered
 
-    position?: Vector3; // where is it placed, needs conversion from [server] ...{x,y,z} to [client] Vector3
+    position: Vector3; // where is it placed, needs conversion from [server] ...{x,y,z} to [client] Vector3
 
     state: string[]; // modifications to the default block attributes - either by playing the level or by the editor
 } 
