@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace KubicekKocnar.Server.Models
 {
@@ -9,9 +9,10 @@ namespace KubicekKocnar.Server.Models
     {
         public override string Id { get; set; } = Guid.NewGuid().ToString();
 
-        [JsonIgnore]
         public ICollection<Role>? Roles { get; set; }
 
+
+        [JsonIgnore]
         public ICollection<Game>? Games { get; set; }
     }
 }

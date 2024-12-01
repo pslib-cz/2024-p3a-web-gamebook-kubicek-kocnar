@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace KubicekKocnar.Server.Models
 {
@@ -14,7 +14,7 @@ namespace KubicekKocnar.Server.Models
 
         public bool Published { get; set; }
 
-        //[JsonIgnore]
+        [JsonIgnore]
         public ICollection<Level> Levels { get; set; } = new List<Level>();
     }
 }

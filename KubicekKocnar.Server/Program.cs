@@ -20,7 +20,10 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source=app.db"));
 
 builder.Services.AddControllers()
-    .AddNewtonsoftJson();
+    .AddNewtonsoftJson(options =>
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

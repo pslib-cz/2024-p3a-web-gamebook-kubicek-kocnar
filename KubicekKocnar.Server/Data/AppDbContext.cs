@@ -74,41 +74,41 @@ namespace KubicekKocnar.Server.Data
                 .HasForeignKey(f => f.LevelId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            /*modelBuilder.Entity<Texture>()
-                .HasMany(t => t.Blocks)
+            modelBuilder.Entity<Texture>()
+                .HasMany(t => t.Blocks0)
                 .WithOne(b => b.Texture0)
                 .HasForeignKey(b => b.Texture0Id)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Texture>()
-                .HasMany(t => t.Blocks)
+                .HasMany(t => t.Blocks1)
                 .WithOne(b => b.Texture1)
                 .HasForeignKey(b => b.Texture1Id)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Texture>()
-                .HasMany(t => t.Blocks)
+                .HasMany(t => t.Blocks2)
                 .WithOne(b => b.Texture2)
                 .HasForeignKey(b => b.Texture2Id)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Texture>()
-                .HasMany(t => t.Blocks)
+                .HasMany(t => t.Blocks3)
                 .WithOne(b => b.Texture3)
                 .HasForeignKey(b => b.Texture3Id)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Texture>()
-                .HasMany(t => t.Blocks)
+                .HasMany(t => t.Blocks4)
                 .WithOne(b => b.Texture4)
                 .HasForeignKey(b => b.Texture4Id)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Texture>()
-                .HasMany(t => t.Blocks)
+                .HasMany(t => t.Blocks5)
                 .WithOne(b => b.Texture5)
                 .HasForeignKey(b => b.Texture5Id)
-                .OnDelete(DeleteBehavior.SetNull);*/
+                .OnDelete(DeleteBehavior.SetNull);
 
 
 

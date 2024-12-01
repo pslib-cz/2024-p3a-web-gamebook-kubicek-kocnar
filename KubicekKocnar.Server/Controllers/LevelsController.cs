@@ -26,7 +26,8 @@ namespace KubicekKocnar.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Level>>> GetLevels()
         {
-            return await _context.Levels.ToListAsync();
+            return await _context.Levels.Include(Level => Level.Game).ToListAsync();
+
         }
 
         // GET: api/Levels/5
@@ -39,11 +40,7 @@ namespace KubicekKocnar.Server.Controllers
             {
                 return NotFound();
             }
-
-            level.Game.Levels = null;
             return Ok(level);
-
-            //return level;
         }
 
         // PUT: api/Levels/5

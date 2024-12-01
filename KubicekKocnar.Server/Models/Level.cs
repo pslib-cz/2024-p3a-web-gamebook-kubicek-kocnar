@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace KubicekKocnar.Server.Models
 {
@@ -12,11 +12,9 @@ namespace KubicekKocnar.Server.Models
 
         public uint? NextLevelId { get; set; }
 
-
         [JsonIgnore]
         public Game? Game { get; set; } = null;
         
-
         public uint GameId { get; set; }
         
 
