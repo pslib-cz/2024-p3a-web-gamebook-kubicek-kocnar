@@ -13,6 +13,8 @@ interface Level
   game?: Game; // gameReference -> needs to be set on client from gameId
 
   blocks: PlacedBlock[]
+
+  created: Date;
 }
 
 export default Level

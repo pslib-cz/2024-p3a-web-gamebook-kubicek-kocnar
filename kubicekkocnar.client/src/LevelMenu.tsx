@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
 import Level from "./types/Level";
 import { useForm } from "react-hook-form";
+import { Link, useParams } from "react-router-dom";
 
 export function LevelMenu()
 {
-	const endpoint = 'https://localhost:7097/api/Games/1/Levels';
+
+	const { gameid } = useParams();
+
+	const LEVELSROUTE = `https://localhost:7097/api/Games/${gameid}/Levels`;
 
 	const [levels_, setLevels] = useState<Level[]>();
 
 	async function fetchLevels() {
 		try {
-			const response = await fetch(endpoint);
+			const response = await fetch(LEVELSROUTE);
 			if (!response.ok) {
 					throw new Error('Network response was not ok');
 			}
@@ -23,7 +27,7 @@ export function LevelMenu()
 
 	useEffect(() => {
 		fetchLevels();
-	}, [])
+	})
 
   const {register, getValues} = useForm();
   
@@ -32,7 +36,7 @@ export function LevelMenu()
     console.log("Posting level");
 
 		try {
-			const response = await fetch(endpoint, {
+			const response = await fetch(LEVELSROUTE, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -87,6 +91,7 @@ function LevelDisplayer(level : Level)
       <div key={level.levelId}>
         <h2>{level.name}</h2>
         <p>{level.description}</p>
+		<button><Link to={`/games/${level.gameId}/levels/${level.levelId}`}>Otevřít</Link></button>
       </div>
     )
 }

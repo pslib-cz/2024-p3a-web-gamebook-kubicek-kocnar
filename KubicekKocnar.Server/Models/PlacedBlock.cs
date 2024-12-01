@@ -16,6 +16,8 @@ namespace KubicekKocnar.Server.Models
 
         public required DateTime Created { get; set; } = DateTime.Now;
 
+        public required string State { get; set; } = "";
+
         public required double X { get; set; }
         public required double Y { get; set; }
         public required double Z { get; set; }

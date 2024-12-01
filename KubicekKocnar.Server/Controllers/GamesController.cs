@@ -39,24 +39,21 @@ namespace KubicekKocnar.Server.Controllers
 
 
 
-        // PUT: api/Games/5
+        // PATCH: api/Games/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutGame(uint id, Game game)
-        {
-            if (id != game.GameId) return BadRequest();
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchGame(uint id, [FromBody] JsonPatchDocument<Game> patchDoc) {
+            if (patchDoc == null) return BadRequest();
 
-            _context.Entry(game).State = EntityState.Modified;
+            var game = await _context.Games.FindAsync(id);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GameExists(id)) return NotFound();
-                else throw;
-            }
+            if (game == null) return NotFound();
+
+            patchDoc.ApplyTo(game, ModelState);
+
+            if (!TryValidateModel(game)) return ValidationProblem(ModelState);
+
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -111,16 +108,27 @@ namespace KubicekKocnar.Server.Controllers
 
         // POST: api/Games/5/Levels
         [HttpPost("{id}/Levels")]
-        public async Task<ActionResult<Level>> PostLevel(uint id, Level level)
-        {
+        public async Task<ActionResult<Level>> PostLevel(uint id, Level level) {
             var game = await _context.Games.FindAsync(id);
 
             if (game == null) return NotFound();
 
             game.Levels.Add(level);
+
+            var block = new PlacedBlock {
+                BlockId = 1,
+                LevelId = level.LevelId,
+                X = 0,
+                Y = 0,
+                Z = 0,
+                Created = DateTime.Now,
+                State = ""
+            };
+            level.Blocks.Add(block);
+
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLevel", new { id = level.GameId, levelId = level.LevelId }, level); 
+            return CreatedAtAction("GetLevel", new { id = level.GameId, levelId = level.LevelId }, level);
         }
 
         // DELETE: api/Games/5/Levels/5
@@ -195,19 +203,11 @@ namespace KubicekKocnar.Server.Controllers
         [HttpDelete("{id}/Levels/{levelId}/Blocks/{blockId}")]
         public async Task<IActionResult> DeleteBlock(uint id, uint levelId, uint blockId)
         {
-            var game = await _context.Games.FindAsync(id);
-
-            if (game == null) return NotFound();
-
-            var level = game.Levels.FirstOrDefault(l => l.LevelId == levelId);
-
-            if (level == null) return NotFound();
-
-            var block = level.Blocks.FirstOrDefault(b => b.PlacedBlockId == blockId);
+            var block = await _context.PlacedBlocks.Where(b => b.LevelId == levelId && b.PlacedBlockId == blockId).FirstOrDefaultAsync();
 
             if (block == null) return NotFound();
 
-            level.Blocks.Remove(block);
+            _context.PlacedBlocks.Remove(block);
             await _context.SaveChangesAsync();
 
             return NoContent();

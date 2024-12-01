@@ -5,6 +5,7 @@ import plugin from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
 import child_process from 'child_process';
+import Pages from 'vite-plugin-pages';
 import { env } from 'process';
 
 const baseFolder =
@@ -39,7 +40,7 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [plugin()],
+    plugins: [plugin(), Pages({dirs: 'src/app'})],
     resolve: {
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url))

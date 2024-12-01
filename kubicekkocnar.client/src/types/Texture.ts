@@ -4,6 +4,7 @@
 interface Texture {
     textureId: string;
     content: Blob;
+    created: Date;
 }
 
 export default Texture;

@@ -16,6 +16,8 @@ interface Game {
 
     authorId: number; // the user who created the game
     author: User; 
+
+    created: Date;
 }
 
 export default Game;

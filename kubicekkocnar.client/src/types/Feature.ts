@@ -10,6 +10,7 @@ interface GenericFeature {
     type: FeatureType; // what kind of feature is it -> determines the properties, models and behavior
     position?: Vector3; // where is it placed, needs conversion from [server] ...{x,y,z} to [client] Vector3
     params: FeatureParams;
+    created: Date;
 }
 
 enum FeatureType {

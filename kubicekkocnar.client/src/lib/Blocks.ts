@@ -12,7 +12,15 @@ class Blocks {
             if (!blocksResponse.ok) {
                 throw new Error(`Response status: ${blocksResponse.status}`);
             }
-            this.blocks = await blocksResponse.json();
+            this.blocks = (await blocksResponse.json()).map((block: {attributes: string}) =>
+            {
+                return {
+                    ...block,
+                    attributes: block.attributes.split(',')
+                }
+            })
+            console.log(this.blocks);
+            
             onReady(this);
         } catch (err: unknown) {
             console.error(err);

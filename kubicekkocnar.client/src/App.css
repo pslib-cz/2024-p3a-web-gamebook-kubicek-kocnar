@@ -37,3 +37,15 @@ img {
   width: 100%;
   display: block;
 }
+
+.coord--x {
+    color: #f52a2a;
+}
+
+.coord--y {
+    color: #2af560;
+}
+
+.coord--z {
+    color: #2a6df5;
+}

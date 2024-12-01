@@ -24,6 +24,7 @@ class Level implements LevelType {
         this.mapRenderer = mapRenderer;
         this.initializeServerLevel(onReady);
     }
+    created!: Date;
     game?: Game | undefined;
     blocks: PlacedBlock[] = []
 
@@ -39,6 +40,7 @@ class Level implements LevelType {
             this.description = level.description;
             this.nextLevel = level.nextLevel;
             this.available = true;
+            this.created = level.created;
 
             const levelBlocksResponse = await fetch(APIROUTE(this.gameId, this.levelId) + '/Blocks');
             if (!levelBlocksResponse.ok) {
@@ -88,6 +90,53 @@ class Level implements LevelType {
             console.error(err);
         }
     };
+
+    async addBlock(block: PlacedBlock) {
+        try {
+            const blockResponse = await fetch(APIROUTE(this.gameId, this.levelId) + '/Blocks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    blockId: block.blockId,
+                    state: block.state,
+                    x: block.position.x,
+                    y: block.position.y,
+                    z: block.position.z,
+                })
+            })
+            if (!blockResponse.ok) {
+                throw new Error(`Response status: ${blockResponse.status}`);
+            }
+            const newBlock: PlacedBlock = await blockResponse.json();
+            block = {...block, placedBlockId: newBlock.placedBlockId};
+            
+            this.blocks.push(block);
+            this.mapRenderer.addBlock(block);
+        } catch (err: unknown) {
+            console.error(err);
+        }
+    }
+
+    async removeBlock(block: PlacedBlock) {
+        try {
+            const blockResponse = await fetch(APIROUTE(this.gameId, this.levelId) + `/Blocks/${block.placedBlockId}`, {
+                method: 'DELETE'
+            })
+            if (!blockResponse.ok) {
+                throw new Error(`Response status: ${blockResponse.status}`);
+            }
+            
+            const blockIndex = this.blocks.findIndex(block => block.placedBlockId === block.placedBlockId);
+            if (blockIndex !== -1) {
+                this.blocks.splice(blockIndex, 1);
+            }
+            this.mapRenderer.removeBlock(block);
+        } catch (err: unknown) {
+            console.error(err);
+        }
+    }
 
     static async createLevel(gameId: number, mapRenderer: MapRenderer, options: LevelOptions, onReady: (level: Level) => void) {
         try {

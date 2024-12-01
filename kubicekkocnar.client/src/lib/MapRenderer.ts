@@ -14,7 +14,7 @@ class MapRenderer {
 
     blocksReference: Blocks;
 
-    private blockCounter = 0;
+    blockCounter = 0;
 
 
     constructor(scene: THREE.Scene, blocksReference: Blocks) {
@@ -45,9 +45,10 @@ class MapRenderer {
         );
 
         // set the mesh name for better identification
-        placedBlock.mesh.name = placedBlock.block.name + ' ' + placedBlock.placedBlockId;
+        placedBlock.mesh.name = 'block ' + placedBlock.block.name + ' ' + placedBlock.placedBlockId;
 
         // set the attributes and state of the block as userData
+        console.log('Setting attributes', placedBlock.block.attributes);
         placedBlock.mesh.userData.attributes = placedBlock.block.attributes.concat('block')
         placedBlock.mesh.userData.state = placedBlock.state;
 

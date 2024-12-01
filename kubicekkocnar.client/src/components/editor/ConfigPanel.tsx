@@ -24,33 +24,36 @@ const ConfigPanel: React.FC = () => {
             <button className="toggle-button" onClick={togglePanel}>
                 {isOpen ? <MaterialSymbol icon='chevron_right' size={24}/> : <MaterialSymbol icon='chevron_left' size={24}/>}
             </button>
-            <div>
-              <h3>
-                  {blockState?.mesh?.geometry.type} {blockState?.blockId}
-              </h3>
-              <p>
-                  Name: {blockState?.mesh?.name}
-              </p>
-              <p>
-                  Position: {blockState?.position.x}, {blockState?.position.y}, {blockState?.position.z}
-              </p>
-              <div>
-                  <h4>Textures</h4>
-                  <div className="configpanel__textures">
+            <div className='configpanel__info'>
+                <h3>
+                    {blockState?.block.name} {blockState?.placedBlockId}
+                </h3>
+                <p>
+                    Attributes: {blockState?.block.attributes.join(', ')}
+                </p>
+
+                <p>
+                    Position: <span className='coord--x'>{blockState?.position.x}</span>, <span className='coord--y'>{blockState?.position.y}</span>, <span className='coord--z'>{blockState?.position.z}</span>
+                </p>
+                <p>
+                    Added at: {new Date(blockState?.created ?? 0).toLocaleString()}
+                </p>
+                <div>
+                    <h4>Textures</h4>
+                    <div className="configpanel__textures">
                     {[blockState?.block.texture0, blockState?.block.texture1, blockState?.block.texture2, blockState?.block.texture3, blockState?.block.texture4, blockState?.block.texture5].map((texture, index) => (
-                      <div
-                      key={index} 
-                      className="configpanel__texture" 
-                      >
+                        <div
+                        key={index} 
+                        className="configpanel__texture" 
+                        >
                         {texture && <img className='configpanel__texture__image' src={URL.createObjectURL(texture!.content)} alt={`texture ${index}`}/>}
                         <p className='configpanel__texture__side'>{MapRender.translateTextureSide(index)}</p>
-                      </div>
+                        </div>
                     ))}
-                  </div>
-              </div>
+                    </div>
+                </div>
             </div>
         </div>
-        
     );
 };
 

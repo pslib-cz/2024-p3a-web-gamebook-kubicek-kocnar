@@ -9,18 +9,21 @@ import ToolBar from './components/editor/ToolBar';
 import 'react-material-symbols/outlined';
 import ConfigPanel from './components/editor/ConfigPanel';
 import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom';
-import { LevelMenu } from './LevelMenu';
+import { GamesMenu } from './GamesMenu';
 import Level from './lib/Level';
 import MapRenderer from './lib/MapRenderer';
 import Blocks from './lib/Blocks';
+import { LevelMenu } from './LevelMenu';
+import MainMenu from './MainMenu';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/"> {/* na Layout.tsx*/}
-          <Route index element={<LevelEditor />} />
-          <Route path="games" element={<LevelMenu />} />
+          <Route index element={<MainMenu />} />
+          <Route path="games" element={<GamesMenu />} />
+          <Route path="games/:gameid/levels" element={<LevelMenu />} />
           <Route path="games/:gameid/levels/:levelid" element={<LevelEditor/>} />
         </Route>
       </Routes>
@@ -61,7 +64,10 @@ function LevelEditor()
       <ToolBar />
       {level && <ConfigPanel/>}
       <div className='canvas'>
-      <Canvas onCreated={(state) => setScene(state.scene)}>
+      <Canvas onCreated={(state) => {
+          state.camera.position.set(20, 20, 20);
+          setScene(state.scene)}
+        }>
         {level && <Map level={level}/>}
       </Canvas>
       </div>
