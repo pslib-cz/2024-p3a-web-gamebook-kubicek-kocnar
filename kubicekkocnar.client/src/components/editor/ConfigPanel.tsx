@@ -42,7 +42,7 @@ const ConfigPanel: React.FC = () => {
                       key={index} 
                       className="configpanel__texture" 
                       >
-                        <img className='configpanel__texture__image' src={URL.createObjectURL(texture!.src)} alt={`texture ${index}`}/>
+                        {texture && <img className='configpanel__texture__image' src={URL.createObjectURL(texture!.content)} alt={`texture ${index}`}/>}
                         <p className='configpanel__texture__side'>{MapRender.translateTextureSide(index)}</p>
                       </div>
                     ))}

@@ -7,6 +7,7 @@ namespace KubicekKocnar.Server.Models
         public uint BlockId { get; set; }
 
         public required string Name { get; set; }
+        public required DateTime Created { get; set; } = DateTime.Now;
 
         public uint? Texture0Id { get; set; }
         public Texture? Texture0 { get; set; }

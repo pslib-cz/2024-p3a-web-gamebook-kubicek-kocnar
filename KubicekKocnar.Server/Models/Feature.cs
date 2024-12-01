@@ -20,6 +20,8 @@ namespace KubicekKocnar.Server.Models
         public required Level Level { get; set; }
         public uint LevelId { get; set; }
 
+        public required DateTime Created { get; set; } = DateTime.Now;
+
         public Dictionary<string, string> Params { get; set; } = new();
     }
 }

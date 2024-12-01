@@ -3,7 +3,7 @@
 
 interface Texture {
     textureId: string;
-    src: Blob;
+    content: Blob;
 }
 
 export default Texture;

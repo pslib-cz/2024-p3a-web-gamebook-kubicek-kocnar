@@ -11,11 +11,13 @@ namespace KubicekKocnar.Server.Models
         public required uint BlockId { get; set; }
 
         [JsonIgnore]
-        public Level ?Level { get; set; }
+        public Level? Level { get; set; }
         public required uint LevelId { get; set; }
 
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Z { get; set; }
+        public required DateTime Created { get; set; } = DateTime.Now;
+
+        public required double X { get; set; }
+        public required double Y { get; set; }
+        public required double Z { get; set; }
     }
 }

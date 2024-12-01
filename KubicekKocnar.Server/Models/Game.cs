@@ -14,6 +14,8 @@ namespace KubicekKocnar.Server.Models
 
         public bool Published { get; set; }
 
+        public required DateTime Created { get; set; } = DateTime.Now;
+
         [JsonIgnore]
         public ICollection<Level> Levels { get; set; } = new List<Level>();
     }

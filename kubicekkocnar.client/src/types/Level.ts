@@ -6,11 +6,11 @@ interface Level
 {
   levelId: number,
   name: string,
-  description: string,
-  nextLevel: number,
+  description?: string,
+  nextLevel?: number,
 
   gameId: number,
-  game: Game; // gameReference -> needs to be set on client from gameId
+  game?: Game; // gameReference -> needs to be set on client from gameId
 
   blocks: PlacedBlock[]
 }

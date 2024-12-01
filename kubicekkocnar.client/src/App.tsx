@@ -1,8 +1,7 @@
 import './App.css';
 import Map from './components/map/Map';
 import { Canvas } from '@react-three/fiber'
-import React, { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import * as THREE from 'three';
 import { AppContextProvider } from './components/AppContextProvider';
 import ToolBar from './components/editor/ToolBar';
@@ -11,7 +10,9 @@ import 'react-material-symbols/outlined';
 import ConfigPanel from './components/editor/ConfigPanel';
 import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom';
 import { LevelMenu } from './LevelMenu';
-import Level from './types/Level';
+import Level from './lib/Level';
+import MapRenderer from './lib/MapRenderer';
+import Blocks from './lib/Blocks';
 
 function App() {
   return (
@@ -19,8 +20,8 @@ function App() {
       <Routes>
         <Route path="/"> {/* na Layout.tsx*/}
           <Route index element={<LevelEditor />} />
-          <Route path="levels" element={<LevelMenu />} />
-          <Route path="levels/:id" element={<LevelEditor/>} />
+          <Route path="games" element={<LevelMenu />} />
+          <Route path="games/:gameid/levels/:levelid" element={<LevelEditor/>} />
         </Route>
       </Routes>
     </BrowserRouter>
@@ -29,52 +30,39 @@ function App() {
 
 function LevelEditor()
 {
-  const { id } = useParams();
+  const { gameid, levelid } = useParams();
   const [scene, setScene] = useState<THREE.Scene | null>(null);
-
-
-  const [level_, setLevel] = useState<Level|null>(null);
+  const [level, setLevel] = useState<Level | null>(null);
+  //const [blocks, setBlocks] = useState<Blocks | null>(null);
 
   React.useEffect(() => {
-    console.log("Level ID:", id);
-
-    const endpoint = 'https://localhost:7097/api/Games/1/Levels/';
-  
-    async function fetchLevel() {
-
-      console.log("Fetching level");
-
-      try {
-        const response = await fetch(endpoint + id);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const level: Level = await response.json();
-        setLevel(level);
-
-        console.log(`Level found`);
-        console.log(level);
-
-      } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-      }
+    if (!scene) {
+      console.error("Scene not ready yet...");
+      return;
     }
-
-    fetchLevel();
-
-  }, [id]);
-
-  useEffect(() =>{
-    console.log(level_);
-  }, [level_])
+    if (!gameid || !levelid) {
+      console.error("Invalid URL");
+      return;
+    }
   
-  return(
+    
+    new Blocks((blocks) => {
+      const mapRenderer = new MapRenderer(scene, blocks);
+      new Level(parseInt(gameid), parseInt(levelid), mapRenderer, (level) => {
+        setLevel(level);
+      });
+    });
+  }, [gameid, levelid, scene])
+
+  
+  
+  return (
     <AppContextProvider>
       <ToolBar />
-      <ConfigPanel/>
+      {level && <ConfigPanel/>}
       <div className='canvas'>
-      <Canvas onCreated={(state) => {console.log(state); setScene(state.scene)}}>
-        {scene && level_ && <Map scene={scene} level={level_}/>}
+      <Canvas onCreated={(state) => setScene(state.scene)}>
+        {level && <Map level={level}/>}
       </Canvas>
       </div>
     </AppContextProvider>

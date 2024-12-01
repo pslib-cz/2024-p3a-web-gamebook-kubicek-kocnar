@@ -169,7 +169,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // Blocks under a level
         [HttpGet("{id}/Levels/{levelId}/Blocks/{blockId}")]
-        public async Task<ActionResult<IEnumerable<PlacedBlock>>> GetBlocks(uint id, uint levelId, uint BlockId) {
+        public async Task<ActionResult<IEnumerable<PlacedBlock>>> GetBlock(uint? id, uint levelId, uint BlockId) {
             var block = await _context.PlacedBlocks.Where(b => b.LevelId == levelId).FirstOrDefaultAsync();
 
             if (block == null) return NotFound();
@@ -188,7 +188,7 @@ namespace KubicekKocnar.Server.Controllers
             level.Blocks.Add(block);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBlock", new { id = id, levelId = levelId, blockId = block.PlacedBlockId }, block);
+            return CreatedAtAction("GetBlock", new { id, levelId, blockId = block.PlacedBlockId }, block);
         }
 
         // DELETE: api/Games/5/Levels/5/Blocks/5
@@ -219,15 +219,7 @@ namespace KubicekKocnar.Server.Controllers
         {
             if (patchDoc == null) return BadRequest();
 
-            var game = await _context.Games.FindAsync(id);
-
-            if (game == null) return NotFound();
-
-            var level = game.Levels.FirstOrDefault(l => l.LevelId == levelId);
-
-            if (level == null) return NotFound();
-
-            var block = level.Blocks.FirstOrDefault(b => b.PlacedBlockId == blockId);
+            var block = _context.PlacedBlocks.FirstOrDefault(b => b.PlacedBlockId == blockId && b.LevelId == levelId);
 
             if (block == null) return NotFound();
 
@@ -244,26 +236,30 @@ namespace KubicekKocnar.Server.Controllers
         [HttpGet("{id}/Levels/{levelId}/Features")]
         public async Task<ActionResult<IEnumerable<Feature>>> GetFeatures(uint id, uint levelId)
         {
-            var game = await _context.Games.FindAsync(id);
 
-            if (game == null) return NotFound();
-
-            var level = game.Levels.FirstOrDefault(l => l.LevelId == levelId);
+            var level = await _context.Levels.FirstOrDefaultAsync(l => l.LevelId == levelId && l.GameId == id);
 
             if (level == null) return NotFound();
 
             return Ok(level.Features);
         }
 
+        // GET: api/Games/5/Levels/5/Feature/5
+        [HttpGet("{id}/Levels/{levelId}/Features/{featureId}")]
+        public async Task<ActionResult<IEnumerable<Feature>>> GetFeature(uint? id, uint levelId, uint featureId) {
+
+            var feature = await _context.Features.FirstOrDefaultAsync(f => f.FeatureId == featureId && f.LevelId == levelId);
+
+            if (feature == null) return NotFound();
+
+            return Ok(feature);
+        }
+
         // POST: api/Games/5/Levels/5/Features
         [HttpPost("{id}/Levels/{levelId}/Features")]
         public async Task<ActionResult<Feature>> PostFeature(uint id, uint levelId, Feature feature)
         {
-            var game = await _context.Games.FindAsync(id);
-
-            if (game == null) return NotFound();
-
-            var level = game.Levels.FirstOrDefault(l => l.LevelId == levelId);
+            var level = await _context.Levels.Where(l => l.GameId == id && l.LevelId == levelId).FirstOrDefaultAsync();
 
             if (level == null) return NotFound();
 
@@ -277,11 +273,7 @@ namespace KubicekKocnar.Server.Controllers
         [HttpDelete("{id}/Levels/{levelId}/Features/{featureId}")]
         public async Task<IActionResult> DeleteFeature(uint id, uint levelId, uint featureId)
         {
-            var game = await _context.Games.FindAsync(id);
-
-            if (game == null) return NotFound();
-
-            var level = game.Levels.FirstOrDefault(l => l.LevelId == levelId);
+            var level = await _context.Levels.Where(l => l.GameId == id && l.LevelId == levelId).FirstOrDefaultAsync();
 
             if (level == null) return NotFound();
 
@@ -301,15 +293,7 @@ namespace KubicekKocnar.Server.Controllers
         {
             if (patchDoc == null) return BadRequest();
 
-            var game = await _context.Games.FindAsync(id);
-
-            if (game == null) return NotFound();
-
-            var level = game.Levels.FirstOrDefault(l => l.LevelId == levelId);
-
-            if (level == null) return NotFound();
-
-            var feature = level.Features.FirstOrDefault(f => f.FeatureId == featureId);
+            var feature = await _context.Features.FirstOrDefaultAsync(f => f.FeatureId == featureId && f.LevelId == levelId);
 
             if (feature == null) return NotFound();
 

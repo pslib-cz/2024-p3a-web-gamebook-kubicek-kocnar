@@ -4,34 +4,36 @@ import * as THREE from 'three';
 import { useThree } from '@react-three/fiber';
 
 import Player from '../Player';
-import MapRenderer from '../../lib/MapRenderer';
 import { AppContext } from '../AppContextProvider';
 import { Tool } from '../editor/ToolBar';
-import Level from '../../types/Level';
+import Level from '../../lib/Level'
 import MapEditor from '../../lib/MapEditor';
 
 // React.memo(
-const Map = ({scene, level} : {scene : THREE.Scene, level : Level}) => {
+const Map = ({level} : {level : Level}) => {
 
   console.log("Loading level");
   console.log(level);
+
+  const scene = level.mapRenderer.scene
 
   const { tool, setBlock } = useContext(AppContext);
   const threeRef = React.useRef(useThree());
   const { gl, camera } = threeRef.current;
   
-  // create a new MapRenderer instance and remember it between rerenders
+  /*// create a new MapRenderer instance and remember it between rerenders
   const mapRendererRef = React.useRef<MapRenderer | null>(null);
   if (!mapRendererRef.current) {
     mapRendererRef.current = new MapRenderer(scene);
   }
-  const mapRenderer = mapRendererRef.current;
+  const mapRenderer = mapRendererRef.current;*/
+
   console.log("Rerendering MapRenderer");
 
   // create a new MapEditor instance and remember it between rerenders
   const mapEditorRef = React.useRef<MapEditor | null>(null);
   if (!mapEditorRef.current) {
-    mapEditorRef.current = new MapEditor(mapRenderer);
+    mapEditorRef.current = new MapEditor(level.mapRenderer);
   }
   const mapEditor = mapEditorRef.current;
   
@@ -54,7 +56,7 @@ const Map = ({scene, level} : {scene : THREE.Scene, level : Level}) => {
       .filter(intersect => intersect.object.name.includes("block"));
     
     if (intersects.length > 0) {
-      const selectedBlock = mapRenderer.blocks.find(block => block.mesh?.id === intersects[0].object.id);
+      const selectedBlock = level.mapRenderer.blocks.find(block => block.mesh?.id === intersects[0].object.id);
       if (!selectedBlock) return;
       switch (tool.current) {
         case Tool.Mouse: {
@@ -66,19 +68,19 @@ const Map = ({scene, level} : {scene : THREE.Scene, level : Level}) => {
           const newPos = intersects[0].object.position.clone().add(intersects[0].face?.normal);
           const newBlock = structuredClone(selectedBlock);
           newBlock.position = newPos;
-          mapRenderer.addBlock(newBlock);
+          level.mapRenderer.addBlock(newBlock);
           break; 
         } case Tool.Remove: {
-          const block = mapRenderer.blocks.find(block => block.mesh === intersects[0].object);
+          const block = level.mapRenderer.blocks.find(block => block.mesh === intersects[0].object);
           if (block) {
-            mapRenderer.removeBlock(block);
+            level.mapRenderer.removeBlock(block);
           }
           break;
         }
       }
 
     }
-  }, [tool, setBlock, mapRenderer, scene, camera]);
+  }, [tool, setBlock, level.mapRenderer, scene, camera]);
 
   useEffect(() => {
     console.log("Adding event listeners");
@@ -93,9 +95,9 @@ const Map = ({scene, level} : {scene : THREE.Scene, level : Level}) => {
   useEffect(() => {
     console.log("MapRenderer mounted");
 
-    level.blocks.forEach((block) => mapRenderer.addBlock(block));
+    level.blocks.forEach((block) => level.mapRenderer.addBlock(block));
     console.log(scene);
-  }, [mapRenderer, scene, level],);
+  }, [level.mapRenderer, scene, level],);
 
     return (
       <>

@@ -16,7 +16,9 @@ namespace KubicekKocnar.Server.Models
         public Game? Game { get; set; } = null;
         
         public uint GameId { get; set; }
-        
+
+        public required DateTime Created { get; set; } = DateTime.Now;
+
 
         public ICollection<PlacedBlock> Blocks { get; set; } = new List<PlacedBlock>();
 
