@@ -169,8 +169,8 @@ namespace KubicekKocnar.Server.Controllers
 
         // Blocks under a level
         [HttpGet("{id}/Levels/{levelId}/Blocks/{blockId}")]
-        public async Task<ActionResult<IEnumerable<PlacedBlock>>> GetBlock(uint? id, uint levelId, uint BlockId) {
-            var block = await _context.PlacedBlocks.Where(b => b.LevelId == levelId).FirstOrDefaultAsync();
+        public async Task<ActionResult<IEnumerable<PlacedBlock>>> GetBlock(uint? id, uint levelId, uint blockId) {
+            var block = await _context.PlacedBlocks.Where(b => b.LevelId == levelId && b.PlacedBlockId == blockId).FirstOrDefaultAsync();
 
             if (block == null) return NotFound();
 
