@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const MainMenu: React.FC = () => {
     return (
-        <div>
+        <div className='mainmenu'>
             <h1>Main Menu</h1>
             <div>
                 <Link to="/games/1/levels/1">

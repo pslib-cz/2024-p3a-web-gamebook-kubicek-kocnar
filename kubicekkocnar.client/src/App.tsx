@@ -15,6 +15,7 @@ import MapRenderer from './lib/MapRenderer';
 import Blocks from './lib/Blocks';
 import { LevelMenu } from './LevelMenu';
 import MainMenu from './MainMenu';
+import './styles/UI.css';
 
 function App() {
   return (
