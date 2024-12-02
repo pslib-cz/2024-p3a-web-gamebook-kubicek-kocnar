@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using KubicekKocnar.Server.Data;
+﻿using KubicekKocnar.Server.Data;
 using KubicekKocnar.Server.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace KubicekKocnar.Server.Controllers
 {
@@ -20,6 +15,30 @@ namespace KubicekKocnar.Server.Controllers
         public TexturesController(AppDbContext context)
         {
             _context = context;
+        }
+
+        [HttpPost("upload--")]
+        public async Task<IActionResult> OnPostUploadAsync(List<IFormFile> files)
+        {
+            long size = files.Sum(f => f.Length);
+
+            foreach (var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+                    var filePath = Path.GetTempFileName();
+
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+            }
+
+            // Process uploaded files
+            // Don't rely on or trust the FileName property without validation.
+
+            return Ok(new { count = files.Count, size });
         }
 
         // GET: api/Textures
@@ -69,16 +88,20 @@ namespace KubicekKocnar.Server.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchTexture(uint id, [FromBody] JsonPatchDocument<Texture> patchDoc) {
-            if (patchDoc == null) {
+        public async Task<IActionResult> PatchTexture(uint id, [FromBody] JsonPatchDocument<Texture> patchDoc)
+        {
+            if (patchDoc == null)
+            {
                 return BadRequest();
             }
             var texture = await _context.Textures.FindAsync(id);
-            if (texture == null) {
+            if (texture == null)
+            {
                 return NotFound();
             }
             patchDoc.ApplyTo(texture, ModelState);
-            if (!TryValidateModel(texture)) {
+            if (!TryValidateModel(texture))
+            {
                 return ValidationProblem(ModelState);
             }
             await _context.SaveChangesAsync();
@@ -86,8 +109,49 @@ namespace KubicekKocnar.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Texture>> PostTexture(Texture texture)
+        public async Task<ActionResult<Texture>> PostTexture(string name, IFormFile file)
         {
+
+            // check if file is an image and set it into texture.contetn
+            if (file == null)
+            {
+                return BadRequest("File is missing");
+            }
+
+            byte[] fr = null;
+
+            int width = 0;
+            int height = 0;
+            int size = 0;
+
+            if (!file.ContentType.Contains("image")) return BadRequest("File is not an image");
+            if (file.ContentType == "image/svg+xml") return BadRequest("SVG format is not supported.");
+
+            // get width of this image 
+            using (var image = System.Drawing.Image.FromStream(file.OpenReadStream()))
+            {
+                width = image.Width;
+                height = image.Height;
+                size = (int)file.Length;
+            }
+
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                fr = memoryStream.ToArray();
+            }
+
+
+            Texture texture = new Texture()
+            {
+                Name = name,
+                Content = fr,
+                Created = DateTime.Now,
+                Width = width,
+                Height = height,
+                Size = size
+            };
+
             _context.Textures.Add(texture);
             await _context.SaveChangesAsync();
 

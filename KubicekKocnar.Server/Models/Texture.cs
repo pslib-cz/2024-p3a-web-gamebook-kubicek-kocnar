@@ -14,6 +14,7 @@ namespace KubicekKocnar.Server.Models
         public int Size { get; set; }
         public required DateTime Created { get; set; } = DateTime.Now;
 
+        
         [JsonIgnore]
         public ICollection<Block>? Blocks0 { get; set; }
         [JsonIgnore]
@@ -26,5 +27,6 @@ namespace KubicekKocnar.Server.Models
         public ICollection<Block>? Blocks4 { get; set; }
         [JsonIgnore]
         public ICollection<Block>? Blocks5 { get; set; }
+        
     }
 }
