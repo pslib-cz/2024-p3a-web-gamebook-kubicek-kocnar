@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import type PlacedBlock from '../types/PlacedBlock';
 import Block from '../types/Block';
 import Blocks from './Blocks';
+import Texture from '../types/Texture';
 
 const textureLoader = new THREE.TextureLoader();
 textureLoader.setCrossOrigin('anonymous');
@@ -21,6 +22,16 @@ class MapRenderer {
         this.scene = scene;
         this.blocksReference = blocksReference;
     }
+
+    static loadTexture(texture: Texture): Blob {
+        const byteCharacters = atob(texture.content);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        return new Blob([new Uint8Array(byteNumbers)], { type: texture.type ? texture.type : 'image/png'});
+    }
+
 
     public addBlock(placedBlock: PlacedBlock) {
         // if the blockId exists in this.blocks, we dont add it
@@ -70,7 +81,14 @@ class MapRenderer {
                 // if there is only one texture, we use it for all sides
                 if (!block.texture5) {
                     // create a URL from the Blob
-                    const loadedTexture = textureLoader.load(URL.createObjectURL(block.texture0.content));
+                    console.log(block.texture0.content)
+                    const byteCharacters = atob(block.texture0.content);
+                    const byteNumbers = new Array(byteCharacters.length);
+                    for (let i = 0; i < byteCharacters.length; i++) {
+                        byteNumbers[i] = byteCharacters.charCodeAt(i);
+                    }
+                    const byteArray = new Uint8Array(byteNumbers);
+                    const loadedTexture = textureLoader.load(URL.createObjectURL(MapRenderer.loadTexture(block.texture0)));
                     // avoid blurring for pixel art
                     loadedTexture.minFilter = THREE.NearestFilter;
                     loadedTexture.magFilter = THREE.NearestFilter;
@@ -78,8 +96,8 @@ class MapRenderer {
                     block.material = new THREE.MeshStandardMaterial({ map: loadedTexture });
                 } else {
                     block.material = [block.texture0, block.texture1, block.texture2, block.texture3, block.texture4, block.texture5].map(texture => {
-                        if (!texture) texture = block.texture1; 
-                        const loadedTexture = textureLoader.load(URL.createObjectURL(texture!.content));
+                        if (!texture) texture = block.texture0; 
+                    const loadedTexture = textureLoader.load(URL.createObjectURL(MapRenderer.loadTexture(texture!)));
                         loadedTexture.minFilter = THREE.NearestFilter;
                         loadedTexture.magFilter = THREE.NearestFilter;
                         return new THREE.MeshStandardMaterial({ map: loadedTexture, blendSrc: THREE.OneFactor });

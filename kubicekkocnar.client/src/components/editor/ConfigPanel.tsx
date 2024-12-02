@@ -3,6 +3,7 @@ import '../../styles/ConfigPanel.css';
 import { MaterialSymbol } from 'react-material-symbols';
 import { AppContext } from '../AppContextProvider';
 import MapRender from '../../lib/MapRenderer';
+import MapRenderer from '../../lib/MapRenderer';
 
 const ConfigPanel: React.FC = () => {
 
@@ -46,7 +47,7 @@ const ConfigPanel: React.FC = () => {
                         key={index} 
                         className="configpanel__texture" 
                         >
-                        {texture && <img className='configpanel__texture__image' src={URL.createObjectURL(texture!.content)} alt={`texture ${index}`}/>}
+                        {texture && <img className='configpanel__texture__image' src={URL.createObjectURL(MapRenderer.loadTexture(texture!))} alt={`texture ${index}`}/>}
                         <p className='configpanel__texture__side'>{MapRender.translateTextureSide(index)}</p>
                         </div>
                     ))}
