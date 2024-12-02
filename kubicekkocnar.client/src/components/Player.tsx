@@ -1,6 +1,8 @@
-import { useRef, useState, useEffect, MutableRefObject } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useRef, useState, useEffect, MutableRefObject, useContext } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
+import { AppContext } from './AppContextProvider';
+import { Tool } from './editor/ToolBar';
 
 type KeysState = {
   KeyW: boolean;
@@ -11,7 +13,9 @@ type KeysState = {
 };
 
 function Player() {
+  const { camera } = useThree();
   const playerRef: MutableRefObject<THREE.Mesh | null> = useRef(null);
+  const { tool } = useContext(AppContext);
   const [keys, setKeys] = useState<KeysState>({ KeyW: false, KeyA: false, KeyS: false, KeyD: false, Space: false });
   const speed = 0.1;
 
@@ -42,10 +46,17 @@ function Player() {
     const previousPosition = player.position.clone();
 
     // Movement logic
-    if (keys.KeyW) player.position.z -= speed;
-    if (keys.KeyS) player.position.z += speed;
-    if (keys.KeyA) player.position.x -= speed;
-    if (keys.KeyD) player.position.x += speed;
+    if (keys.KeyA) player.rotateY(speed/2);
+    if (keys.KeyD) player.rotateY(-speed/2);
+
+    // Move the player forward/backward based on player rotation
+    if (keys.KeyW) {
+      player.position.add(player.getWorldDirection(new THREE.Vector3()).multiplyScalar(-speed));
+    };
+    if (keys.KeyS) {
+      player.position.add(player.getWorldDirection(new THREE.Vector3()).multiplyScalar(speed));
+    };
+
     if (keys.Space) player.position.y += speed;
 
     // Collision detection
@@ -57,6 +68,22 @@ function Player() {
     if (detectCollision(playerBox, obstacles)) {
       player.position.copy(previousPosition); // Revert to the previous position on collision
       //shift the player to the side
+    }
+
+    // Update camera position
+    if (tool.current === Tool.PlayerCamera) {
+      // Cast a ray from the player to the y+2, z+3, if it hits, set the camera position to the hit point
+      // Position of of the camera depends on the player's rotation and position
+      const cameraPos = new THREE.Vector3(0, 2, 3).applyEuler(player.rotation).add(player.position);
+
+      /*const raycaster = new THREE.Raycaster(player.position, cameraPos, 0, 5);
+      const intersects = raycaster.intersectObjects(scene.children);
+      if (intersects.length > 0) {
+        camera.position.copy(intersects[0].point);
+      } else {*/
+        camera.position.copy(cameraPos);
+      //´/}
+      camera.lookAt(player.position);
     }
   });
 
@@ -77,7 +104,7 @@ function Player() {
   });
 
   return (
-    <mesh ref={playerRef} position={[0, 1.5, 0]} name='Player'>
+    <mesh ref={playerRef} position={[0, 1.5, 0]} name='player'>
       <boxGeometry args={[0.6, 1.8, 0.6]} />
       <meshStandardMaterial color={0x88ff00} />
     </mesh>

@@ -17,6 +17,8 @@ interface Block {
     texture3?: Texture;
     texture4?: Texture;
     texture5?: Texture; // when texture5 is set, all textures are used for each side
+
+    created: Date;
 }
 
 export default Block;

@@ -38,6 +38,7 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
         setBlockState(newBlock);
     };
 
+
     const contextValue = useMemo(() => ({
         tool, setTool, toolState, block, blockState, setBlock
     }), [toolState, blockState]);
