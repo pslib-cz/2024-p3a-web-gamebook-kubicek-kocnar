@@ -6,13 +6,13 @@ const MainMenu: React.FC = () => {
         <div className='mainmenu'>
             <h1>Main Menu</h1>
             <div>
-                <Link to="/games/1/levels/1">
-                    <button>Play</button>
+                <Link className='button' to="/games/1/levels/1">
+                Play
                 </Link>
             </div>
             <div>
-                <Link to="/games">
-                    <button>Browse Games</button>
+                <Link className='button' to="/games">
+                    Browse Games
                 </Link>
             </div>
         </div>
