@@ -27,7 +27,14 @@ namespace KubicekKocnar.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Block>>> GetBlocks()
         {
-            return await _context.Blocks.Include(t => t.Texture0).ToListAsync();
+            return await _context.Blocks
+                .Include(t => t.Texture0)
+                .Include(t => t.Texture1)
+                .Include(t => t.Texture2)
+                .Include(t => t.Texture3)
+                .Include(t => t.Texture4)
+                .Include(t => t.Texture5)
+                .ToListAsync();
         }
 
         [HttpGet("{id}")]

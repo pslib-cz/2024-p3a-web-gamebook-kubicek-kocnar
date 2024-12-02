@@ -5,7 +5,6 @@ import { Link, useParams } from "react-router-dom";
 
 export function LevelMenu()
 {
-
 	const { gameid } = useParams();
 
 	const LEVELSROUTE = `https://localhost:7097/api/Games/${gameid}/Levels`;
@@ -16,7 +15,7 @@ export function LevelMenu()
 		try {
 			const response = await fetch(LEVELSROUTE);
 			if (!response.ok) {
-					throw new Error('Network response was not ok');
+				throw new Error('Network response was not ok');
 			}
 			const levels: Level[] = await response.json();
 			setLevels(levels);
@@ -57,28 +56,27 @@ export function LevelMenu()
 		<div>
 			<div>
 				<h2>New Level</h2>
-        <form>
-          <input {...register("level.name")}></input>
-          <button
-            onClick={(e) =>
-              {
-                e.preventDefault()
-                PostLevel(
-                  {
-                    name: getValues('level.name')
-                  } as Level
-                );
-              }
-            }
-          >
-            Create new Level
-          </button>
-        </form>
+				<form>
+					<input {...register("level.name")}></input>
+					<button
+						onClick={(e) =>
+						{
+							e.preventDefault()
+							PostLevel(
+							{
+								name: getValues('level.name')
+							} as Level
+							);
+						}
+						}
+					>
+						Create new Level
+					</button>
+				</form>
 			</div>
-
 			<div>
 				{levels_ && levels_?.length != 0 &&
-          levels_.map(level => LevelDisplayer(level))
+          			levels_.map(level => LevelDisplayer(level))
 				}
 			</div>
 		</div>
@@ -91,7 +89,9 @@ function LevelDisplayer(level : Level)
       <div key={level.levelId}>
         <h2>{level.name}</h2>
         <p>{level.description}</p>
-		<button><Link to={`/games/${level.gameId}/levels/${level.levelId}`}>Otevřít</Link></button>
+
+		<Link className="button" to={`/games/${level.gameId}/levels/${level.levelId}`}>Otevřít</Link>
+
       </div>
     )
 }

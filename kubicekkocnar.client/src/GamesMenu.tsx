@@ -13,7 +13,7 @@ export function GamesMenu()
 		try {
 			const response = await fetch(GAMESROUTE);
 			if (!response.ok) {
-					throw new Error('Network response was not ok');
+				throw new Error('Network response was not ok');
 			}
 			const games: Game[] = await response.json();
 			setGames(games);
@@ -88,7 +88,7 @@ function GameDisplayer(game : Game)
       <div key={game.gameId}>
         <h2>{game.name}</h2>
         <p>{game.description}</p>
-		<button><Link to={`/games/${game.gameId}/levels`}>Zobrazit</Link></button>
+		<Link className="button" to={`/games/${game.gameId}/levels`}>Zobrazit</Link>
       </div>
     )
 }
