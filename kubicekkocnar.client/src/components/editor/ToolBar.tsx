@@ -15,10 +15,15 @@ const ToolBar: React.FC = () => {
 
     return (
         <div className='toolbar'>
-            <button className={`toolbar__button${toolState === Tool.Mouse ? ' toolbar__button--active' : ''}`} onClick={() => setTool(Tool.Mouse)}><MaterialSymbol icon="arrow_selector_tool" size={24} fill/></button>
-            <button className={`toolbar__button${toolState === Tool.Add ? ' toolbar__button--active' : ''}`} onClick={() => setTool(Tool.Add)}><MaterialSymbol icon="add" size={24} fill/></button>
-            <button className={`toolbar__button${toolState === Tool.Remove ? ' toolbar__button--active' : ''}`} onClick={() => setTool(Tool.Remove)}><MaterialSymbol icon="remove" size={24} fill/></button>
-            <button className={`toolbar__button${toolState === Tool.PlayerCamera ? ' toolbar__button--active' : ''}`} onClick={() => setTool(Tool.PlayerCamera)}><MaterialSymbol icon="video_camera_front" size={24} fill/></button>
+            <div className="toolbar__buttons">
+                <button className={`toolbar__button${toolState === Tool.Mouse ? ' toolbar__button--active' : ''}`} onClick={() => setTool(Tool.Mouse)}><MaterialSymbol icon="arrow_selector_tool" size={24} fill/></button>
+                <button className={`toolbar__button${toolState === Tool.Add ? ' toolbar__button--active' : ''}`} onClick={() => setTool(Tool.Add)}><MaterialSymbol icon="add" size={24} fill/></button>
+                <button className={`toolbar__button${toolState === Tool.Remove ? ' toolbar__button--active' : ''}`} onClick={() => setTool(Tool.Remove)}><MaterialSymbol icon="remove" size={24} fill/></button>
+                <button className={`toolbar__button${toolState === Tool.PlayerCamera ? ' toolbar__button--active' : ''}`} onClick={() => setTool(Tool.PlayerCamera)}><MaterialSymbol icon="video_camera_front" size={24} fill/></button>
+            </div>
+            <div className="toolbar__heading">
+
+            </div>
         </div>
     );
 };

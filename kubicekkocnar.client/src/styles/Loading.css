@@ -1,0 +1,42 @@
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(4px);
+}
+.loader::after {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 70px;
+    border: 5px solid transparent;
+    padding: 0 8px;
+    box-sizing: border-box;
+    background:
+      linear-gradient(#fff 0 0) 0    0/8px 20px,
+      linear-gradient(#fff 0 0) 100% 0/8px 20px,
+      radial-gradient(farthest-side,#fff 90%,#fff0) 0 5px/8px 8px content-box,
+      transparent;
+    background-repeat: no-repeat; 
+    animation: l3 2s infinite linear;
+    z-index: 10;
+  }
+  @keyframes l3{
+    25% {background-position: 0 0   ,100% 100%,100% calc(100% - 5px)}
+    50% {background-position: 0 100%,100% 100%,0    calc(100% - 5px)}
+    75% {background-position: 0 100%,100%    0,100% 5px}
+  }
+
+  body {
+    background-color: #1a1a24;
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+  }

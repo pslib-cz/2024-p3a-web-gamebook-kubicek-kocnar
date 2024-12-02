@@ -62,6 +62,7 @@ function LevelEditor()
   
   return (
     <AppContextProvider>
+      {!level &&  <div className="loader"></div>}
       <ToolBar />
       {level && <ConfigPanel/>}
       <div className='canvas'>

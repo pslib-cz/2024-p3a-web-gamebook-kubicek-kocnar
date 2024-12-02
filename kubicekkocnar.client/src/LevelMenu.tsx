@@ -75,8 +75,9 @@ export function LevelMenu()
 				</form>
 			</div>
 			<div className="games">
-				{levels_ && levels_?.length != 0 &&
-          			levels_.map(level => LevelDisplayer(level))
+				{levels_ && levels_?.length != 0 ?
+          			levels_.map(level => LevelDisplayer(level)) :
+					  <div className="loader"></div>
 				}
 			</div>
 		</div>

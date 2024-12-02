@@ -82,12 +82,6 @@ class MapRenderer {
                 if (!block.texture5) {
                     // create a URL from the Blob
                     console.log(block.texture0.content)
-                    const byteCharacters = atob(block.texture0.content);
-                    const byteNumbers = new Array(byteCharacters.length);
-                    for (let i = 0; i < byteCharacters.length; i++) {
-                        byteNumbers[i] = byteCharacters.charCodeAt(i);
-                    }
-                    const byteArray = new Uint8Array(byteNumbers);
                     const loadedTexture = textureLoader.load(URL.createObjectURL(MapRenderer.loadTexture(block.texture0)));
                     // avoid blurring for pixel art
                     loadedTexture.minFilter = THREE.NearestFilter;

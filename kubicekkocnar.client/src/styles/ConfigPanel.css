@@ -6,6 +6,7 @@
     padding: 1rem;
     z-index: 1000;
     background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(3px);
     translate: 0;
     transition: translate 0.3s ease-in-out;
     width: 25vw;
@@ -22,6 +23,7 @@
     left: 0;
     padding: 1rem;
     background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(3px);
     cursor: pointer;
     padding: 1rem .25rem;
     border-radius: 4px 0 0 4px;

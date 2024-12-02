@@ -3,6 +3,7 @@ import Game from "../types/Game";
 import LevelType from "../types/Level"
 import PlacedBlock from "../types/PlacedBlock";
 import MapRenderer from "./MapRenderer";
+import GenericFeature from "../types/Feature";
 
 interface LevelOptions {
     name: string
@@ -26,7 +27,8 @@ class Level implements LevelType {
     }
     created!: Date;
     game?: Game | undefined;
-    blocks: PlacedBlock[] = []
+    blocks: PlacedBlock[] = [];
+    features: GenericFeature[] = [];
 
     async initializeServerLevel(onReady: (level: Level) => void) {
         try {
@@ -57,6 +59,19 @@ class Level implements LevelType {
             for (const block of level.blocks) {
                 this.mapRenderer.addBlock(block);
             }
+
+            const levelFeaturesResponse = await fetch(APIROUTE(this.gameId, this.levelId) + '/Features');
+            if (!levelFeaturesResponse.ok) {
+                throw new Error(`Response status: ${levelFeaturesResponse.status}`);
+            }
+
+            this.features = (await levelFeaturesResponse.json()).map((feature: {x: number, y: number, z: number}) => {
+                return {
+                    ...feature,
+                    position: new Vector3(feature.x, feature.y, feature.z)
+                }
+            });;
+
 
             onReady(this);
         } catch (err: unknown) {

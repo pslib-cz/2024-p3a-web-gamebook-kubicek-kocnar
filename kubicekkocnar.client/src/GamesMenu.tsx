@@ -74,8 +74,9 @@ export function GamesMenu()
 			</div>
 
 			<div className="games">
-				{games && games?.length != 0 &&
-          games.map(game => GameDisplayer(game))
+				{games && games?.length != 0 ?
+					games.map(game => GameDisplayer(game)) :
+					<div className="loader"></div>
 				}
 			</div>
 		</div>
