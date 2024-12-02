@@ -74,7 +74,7 @@ export function LevelMenu()
 					</button>
 				</form>
 			</div>
-			<div>
+			<div className="games">
 				{levels_ && levels_?.length != 0 &&
           			levels_.map(level => LevelDisplayer(level))
 				}
@@ -86,12 +86,10 @@ export function LevelMenu()
 function LevelDisplayer(level : Level)
 {
     return (
-      <div key={level.levelId}>
-        <h2>{level.name}</h2>
+      <Link key={level.levelId} className="game" to={`/games/${level.gameId}/levels/${level.levelId}`}>
+        <h2>{level.levelId}</h2>
+		<p>{level.name}</p>
         <p>{level.description}</p>
-
-		<Link className="button" to={`/games/${level.gameId}/levels/${level.levelId}`}>Otevřít</Link>
-
-      </div>
+      </Link>
     )
 }

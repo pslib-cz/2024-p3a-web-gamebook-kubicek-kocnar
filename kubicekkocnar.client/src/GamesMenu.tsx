@@ -73,7 +73,7 @@ export function GamesMenu()
         </form>
 			</div>
 
-			<div>
+			<div className="games">
 				{games && games?.length != 0 &&
           games.map(game => GameDisplayer(game))
 				}
@@ -85,10 +85,11 @@ export function GamesMenu()
 function GameDisplayer(game : Game)
 {
     return (
-      <div key={game.gameId}>
+      <Link className="game" key={game.gameId} to={`/games/${game.gameId}/levels`}>
         <h2>{game.name}</h2>
         <p>{game.description}</p>
-		<Link className="button" to={`/games/${game.gameId}/levels`}>Zobrazit</Link>
-      </div>
+		<p>{game.author?.username}</p>
+		{/* <Link className="button" to={`/games/${game.gameId}/levels`}>Zobrazit</Link> */}
+      </Link>
     )
 }

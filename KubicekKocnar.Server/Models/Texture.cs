@@ -7,6 +7,8 @@ namespace KubicekKocnar.Server.Models
         public uint TextureId { get; set; }
 
         public required string Name { get; set; }
+
+        public required string Type { get; set; } = "image/png";
         public required byte[] Content { get; set; }
 
         public int Width { get; set; }

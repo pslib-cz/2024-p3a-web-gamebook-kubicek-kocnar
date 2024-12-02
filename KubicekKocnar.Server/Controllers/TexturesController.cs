@@ -87,7 +87,6 @@ namespace KubicekKocnar.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Texture>> PostTexture(string name, IFormFile file)
         {
-
             // check if file is an image and set it into texture.contetn
             if (file == null)
             {
@@ -100,6 +99,8 @@ namespace KubicekKocnar.Server.Controllers
             int height = 0;
             int size = 0;
 
+            string type = file.ContentType;
+
             if (!file.ContentType.Contains("image")) return BadRequest("File is not an image");
             if (file.ContentType == "image/svg+xml") return BadRequest("SVG format is not supported.");
 
@@ -108,7 +109,7 @@ namespace KubicekKocnar.Server.Controllers
             {
                 width = image.Width;
                 height = image.Height;
-                size = (int)file.Length;
+                size = (int)file.Length;                
             }
 
             using (var memoryStream = new MemoryStream())
@@ -121,6 +122,7 @@ namespace KubicekKocnar.Server.Controllers
             Texture texture = new Texture()
             {
                 Name = name,
+                Type = type,
                 Content = fr,
                 Created = DateTime.Now,
                 Width = width,

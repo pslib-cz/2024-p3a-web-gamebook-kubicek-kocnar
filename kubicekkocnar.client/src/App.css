@@ -49,3 +49,28 @@ img {
 .coord--z {
     color: #2a6df5;
 }
+
+.games
+{
+    display: flex;
+    gap: 1em;
+    margin: 1em;
+}
+
+.game
+{
+    background-color: rgb(27, 27, 27);
+    padding: 1em;
+    border-radius: 1em;
+    color: white;
+}
+
+.game:hover
+{
+    color: white;
+}
+
+#root
+{
+    margin: auto;
+}
