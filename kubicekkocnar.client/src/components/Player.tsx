@@ -18,6 +18,7 @@ function Player() {
   const { tool } = useContext(AppContext);
   const [keys, setKeys] = useState<KeysState>({ KeyW: false, KeyA: false, KeyS: false, KeyD: false, Space: false });
   const speed = 0.1;
+  let velocityY = 0;
 
   // Update keys state
   useEffect(() => {
@@ -57,7 +58,7 @@ function Player() {
       player.position.add(player.getWorldDirection(new THREE.Vector3()).multiplyScalar(speed));
     };
 
-    if (keys.Space) player.position.y += speed;
+    if (keys.Space) player.position.y += speed*2;
 
     // Collision detection
     const playerBox = new THREE.Box3().setFromObject(player);
@@ -92,14 +93,18 @@ function Player() {
     const player = playerRef.current;
     if (!player) return;
 
-    player.position.y -= 0.05;
+    // Gravity acceleration
+    velocityY += 0.01;
+    player.position.y -= velocityY;
+
 
     const playerBox = new THREE.Box3().setFromObject(player);
     const obstacles = scene.children
       .filter((child) => child.name.includes('block'))
       .map((obstacle) => new THREE.Box3().setFromObject(obstacle));
     if (detectCollision(playerBox, obstacles)) {
-      player.position.y += 0.05;
+      player.position.y += velocityY; // Revert to the previous position on collision
+      velocityY = 0;
     }
   });
 
