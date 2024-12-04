@@ -69,13 +69,21 @@ class Level implements LevelType {
             }
 
             this.features = (await levelFeaturesResponse.json()).map((feature: {x: number, y: number, z: number}) => {
+                console.log({
+                    ...feature,
+                    position: new Vector3(feature.x, feature.y, feature.z)
+                })
                 return {
                     ...feature,
                     position: new Vector3(feature.x, feature.y, feature.z)
                 }
-            });;
+            });
 
-            for (const feature of level.features) {
+            console.log("features", this.features);
+
+            for (const feature of this.features) {
+                console.log("feature", feature);
+                
                 this.featureRenderer.addFeature(feature);
             }
 

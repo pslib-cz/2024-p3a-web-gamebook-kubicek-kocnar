@@ -59,20 +59,19 @@ class MapRenderer {
         placedBlock.mesh.name = 'block ' + placedBlock.block.name + ' ' + placedBlock.placedBlockId;
 
         // set the attributes and state of the block as userData
-        console.log('Setting attributes', placedBlock.block.attributes);
         placedBlock.mesh.userData.attributes = placedBlock.block.attributes.concat('block')
         placedBlock.mesh.userData.state = placedBlock.state;
 
         placedBlock.mesh.position.set(placedBlock.position.x, placedBlock.position.y, placedBlock.position.z);
         
-        console.log("MapRenderer -> ADD ", placedBlock.mesh.name, placedBlock.mesh.position);
+        //console.log("MapRenderer -> ADD ", placedBlock.mesh.name, placedBlock.mesh.position);
 
         this.blocks.push(placedBlock);
         this.scene.add(placedBlock.mesh);
     }
 
     private createBlockMaterial(block: Block) {
-        console.log('Creating material for block', block);
+        //console.log('Creating material for block', block);
         
         // if the block already has a material (its not the first one), we dont have to create the material
         if (block.material === undefined) {
@@ -81,7 +80,6 @@ class MapRenderer {
                 // if there is only one texture, we use it for all sides
                 if (!block.texture5) {
                     // create a URL from the Blob
-                    console.log(block.texture0.content)
                     const loadedTexture = textureLoader.load(URL.createObjectURL(MapRenderer.loadTexture(block.texture0)));
                     // avoid blurring for pixel art
                     loadedTexture.minFilter = THREE.NearestFilter;

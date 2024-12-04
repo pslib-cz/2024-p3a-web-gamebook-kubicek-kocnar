@@ -35,7 +35,7 @@ class FeatureRenderer {
         }
 
         feature.object.name = 'feature ' + feature.type + ' ' + feature.featureId;
-        feature.position?.set(feature.position.x, feature.position.y, feature.position.z);
+        feature.object.position.set(feature.position!.x, feature.position!.y, feature.position!.z);
         console.log("FeatureRenderer -> ADD ", feature.object.name, feature.object.position);
 
         this.features.push(feature);

@@ -236,8 +236,7 @@ namespace KubicekKocnar.Server.Controllers
         [HttpGet("{id}/Levels/{levelId}/Features")]
         public async Task<ActionResult<IEnumerable<Feature>>> GetFeatures(uint id, uint levelId)
         {
-
-            var level = await _context.Levels.FirstOrDefaultAsync(l => l.LevelId == levelId && l.GameId == id);
+            var level = await _context.Levels.Where(l => l.GameId == id && l.LevelId == levelId).Include(l => l.Features).FirstOrDefaultAsync();
 
             if (level == null) return NotFound();
 
@@ -273,7 +272,7 @@ namespace KubicekKocnar.Server.Controllers
         [HttpDelete("{id}/Levels/{levelId}/Features/{featureId}")]
         public async Task<IActionResult> DeleteFeature(uint id, uint levelId, uint featureId)
         {
-            var level = await _context.Levels.Where(l => l.GameId == id && l.LevelId == levelId).FirstOrDefaultAsync();
+            var level = await _context.Levels.Where(l => l.GameId == id && l.LevelId == levelId).Include(l => l.Features).FirstOrDefaultAsync();
 
             if (level == null) return NotFound();
 
