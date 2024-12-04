@@ -4,6 +4,7 @@ import LevelType from "../types/Level"
 import PlacedBlock from "../types/PlacedBlock";
 import MapRenderer from "./MapRenderer";
 import GenericFeature from "../types/Feature";
+import FeatureRenderer from "./FeatureRenderer";
 
 interface LevelOptions {
     name: string
@@ -18,11 +19,13 @@ class Level implements LevelType {
     description?: string;
     nextLevel?: number;
     mapRenderer: MapRenderer;
+    featureRenderer: FeatureRenderer;
 
-    constructor(gameId: number, levelId: number, mapRenderer: MapRenderer,  onReady: (level: Level) => void) {
+    constructor(gameId: number, levelId: number, mapRenderer: MapRenderer, onReady: (level: Level) => void) {
         this.gameId = gameId;
         this.levelId = levelId
         this.mapRenderer = mapRenderer;
+        this.featureRenderer = new FeatureRenderer(mapRenderer.scene);
         this.initializeServerLevel(onReady);
     }
     created!: Date;
@@ -72,6 +75,9 @@ class Level implements LevelType {
                 }
             });;
 
+            for (const feature of level.features) {
+                this.featureRenderer.addFeature(feature);
+            }
 
             onReady(this);
         } catch (err: unknown) {

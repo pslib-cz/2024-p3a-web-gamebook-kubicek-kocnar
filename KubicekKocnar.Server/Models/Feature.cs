@@ -17,8 +17,8 @@ namespace KubicekKocnar.Server.Models
         public uint Type { get; set; }
 
         [JsonIgnore]
-        public required Level Level { get; set; }
-        public uint LevelId { get; set; }
+        public Level? Level { get; set; }
+        public required uint LevelId { get; set; }
 
         public required DateTime Created { get; set; } = DateTime.Now;
 

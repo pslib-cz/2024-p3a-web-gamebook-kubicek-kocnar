@@ -1,4 +1,5 @@
-import { Vector3 } from "three";
+import { Vector3, Object3D } from "three";
+
 
 // a Feature is a thing in a level that can be interacted with
 // it can be a lot of things, like a light or a turret, which all have different properties
@@ -11,11 +12,11 @@ interface GenericFeature {
     position?: Vector3; // where is it placed, needs conversion from [server] ...{x,y,z} to [client] Vector3
     params: FeatureParams;
     created: Date;
+    object: Object3D;
 }
 
 enum FeatureType {
-    "Light",
-    "Turret"
+    "Light"=1
 }
 
 // the FeatureParams type is used to define the properties of a feature -> its content depends on the FeatureType
@@ -27,4 +28,5 @@ interface FeatureParams {
 
 
 export default GenericFeature;
-export type { FeatureType, FeatureParams };
+export { FeatureType }
+export type { FeatureParams };

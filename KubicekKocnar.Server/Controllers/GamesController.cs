@@ -266,7 +266,7 @@ namespace KubicekKocnar.Server.Controllers
             level.Features.Add(feature);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetFeature", new { id = feature.FeatureId }, feature);
+            return CreatedAtAction("GetFeature", new { id = level.GameId, levelId= level.LevelId, featureId = feature.FeatureId }, feature);
         }
 
         // DELETE: api/Games/5/Levels/5/Features/5
