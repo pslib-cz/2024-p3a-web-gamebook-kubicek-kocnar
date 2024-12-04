@@ -13,7 +13,35 @@ enum Tool {
 const ToolBar: React.FC = () => {
     const { toolState, setTool } = useContext(AppContext);
 
+    // add a keybord shortcut for switching tools (1, 2, 3, 4)
+    const handleKeyDown = (e: KeyboardEvent) => {
+        console.log(e);
+        
+        switch (e.key) {
+            case '1':
+            case '+':
+                setTool(Tool.Mouse);
+                break;
+            case '2':
+            case 'ě':
+                setTool(Tool.Add);
+                break;
+            case '3':
+            case 'š':
+                setTool(Tool.Remove);
+                break;
+            case '4':
+            case 'č':
+                setTool(Tool.PlayerCamera);
+                break;
+        }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    
+
     return (
+        <>
+        <div className={`crosshair${toolState != Tool.PlayerCamera ? ' crosshair--hidden' : ''}`}></div>
         <div className='toolbar'>
             <div className="toolbar__buttons">
                 <button className={`toolbar__button${toolState === Tool.Mouse ? ' toolbar__button--active' : ''}`} onClick={() => setTool(Tool.Mouse)}><MaterialSymbol icon="arrow_selector_tool" size={24} fill/></button>
@@ -25,6 +53,7 @@ const ToolBar: React.FC = () => {
 
             </div>
         </div>
+        </>
     );
 };
 

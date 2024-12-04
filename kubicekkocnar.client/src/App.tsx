@@ -67,9 +67,9 @@ function LevelEditor()
       {level && <ConfigPanel/>}
       <div className='canvas'>
       <Canvas onCreated={(state) => {
-          state.camera.position.set(20, 20, 20);
-          setScene(state.scene)}
-        }>
+          state.camera.position.set(0, 2, 0);
+          setScene(state.scene);
+        }}>
         {level && <Map level={level}/>}
       </Canvas>
       </div>

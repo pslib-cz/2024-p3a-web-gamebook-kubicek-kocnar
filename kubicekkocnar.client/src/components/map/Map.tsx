@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useCallback } from 'react';
-import { OrbitControls, Stats, Lightformer } from '@react-three/drei';
+import { OrbitControls, Stats } from '@react-three/drei';
 import * as THREE from 'three';
 import { useThree } from '@react-three/fiber';
 
-import Player from '../Player';
 import { AppContext } from '../AppContextProvider';
 import { Tool } from '../editor/ToolBar';
 import Level from '../../lib/Level'
 import MapEditor from '../../lib/MapEditor';
+import FirstPersonControllerComponent from '../FirstPersonController';
 
 // React.memo(
 const Map = ({level} : {level : Level}) => {
@@ -102,8 +102,7 @@ const Map = ({level} : {level : Level}) => {
 
     return (
       <>
-        <OrbitControls />
-        <Lightformer />
+        {tool.current == Tool.PlayerCamera ? <FirstPersonControllerComponent camera={camera} /> : <OrbitControls camera={camera} />}
         <Stats className='stats'/>
         <ambientLight intensity={0.1} />
         <pointLight position={[0, 10, 0]} intensity={50}/> 
@@ -122,7 +121,7 @@ const Map = ({level} : {level : Level}) => {
           
           <meshStandardMaterial color={0x00ff00} />
         </mesh>
-        <Player />
+        {/* <Player /> */}
       </>
     );
   //never rerender :D
