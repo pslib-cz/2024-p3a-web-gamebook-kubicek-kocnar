@@ -94,6 +94,9 @@ Hráč je jedním z posledních přeživších světa zasaženého Korupcí. Pro
 ### **Backend**
 - C#, Asp.net Core, SQLite
 
+## **Figma**
+https://www.figma.com/design/XSkCP23QGliY0u9oEQlrGf/KubicekKocnar?node-id=0-1&t=eR2HrG2fi05V3VoA-1
+
 
 
 
