@@ -64,7 +64,7 @@ function LevelEditor()
     <AppContextProvider>
       {!level &&  <div className="loader"></div>}
       <ToolBar />
-      {level && <ConfigPanel/>}
+      {level && <ConfigPanel level={level}/>}
       <div className='canvas'>
       <Canvas onCreated={(state) => {
           state.camera.position.set(0, 2, 0);

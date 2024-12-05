@@ -27,7 +27,7 @@ class FeatureRenderer {
             return;
         }
         switch (feature.type) {
-            case FeatureType.Light:
+            case FeatureType.light:
                 this.renderLight(feature as Light);
                 break;
             default:
@@ -57,3 +57,4 @@ class FeatureRenderer {
 }
 
 export default FeatureRenderer;
+export type { Light };

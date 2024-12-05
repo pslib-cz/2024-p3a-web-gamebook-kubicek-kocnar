@@ -16,7 +16,7 @@ interface GenericFeature {
 }
 
 enum FeatureType {
-    "Light"=1
+    "light"=1
 }
 
 // the FeatureParams type is used to define the properties of a feature -> its content depends on the FeatureType

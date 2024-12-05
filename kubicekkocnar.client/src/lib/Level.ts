@@ -167,6 +167,54 @@ class Level implements LevelType {
         }
     }
 
+    async addFeature(feature: GenericFeature) {
+        try {
+            const featureResponse = await fetch(APIROUTE(this.gameId, this.levelId) + '/Features', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    featureId: feature.featureId,
+                    type: feature.type,
+                    x: feature.position?.x,
+                    y: feature.position?.y,
+                    z: feature.position?.z,
+                    params: feature.params
+                })
+            })
+            if (!featureResponse.ok) {
+                throw new Error(`Response status: ${featureResponse.status}`);
+            }
+            const newFeature: GenericFeature = await featureResponse.json();
+            feature = {...feature, featureId: newFeature.featureId};
+            
+            this.features.push(feature);
+            this.featureRenderer.addFeature(feature);
+        } catch (err: unknown) {
+            console.error(err);
+        }
+    }
+
+    async removeFeature(feature: GenericFeature) {
+        try {
+            const featureResponse = await fetch(APIROUTE(this.gameId, this.levelId) + `/Features/${feature.featureId}`, {
+                method: 'DELETE'
+            })
+            if (!featureResponse.ok) {
+                throw new Error(`Response status: ${featureResponse.status}`);
+            }
+            
+            const featureIndex = this.features.findIndex(feature => feature.featureId === feature.featureId);
+            if (featureIndex !== -1) {
+                this.features.splice(featureIndex, 1);
+            }
+            this.featureRenderer.removeFeature(feature);
+        } catch (err: unknown) {
+            console.error(err);
+        }
+    }
+
     static async createLevel(gameId: number, mapRenderer: MapRenderer, options: LevelOptions, onReady: (level: Level) => void) {
         try {
             const levelResponse = await fetch(APIROUTE(gameId), {
