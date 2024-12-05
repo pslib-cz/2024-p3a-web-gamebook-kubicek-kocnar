@@ -36,18 +36,22 @@ export class FirstPersonController {
     this.rotation.multiplyQuaternions(yawQuaternion, this.rotation);
 
     // Vertical pitch (rotate around camera's local X-axis)
-    const pitchDelta = -event.movementY * sensitivity;
+    const pitchDelta = Math.min(.1, Math.max(-.1, -event.movementY * sensitivity));
+
     const pitchQuaternion = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), pitchDelta);
 
     // Combine pitch rotation and clamp vertical look
-    const tempRotation = new THREE.Quaternion().copy(this.rotation).multiply(pitchQuaternion);
+    const tempRotation = new THREE.Quaternion().copy(this.rotation).multiply(pitchQuaternion)
     const euler = new THREE.Euler().setFromQuaternion(tempRotation, "YXZ");
-    euler.x = Math.max(-Math.PI / 2.1, Math.min(Math.PI / 2.1, euler.x)); // Clamp pitch
+    euler.x = Math.max(-Math.PI / 2.25, Math.min(Math.PI / 2.25, euler.x)); // Clamp pitch
+
+    euler.z = 0; // Reset roll
+
     this.rotation.setFromEuler(euler);
 
     // Apply updated quaternion to the camera
     this.camera.quaternion.copy(this.rotation);
-}
+  }
 
 
   public handleTouchStart(event: TouchEvent) {
@@ -137,8 +141,8 @@ export class FirstPersonController {
 
     this.velocity.normalize().multiplyScalar(speed * delta);    
   
-    if (!this.isGrounded)
-      console.log(this.isGrounded);
+    //if (!this.isGrounded)
+     // console.log(this.isGrounded);
 
     // Calculate the forward and right directions based on the camera's rotation
     const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(this.camera.quaternion).normalize();
@@ -164,7 +168,7 @@ export class FirstPersonController {
     const proposedHorizontalPosition = this.playerPosition.clone().add(movement);
     if (!this.checkCollisions(proposedHorizontalPosition)) {
       this.playerPosition.add(movement); // Apply horizontal movement if no collision
-      console.log("no collision");
+      //console.log("no collision");
     }
 
     this.camera.position.copy(this.playerPosition);
