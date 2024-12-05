@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
 import '../../styles/ConfigPanel.css';
-import { MaterialSymbol } from 'react-material-symbols';
+import { MaterialSymbol, SymbolCodepoints } from 'react-material-symbols';
 import { AppContext } from '../AppContextProvider';
 import MapRender from '../../lib/MapRenderer';
 import MapRenderer from '../../lib/MapRenderer';
 import { Tool } from './ToolBar';
 import Level from '../../lib/Level';
-import GenericFeature, { FeatureType } from '../../types/Feature';
+import GenericFeature, { FeatureType, FeatureTypeIcon } from '../../types/Feature';
 
 interface ConfigPanelProps {
     level: Level;
@@ -47,8 +47,8 @@ const ConfigPanel: React.FC<ConfigPanelProps> = (level) => {
                             <button className='configpanel__addbtn'  onClick={() => setOpenAddModal(true)}><MaterialSymbol icon='add'/></button>
                         <ul className='configpanel__list'>
                             {level.level.features.map((feature, index) => (
-                                <li key={index} className='configpanel__list__item' onClick={() => selectFeature(feature)}>
-                                    <MaterialSymbol icon={FeatureType[featureState!.type]}/> {FeatureType[feature.type]} {feature.featureId} 
+                                feature && <li key={index} className='configpanel__list__item' onClick={() => selectFeature(feature)}>
+                                    <MaterialSymbol icon={FeatureTypeIcon[feature.type] as SymbolCodepoints}/> {FeatureType[feature.type]} {feature.featureId} 
                                     &nbsp;(<span className='coord--x'>{feature.position?.x}</span>, <span className='coord--y'>{feature.position?.y}</span>, <span className='coord--z'>{feature.position?.z}</span>)
                                 </li>
                             ))}
@@ -57,10 +57,10 @@ const ConfigPanel: React.FC<ConfigPanelProps> = (level) => {
                     </>
                 );
             case Tool.FeatureView:
-                return (
+                return featureState && (
                     <>
                         <h3 className='flexrow'>
-                            <MaterialSymbol icon={FeatureType[featureState!.type]}/> {FeatureType[featureState!.type]} {featureState?.featureId}
+                            <MaterialSymbol icon={FeatureTypeIcon[featureState.type] as SymbolCodepoints}/> {FeatureType[featureState.type]} {featureState?.featureId}
                             <button className='configpanel__deletebtn' onClick={() => level.level.removeFeature(featureState!)}><MaterialSymbol icon='delete'/></button>
                         </h3> 
                         <div className="configpanel__inputs">
@@ -148,8 +148,10 @@ const ConfigPanel: React.FC<ConfigPanelProps> = (level) => {
             </div>
         </div>
         {openAddModal && <div className='modal configpanel__addmodal'>
-            <h3>Add model</h3>
+            
             {modalFeature ?
+            <>
+            <h2><MaterialSymbol icon={FeatureTypeIcon[modalFeature.type] as SymbolCodepoints}/> Add {FeatureType[modalFeature.type]} </h2>
             <div className="configpanel__addmodal__addparams">
                 <h4>Parameters</h4>
                 {Object.keys(modalFeature.params).map((key, index) => (
@@ -158,23 +160,46 @@ const ConfigPanel: React.FC<ConfigPanelProps> = (level) => {
                         <input type="text" id={key} value={modalFeature.params[key]} readOnly/>
                     </div>
                 ))}
+                <div className="configpanel__input">
+                    <label htmlFor="featurepositionx">X: </label>
+                    <input type="text" id="featurepositionx" value={featureState?.position?.x} readOnly/>
+                </div>
+                <div className="configpanel__input">
+                    <label htmlFor="featurepositiony">Y: </label>
+                    <input type="text" id="featurepositiony" value={featureState?.position?.y} readOnly/>
+                </div>
+                <div className="configpanel__input">
+                    <label htmlFor="featurepositionz">Z: </label>
+                    <input type="text" id="featurepositionz" value={featureState?.position?.z} readOnly/>
+                </div>
+
+
+
                 <button className="configpanel__addmodal__addbtn" onClick={() => {
                     level.level.addFeature(modalFeature);
                     setOpenAddModal(false);
                 }}>Add</button>
             </div>
+            </>
             :
-            //@ts-expect-error FeatureType for some reason also contains the index as a string, so we need to filter it out
-            (Object.keys(FeatureType) as Array<keyof typeof FeatureType>).map(featureType => (parseInt(featureType) != featureType) && 
+            <>
+            <h2>Add feature</h2>
+            <div className="configpanel__addmodal__addoptions">
+            {//@ts-expect-error FeatureType for some reason also contains the index as a string, so we need to filter it out}
+            (Object.values(FeatureType) as Array<keyof typeof FeatureType>).map((featureType, index, features) => (parseInt(featureType) != featureType) && 
                 <button className="configpanel__addmodal__addoption" onClick={() => setModalFeature({
                     featureId: 0,
                     type: FeatureType[featureType],
                     params: {}
                 } as GenericFeature)}>
-                <MaterialSymbol icon={featureType}/>
+                {//@ts-expect-error FeatureTypeIcon for some reason also contains the index as a string, so we need to filter it out
+                <MaterialSymbol icon={FeatureTypeIcon[features[features.length/2+index]] as SymbolCodepoints} size={32}/>}
                 {featureType}
                 </button>
             )}
+            </div>
+            </>
+            }
         </div>}
         </>
     );

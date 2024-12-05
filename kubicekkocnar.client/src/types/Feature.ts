@@ -16,7 +16,12 @@ interface GenericFeature {
 }
 
 enum FeatureType {
-    "light"=1
+    "Light"=1,
+    "Crystal"=2
+}
+enum FeatureTypeIcon {
+    "lightbulb"=1,
+    "diamond"=2
 }
 
 // the FeatureParams type is used to define the properties of a feature -> its content depends on the FeatureType
@@ -28,5 +33,5 @@ interface FeatureParams {
 
 
 export default GenericFeature;
-export { FeatureType }
+export { FeatureType, FeatureTypeIcon }
 export type { FeatureParams };

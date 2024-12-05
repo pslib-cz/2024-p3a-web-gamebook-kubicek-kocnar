@@ -27,11 +27,11 @@ class FeatureRenderer {
             return;
         }
         switch (feature.type) {
-            case FeatureType.light:
+            case FeatureType.Light:
                 this.renderLight(feature as Light);
                 break;
             default:
-                console.error("Unknown feature type", feature.type);
+                return console.error("Unknown feature type", feature.type);
         }
 
         feature.object.name = 'feature ' + feature.type + ' ' + feature.featureId;
