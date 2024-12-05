@@ -5,9 +5,10 @@ import { FirstPersonController } from "../lib/FirstPersonController";
 
 type FirstPersonControllerComponentProps = {
   camera: THREE.Camera;
+  scene: THREE.Scene;
 };
 
-const FirstPersonControllerComponent = ({ camera }: FirstPersonControllerComponentProps) => {
+const FirstPersonControllerComponent = ({ camera, scene }: FirstPersonControllerComponentProps) => {
   const controllerRef = useRef<FirstPersonController | null>(null);
   const { gl } = useThree();
   const clock = new THREE.Clock()
@@ -15,7 +16,7 @@ const FirstPersonControllerComponent = ({ camera }: FirstPersonControllerCompone
   console.log("FirstPersonControllerComponent");
 
   useEffect(() => {
-    const controller = new FirstPersonController(camera);
+    const controller = new FirstPersonController(camera, scene);
     controllerRef.current = controller;
 
     const handlePointerLockChange = () => {

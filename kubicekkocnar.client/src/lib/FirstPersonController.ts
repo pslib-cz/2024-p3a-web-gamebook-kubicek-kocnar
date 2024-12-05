@@ -15,8 +15,16 @@ export class FirstPersonController {
   private touchStart: { x: number; y: number } = { x: 0, y: 0 };
   private viewBobPhase: number = 0; // For view bobbing effect
 
-  constructor(camera: THREE.Camera) {
+  private acceleration: number = 0; // Acceleration
+  private isGrounded: boolean = true; // Check if player is on the ground
+  private scene: THREE.Scene;
+  private playerPosition: THREE.Vector3 = new THREE.Vector3();
+
+  constructor(camera: THREE.Camera, scene: THREE.Scene) {
     this.camera = camera;
+    this.scene = scene;
+
+    this.playerPosition = this.camera.position.clone();
   }
 
   public handleMouseMove(event: MouseEvent) {
@@ -34,7 +42,7 @@ export class FirstPersonController {
     // Combine pitch rotation and clamp vertical look
     const tempRotation = new THREE.Quaternion().copy(this.rotation).multiply(pitchQuaternion);
     const euler = new THREE.Euler().setFromQuaternion(tempRotation, "YXZ");
-    euler.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, euler.x)); // Clamp pitch
+    euler.x = Math.max(-Math.PI / 2.1, Math.min(Math.PI / 2.1, euler.x)); // Clamp pitch
     this.rotation.setFromEuler(euler);
 
     // Apply updated quaternion to the camera
@@ -94,6 +102,9 @@ export class FirstPersonController {
       case "KeyD":
         this.move.right = true;
         break;
+      case "Space":
+        // handle jumping
+        break;
     }
   }
 
@@ -124,29 +135,81 @@ export class FirstPersonController {
     if (this.move.left) this.velocity.x -= 1; // Strafe left
     if (this.move.right) this.velocity.x += 1; // Strafe right
 
-    this.velocity.normalize().multiplyScalar(speed * delta);
-
-    console.log(delta);
-    
+    this.velocity.normalize().multiplyScalar(speed * delta);    
+  
+    if (!this.isGrounded)
+      console.log(this.isGrounded);
 
     // Calculate the forward and right directions based on the camera's rotation
     const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(this.camera.quaternion).normalize();
+
+    // to calculate forward use only the x and z components
+    forward.y = 0;
+
     const right = new THREE.Vector3(1, 0, 0).applyQuaternion(this.camera.quaternion).normalize();
 
     // Move the camera
     const movement = new THREE.Vector3()
         .add(forward.multiplyScalar(this.velocity.z)) // Forward/backward
         .add(right.multiplyScalar(this.velocity.x)); // Left/right
+   
+    // Vertical movement (gravity)
+    if (!this.isGrounded) {
+      this.acceleration += delta;
+      this.velocity.y += -9.8 * this.acceleration; // Apply gravity
+    }
+    const verticalMovement = new THREE.Vector3(0, this.velocity.y * delta, 0);
 
-    this.camera.position.add(movement);
+    // Test horizontal movement for collisions
+    const proposedHorizontalPosition = this.playerPosition.clone().add(movement);
+    if (!this.checkCollisions(proposedHorizontalPosition)) {
+      this.playerPosition.add(movement); // Apply horizontal movement if no collision
+      console.log("no collision");
+    }
+
+    this.camera.position.copy(this.playerPosition);
 
     // View bobbing effect
     if (this.move.forward || this.move.backward || this.move.left || this.move.right) {
-        this.viewBobPhase += delta * 10; // Adjust bobbing speed
-        this.camera.position.y = 2+ Math.sin(this.viewBobPhase) * 0.15; // Bobbing amplitude, the 2 is the player's height and its only temporary, sice you will be able to go up later
+      this.viewBobPhase += delta * 10; // Adjust bobbing speed
+      this.camera.position.y += Math.sin(this.viewBobPhase) * 0.15; // Bobbing amplitude, the 2 is the player's height and its only temporary, sice you will be able to go up later
     } else {
-        this.viewBobPhase = 0; // Reset view bobbing phase when not moving
+      this.viewBobPhase = 0; // Reset view bobbing phase when not moving
     }
-}
+
+    // Test vertical movement for collisions
+    const proposedVerticalPosition = this.playerPosition.clone().add(verticalMovement);
+    if (!this.checkCollisions(proposedVerticalPosition)) {
+      this.playerPosition.add(verticalMovement); // Apply vertical movement if no collision
+      this.isGrounded = false;
+    } else {
+      this.velocity.y = 0; // Stop vertical velocity
+      this.isGrounded = true;
+      this.acceleration = 0;
+    }
+  }
+
+  private checkCollisions(newPosition: THREE.Vector3): boolean {
+    // Create a box at the new position
+    const playerBox = new THREE.Box3().setFromCenterAndSize(
+      newPosition,
+      new THREE.Vector3(.75, 2, .75) // Collider size
+    );
+
+    const obstacles = this.scene.children
+      .filter((child) => child.name.includes('block'))
+      .map((obstacle) => new THREE.Box3().setFromObject(obstacle));
+  
+
+    // Check for intersections with collidable objects
+    for (const object of obstacles) {
+      //const objectBox = new THREE.Box3().setFromObject(object);
+      if (playerBox.intersectsBox(object)) {
+        return true; // Collision detected
+      }
+    }
+
+    return false; // No collision
+  }
 
 }

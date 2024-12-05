@@ -102,7 +102,7 @@ const Map = ({level} : {level : Level}) => {
 
     return (
       <>
-        {tool.current == Tool.PlayerCamera ? <FirstPersonControllerComponent camera={camera} /> : <OrbitControls camera={camera} />}
+        {tool.current == Tool.PlayerCamera ? <FirstPersonControllerComponent camera={camera} scene={scene} /> : <OrbitControls camera={camera} />}
         <Stats className='stats'/>
         <ambientLight intensity={0.1} />
         <pointLight position={[0, 10, 0]} intensity={50}/> 
