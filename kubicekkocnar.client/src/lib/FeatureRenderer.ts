@@ -43,7 +43,7 @@ class FeatureRenderer {
     }
 
     renderLight(light: Light) {
-        light.object = new THREE.PointLight( light.params.color, parseFloat(light.params.intensity) )
+        light.object = new THREE.PointLight( light.params.color, parseFloat(light.params.intensity) || 1 )
     }
 
     removeFeature(feature: GenericFeature) {

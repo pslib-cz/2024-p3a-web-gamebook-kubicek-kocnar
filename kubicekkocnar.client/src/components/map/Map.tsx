@@ -8,9 +8,10 @@ import { Tool } from '../editor/ToolBar';
 import Level from '../../lib/Level'
 import MapEditor from '../../lib/MapEditor';
 import FirstPersonControllerComponent from '../FirstPersonController';
+import Model from './Model';
 
 // React.memo(
-const Map = ({level, onPointerDown} : {level : Level, onPointerDown : any}) => {
+const Map = ({level, onPointerDown} : {level : Level, onPointerDown : unknown}) => {
 
   console.log("Loading level");
   console.log(level);
@@ -119,6 +120,10 @@ const Map = ({level, onPointerDown} : {level : Level, onPointerDown : any}) => {
           <edgesGeometry attach="geometry" args={[new THREE.BoxGeometry(1, 1, 1)]} />
           <lineBasicMaterial attach="material" color="yellow" />
         </lineSegments>
+
+        <Model path='/crystal.glb' position={new THREE.Vector3(-2, 0.5, -1)}/>
+        <Model path='/crystal.glb' position={new THREE.Vector3(-2.6, 3, 0)} rotation={new THREE.Euler(0,0,-Math.PI/2)}/>
+
 
         <mesh position={[0, 0, 0]}>
           

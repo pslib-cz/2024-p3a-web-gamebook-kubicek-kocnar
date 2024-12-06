@@ -19,7 +19,7 @@ const InputSlider: React.FC<InputSliderProps> = ({
     slider = false,
     min = -20,
     max = 20,
-    step = 1,
+    step = 0.1,
 }) => {
     const [isSlider, setIsSlider] = useState(slider);
 
