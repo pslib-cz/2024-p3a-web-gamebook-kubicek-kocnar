@@ -53,8 +53,9 @@ class Level implements LevelType {
 
             this.blocks = (await levelBlocksResponse.json()).map(MapRenderer.transformBlock);
 
-            for (const block of level.blocks) {
-                this.mapRenderer.addBlock(block);
+            for (let i = 0; i < this.blocks.length; i++) {
+                this.mapRenderer.addBlock(this.blocks[i]);
+                
             }
 
             const levelFeaturesResponse = await fetch(APIROUTE(this.gameId, this.levelId) + '/Features');
@@ -64,12 +65,8 @@ class Level implements LevelType {
 
             this.features = (await levelFeaturesResponse.json()).map(FeatureRenderer.transformFeature);
 
-            console.log("features", this.features);
-
-            for (const feature of this.features) {
-                console.log("feature", feature);
-                
-                this.featureRenderer.addFeature(feature);
+            for (let i = 0; i < this.features.length; i++) {
+                this.featureRenderer.addFeature(this.features[i]);
             }
 
             onReady(this);

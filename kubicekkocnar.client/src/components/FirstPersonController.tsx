@@ -2,13 +2,12 @@ import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { FirstPersonController } from "../lib/FirstPersonController";
-import { sobel } from "three/examples/jsm/tsl/display/SobelOperatorNode.js";
 import { ItemsController } from "../lib/ItemsController";
 
 type FirstPersonControllerComponentProps = {
   camera: THREE.Camera;
   scene: THREE.Scene;
-  onPointerDown : any;
+  onPointerDown : () => void | null;
 };
 
 const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPersonControllerComponentProps) => {
@@ -18,8 +17,6 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPe
 
   const { gl } = useThree();
   const clock = new THREE.Clock()
-
-  console.log("FirstPersonControllerComponent");
 
   useEffect(() => {
     const controller = new FirstPersonController(camera, scene);
@@ -54,7 +51,7 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPe
       document.removeEventListener("touchstart", handleTouchStart);
       document.removeEventListener("touchmove", handleTouchMove);
     };
-  }, [camera, gl]);
+  }, [camera, gl, scene]);
 
   useFrame(() => {
     controllerRef.current?.update(clock.getDelta());
@@ -64,9 +61,7 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPe
     gl.domElement.requestPointerLock(); // Use the canvas element for pointer locking
     if (onPointerDown) onPointerDown();
 
-    console.log(itemsControllerRef.current);
-
-    itemsControllerRef.current?.OnCLick();
+    itemsControllerRef.current?.onCLick();
   };
 
   gl.domElement.onpointerdown = handleClick;

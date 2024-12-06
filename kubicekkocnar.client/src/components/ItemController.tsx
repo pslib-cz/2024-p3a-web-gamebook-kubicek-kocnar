@@ -26,7 +26,6 @@ export function ItemUI() {
 
     handlePlayerMouseClick = () => {
         setUseItem(true);
-        console.log("Player clicked");
     };
 
     React.useEffect(() => {

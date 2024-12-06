@@ -35,10 +35,7 @@ class MapRenderer {
 
     public addBlock(placedBlock: PlacedBlock) {
         // if the blockId exists in this.blocks, we dont add it
-        if (this.blocks.find(b => b.placedBlockId === placedBlock.placedBlockId)) {
-            console.error("This block is already in the scene", placedBlock.placedBlockId);
-            return;
-        }
+        if (this.blocks.find(b => b.placedBlockId === placedBlock.placedBlockId)) return;
 
         // this generates the material for the block, or uses the existing one if this type of block was already rendered
         placedBlock.block = this.blocksReference.blocks.find(b => b.blockId === placedBlock.blockId)!;
@@ -63,16 +60,12 @@ class MapRenderer {
         placedBlock.mesh.userData.state = placedBlock.state;
 
         placedBlock.mesh.position.set(placedBlock.position.x, placedBlock.position.y, placedBlock.position.z);
-        
-        //console.log("MapRenderer -> ADD ", placedBlock.mesh.name, placedBlock.mesh.position);
 
         this.blocks.push(placedBlock);
         this.scene.add(placedBlock.mesh);
     }
 
     private createBlockMaterial(block: Block) {
-        //console.log('Creating material for block', block);
-        
         // if the block already has a material (its not the first one), we dont have to create the material
         if (block.material === undefined) {
             // if the block has a texture, we create a material with the texture
@@ -105,7 +98,6 @@ class MapRenderer {
         // find the block in the blocks array and remove it and the mesh from the scene
         const removeIndex = this.blocks.findIndex(b => b.placedBlockId === placedBlock.placedBlockId);
         if (removeIndex > -1) {
-            console.log('MapRenderer -> RM ', placedBlock.mesh?.name, placedBlock.mesh?.position);
             this.scene.remove(placedBlock.mesh as THREE.Mesh);
             this.blocks.splice(removeIndex, 1);
         }

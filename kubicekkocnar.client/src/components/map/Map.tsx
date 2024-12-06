@@ -11,10 +11,9 @@ import FirstPersonControllerComponent from '../FirstPersonController';
 import Model from './Model';
 
 // React.memo(
-const Map = ({level, onPointerDown} : {level : Level, onPointerDown : unknown}) => {
+const Map = ({level, onPointerDown} : {level : Level, onPointerDown : () => void | null}) => {
 
   console.log("Loading level");
-  console.log(level);
 
   const scene = level.mapRenderer.scene
 
@@ -98,7 +97,6 @@ const Map = ({level, onPointerDown} : {level : Level, onPointerDown : unknown}) 
     console.log("MapRenderer mounted");
 
     level.blocks.forEach((block) => level.mapRenderer.addBlock(block));
-    console.log(scene);
   }, [level.mapRenderer, scene, level],);
 
     return (

@@ -9,21 +9,18 @@ export class ItemsController {
     this.scene = scene;
   }
 
-  public OnCLick()
+  public onCLick()
   {
-    console.log("OnCLicksdf-*------------------------------------------");
-
     const positionsd : THREE.Vector3 = new THREE.Vector3();
 
     positionsd.copy(this.camera.position);
     positionsd.add(this.camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(1));
 
-    console.log(this.GetColliders(positionsd));
-
-    console.warn("This shit is not implemented yet, you have an array of block that were hit tho")
+    
+    console.warn("ONLICK => This shit is not implemented yet, you have an array of block that were hit tho", this.getColliders(positionsd))
   }    
 
-  private GetColliders(positionToCheck: THREE.Vector3): THREE.Box3[] {
+  private getColliders(positionToCheck: THREE.Vector3): THREE.Box3[] {
 
     const checkBox = new THREE.Box3().setFromCenterAndSize(
         positionToCheck,

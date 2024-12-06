@@ -140,9 +140,6 @@ export class FirstPersonController {
     if (this.move.right) this.velocity.x += 1; // Strafe right
 
     this.velocity.normalize().multiplyScalar(speed * delta);    
-  
-    //if (!this.isGrounded)
-     // console.log(this.isGrounded);
 
     // Calculate the forward and right directions based on the camera's rotation
     const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(this.camera.quaternion).normalize();
@@ -159,16 +156,15 @@ export class FirstPersonController {
    
     // Vertical movement (gravity)
     if (!this.isGrounded) {
-      this.acceleration += delta;
+      this.acceleration += Math.min(.3,delta);
       this.velocity.y += -9.8 * this.acceleration; // Apply gravity
     }
-    const verticalMovement = new THREE.Vector3(0, this.velocity.y * delta, 0);
+    const verticalMovement = new THREE.Vector3(0, this.velocity.y * Math.min(.3,delta), 0);
 
     // Test horizontal movement for collisions
     const proposedHorizontalPosition = this.playerPosition.clone().add(movement);
     if (!this.checkCollisions(proposedHorizontalPosition)) {
       this.playerPosition.add(movement); // Apply horizontal movement if no collision
-      //console.log("no collision");
     }
 
     this.camera.position.copy(this.playerPosition);

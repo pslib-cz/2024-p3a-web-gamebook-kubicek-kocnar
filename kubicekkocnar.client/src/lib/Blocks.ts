@@ -19,7 +19,6 @@ class Blocks {
                     attributes: block.attributes.split(',')
                 }
             })
-            console.log(this.blocks);
             
             onReady(this);
         } catch (err: unknown) {
