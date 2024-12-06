@@ -62,8 +62,6 @@ function LevelEditor()
     });
   }, [gameid, levelid, scene])
 
-
-
   return (
     <AppContextProvider>
       {!level &&  <div className="loader"></div>}
@@ -77,7 +75,6 @@ function LevelEditor()
           }}>
           {level && <Map level={level} onPointerDown={getHandlePlayerMouseClick()}/>}
         </Canvas>
-        {/* {tool.current === Tool.PlayerCamera && <ItemUI/>} */}
         <ItemUI/>
       </div>
     </AppContextProvider>

@@ -9,6 +9,7 @@ import Level from '../../lib/Level'
 import MapEditor from '../../lib/MapEditor';
 import FirstPersonControllerComponent from '../FirstPersonController';
 import Model from './Model';
+import { CorruptionHandler } from '../CorruptionHandler';
 
 // React.memo(
 const Map = ({level, onPointerDown} : {level : Level, onPointerDown : () => void | null}) => {
@@ -97,37 +98,39 @@ const Map = ({level, onPointerDown} : {level : Level, onPointerDown : () => void
     console.log("MapRenderer mounted");
 
     level.blocks.forEach((block) => level.mapRenderer.addBlock(block));
+
   }, [level.mapRenderer, scene, level],);
 
-    return (
-      <>
-        {tool.current == Tool.PlayerCamera ? 
-          <FirstPersonControllerComponent camera={camera} scene={scene} onPointerDown={onPointerDown}/> : 
-          <OrbitControls camera={camera} />
-        }
-        <Stats className='stats'/>
-        <axesHelper args={[20]} /> // x = red, y = green, z = blue
+  return (
+    <>
+      <CorruptionHandler allBlocks={level.blocks} corruptedBlocks={level.blocks.filter((block) => block.block.attributes[0] == "corrupt")}/>
 
-        <lineSegments name="cursorcube" position={[0, 1000, 0]} scale={1.001}>
-          <edgesGeometry attach="geometry" args={[new THREE.BoxGeometry(1, 1, 1)]} />
-          <lineBasicMaterial attach="material" color="white" />
-        </lineSegments>
-        <lineSegments name="selectioncube" position={[0, 1000, 0]} scale={1.002}>
-          <edgesGeometry attach="geometry" args={[new THREE.BoxGeometry(1, 1, 1)]} />
-          <lineBasicMaterial attach="material" color="yellow" />
-        </lineSegments>
+      {tool.current == Tool.PlayerCamera ? 
+        <FirstPersonControllerComponent camera={camera} scene={scene} onPointerDown={onPointerDown}/> : 
+        <OrbitControls camera={camera} />
+      }
+      <Stats className='stats'/>
+      <axesHelper args={[20]} /> // x = red, y = green, z = blue
 
-        <Model path='/crystal.glb' position={new THREE.Vector3(-2, 0.5, -1)}/>
-        <Model path='/crystal.glb' position={new THREE.Vector3(-2.6, 3, 0)} rotation={new THREE.Euler(0,0,-Math.PI/2)}/>
+      <lineSegments name="cursorcube" position={[0, 1000, 0]} scale={1.001}>
+        <edgesGeometry attach="geometry" args={[new THREE.BoxGeometry(1, 1, 1)]} />
+        <lineBasicMaterial attach="material" color="white" />
+      </lineSegments>
+      <lineSegments name="selectioncube" position={[0, 1000, 0]} scale={1.002}>
+        <edgesGeometry attach="geometry" args={[new THREE.BoxGeometry(1, 1, 1)]} />
+        <lineBasicMaterial attach="material" color="yellow" />
+      </lineSegments>
+
+      <Model path='/crystal.glb' position={new THREE.Vector3(-2, 0.5, -1)}/>
+      <Model path='/crystal.glb' position={new THREE.Vector3(-2.6, 3, 0)} rotation={new THREE.Euler(0,0,-Math.PI/2)}/>
 
 
-        <mesh position={[0, 0, 0]}>
-          
-          <meshStandardMaterial color={0x00ff00} />
-        </mesh>
-        {/* <Player /> */}
-      </>
-    );
+      <mesh position={[0, 0, 0]}>          
+        <meshStandardMaterial color={0x00ff00} />
+      </mesh>
+      {/* <Player /> */}
+    </>
+  );
   //never rerender :D
 }//); , () => true
 

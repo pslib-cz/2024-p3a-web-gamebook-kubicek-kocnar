@@ -12,7 +12,6 @@ type FirstPersonControllerComponentProps = {
 
 const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPersonControllerComponentProps) => {
   const controllerRef = useRef<FirstPersonController | null>(null);
-
   const itemsControllerRef = useRef<ItemsController | null>(null);
 
   const { gl } = useThree();
@@ -56,7 +55,7 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPe
   useFrame(() => {
     controllerRef.current?.update(clock.getDelta());
   });
-
+  
   const handleClick = () => {
     gl.domElement.requestPointerLock(); // Use the canvas element for pointer locking
     if (onPointerDown) onPointerDown();

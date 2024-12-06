@@ -23,7 +23,7 @@ export class ItemsController {
   private getColliders(positionToCheck: THREE.Vector3): THREE.Box3[] {
 
     const checkBox = new THREE.Box3().setFromCenterAndSize(
-        positionToCheck,
+      positionToCheck,
       new THREE.Vector3(1, 1, 1) // Collider size
     );
 
@@ -34,12 +34,8 @@ export class ItemsController {
     const colliders = [];
 
     // Check for intersections with collidable objects
-    for (const object of obstacles) {
-        
-      if (!checkBox.intersectsBox(object)) continue;
-        
-        colliders.push(object);
-      
+    for (const object of obstacles) {        
+      if (checkBox.intersectsBox(object)) colliders.push(object);
     }
 
     return colliders;
