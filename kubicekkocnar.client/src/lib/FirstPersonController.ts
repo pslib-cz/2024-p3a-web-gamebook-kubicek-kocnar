@@ -194,6 +194,7 @@ export class FirstPersonController {
   }
 
   private checkCollisions(newPosition: THREE.Vector3): boolean {
+    newPosition.y -= .75; // The camera is at the player's head
     // Create a box at the new position
     const playerBox = new THREE.Box3().setFromCenterAndSize(
       newPosition,

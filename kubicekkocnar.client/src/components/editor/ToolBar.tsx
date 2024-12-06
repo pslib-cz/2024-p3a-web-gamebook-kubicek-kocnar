@@ -18,6 +18,8 @@ const ToolBar: React.FC = () => {
     // add a keybord shortcut for switching tools (1, 2, 3, 4)
     const handleKeyDown = (e: KeyboardEvent) => {
         console.log(e);
+        // dont switch tools when typing in an input
+        if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
         
         switch (e.key) {
             case '1':

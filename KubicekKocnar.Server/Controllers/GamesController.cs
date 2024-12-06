@@ -300,9 +300,11 @@ namespace KubicekKocnar.Server.Controllers
 
             if (!TryValidateModel(feature)) return ValidationProblem(ModelState);
 
+            _context.Entry(feature).Property(f => f.Params).IsModified = true;
+
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(feature);
         }
     }
 }

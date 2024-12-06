@@ -1,5 +1,6 @@
-import { useState, useEffect, createContext, useContext } from 'react';
-import './Fr.css'
+/* eslint-disable react-refresh/only-export-components */
+import { useState, createContext } from 'react';
+import './ItemController.css'
 import React from 'react';
 
 interface Item {

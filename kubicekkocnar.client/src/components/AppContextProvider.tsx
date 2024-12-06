@@ -16,8 +16,8 @@ interface AppContextType {
 }
 
 const defaultContext: AppContextType = {
-    tool: {current: Tool.Mouse},
-    toolState: Tool.Mouse,
+    tool: {current: Tool.List},
+    toolState: Tool.List,
     setTool: () => {},
     block: {current: null},
     setBlock: () => {},
@@ -30,8 +30,8 @@ const defaultContext: AppContextType = {
 const AppContext = React.createContext<AppContextType>(defaultContext);
 
 function AppContextProvider({children}: {children: React.ReactNode}) {
-    const tool = useRef(Tool.Mouse);
-    const [toolState, setToolState] = useState(Tool.Mouse);
+    const tool = useRef(Tool.List);
+    const [toolState, setToolState] = useState(Tool.List);
     const setTool = (newTool: Tool) => {
         tool.current = newTool;
         setToolState(newTool);

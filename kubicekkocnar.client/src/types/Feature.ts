@@ -20,7 +20,7 @@ enum FeatureType {
     "Crystal"=2
 }
 enum FeatureTypeIcon {
-    "lightbulb"=1,
+    "light_mode"=1,
     "diamond"=2
 }
 

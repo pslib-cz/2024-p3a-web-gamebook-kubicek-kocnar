@@ -1,0 +1,15 @@
+.inputslider {
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputslider__button {
+  cursor: pointer;
+  padding: .5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}

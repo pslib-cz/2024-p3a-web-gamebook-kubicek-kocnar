@@ -1,4 +1,3 @@
-import { Vector3 } from "three";
 import Game from "../types/Game";
 import LevelType from "../types/Level"
 import PlacedBlock from "../types/PlacedBlock";
@@ -52,12 +51,7 @@ class Level implements LevelType {
                 throw new Error(`Response status: ${levelBlocksResponse.status}`);
             }
 
-            this.blocks = (await levelBlocksResponse.json()).map((block: {x: number, y: number, z: number}) => {
-                return {
-                    ...block,
-                    position: new Vector3(block.x, block.y, block.z)
-                }
-            });
+            this.blocks = (await levelBlocksResponse.json()).map(MapRenderer.transformBlock);
 
             for (const block of level.blocks) {
                 this.mapRenderer.addBlock(block);
@@ -68,16 +62,7 @@ class Level implements LevelType {
                 throw new Error(`Response status: ${levelFeaturesResponse.status}`);
             }
 
-            this.features = (await levelFeaturesResponse.json()).map((feature: {x: number, y: number, z: number}) => {
-                console.log({
-                    ...feature,
-                    position: new Vector3(feature.x, feature.y, feature.z)
-                })
-                return {
-                    ...feature,
-                    position: new Vector3(feature.x, feature.y, feature.z)
-                }
-            });
+            this.features = (await levelFeaturesResponse.json()).map(FeatureRenderer.transformFeature);
 
             console.log("features", this.features);
 
@@ -89,6 +74,31 @@ class Level implements LevelType {
 
             onReady(this);
         } catch (err: unknown) {
+            console.error(err);
+        }
+    }
+
+    async patchFeature(featureId: number, path: string, value: unknown, op: string = 'replace') {
+        try {
+            const featureResponse = await fetch(APIROUTE(this.gameId, this.levelId) + `/Features/${featureId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json-patch+json'
+                },
+                body: JSON.stringify([{
+                    op: op,
+                    path: path,
+                    value: value
+                }])
+            })
+            if (!featureResponse.ok) {
+                throw new Error(`Response status: ${featureResponse.status}`);
+            }
+            const feature: GenericFeature = FeatureRenderer.transformFeature(await featureResponse.json());
+            this.featureRenderer.removeFeature(feature);
+            this.featureRenderer.addFeature(feature);
+        }
+        catch (err: unknown) {
             console.error(err);
         }
     }
@@ -191,6 +201,8 @@ class Level implements LevelType {
             
             this.features.push(feature);
             this.featureRenderer.addFeature(feature);
+
+            return feature;
         } catch (err: unknown) {
             console.error(err);
         }

@@ -85,6 +85,13 @@
     border-radius: 4px;
 }
 
+.configpanel__copybtn {
+    cursor: pointer;
+    padding: .5rem;
+    background: rgba(0, 255, 0, 0.2);
+    border-radius: 4px;
+}
+
 .configpanel__addbtn {
     cursor: pointer;
     background: rgba(0, 255, 0, 0.2);

@@ -47,13 +47,21 @@ class FeatureRenderer {
     }
 
     removeFeature(feature: GenericFeature) {
-        const removeIndex = this.features.findIndex(f => f.featureId === feature.featureId);
-        if (removeIndex > -1) {
-            console.log('FeatureRenderer -> RM ', feature.object?.name, feature.object?.position);
-            this.scene.remove(feature.object);
-            this.features.splice(removeIndex, 1);
+        const removedFeature = this.features.find(f => f.featureId === feature.featureId);
+        if (removedFeature) {
+            console.log('FeatureRenderer -> RM ', FeatureType[removedFeature.type], removedFeature.featureId);
+            this.scene.remove(removedFeature.object);
+            this.features = this.features.filter(f => f.featureId !== feature.featureId);
         }
     }
+
+    static transformFeature(feature: {x: number, y: number, z: number}) {
+        return {
+            ...feature,
+            position: new THREE.Vector3(feature.x, feature.y, feature.z)
+        } as unknown as GenericFeature;
+    }
+
 }
 
 export default FeatureRenderer;

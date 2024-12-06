@@ -125,6 +125,13 @@ class MapRenderer {
         return sides[sideIndex];
     }
 
+    static transformBlock(block: {x: number, y: number, z: number}) {
+        return {
+            ...block,
+            position: new THREE.Vector3(block.x, block.y, block.z)
+        }  as unknown as PlacedBlock;
+    }
+
 }
 
 export default MapRenderer;
