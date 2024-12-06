@@ -72,6 +72,7 @@ function LevelEditor()
       <div className='canvas'>
         <Canvas onCreated={(state) => {
             state.camera.position.set(0, 2.251, 0);
+            state.scene.background = new THREE.Color(0x0e0726);
             setScene(state.scene);
           }}>
           {level && <Map level={level} onPointerDown={getHandlePlayerMouseClick()}/>}

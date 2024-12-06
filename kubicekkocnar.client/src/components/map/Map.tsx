@@ -106,8 +106,6 @@ const Map = ({level, onPointerDown} : {level : Level, onPointerDown : () => void
           <OrbitControls camera={camera} />
         }
         <Stats className='stats'/>
-        <ambientLight intensity={0.1} />
-        <pointLight position={[0, 10, 0]} intensity={50}/> 
         <axesHelper args={[20]} /> // x = red, y = green, z = blue
 
         <lineSegments name="cursorcube" position={[0, 1000, 0]} scale={1.001}>
