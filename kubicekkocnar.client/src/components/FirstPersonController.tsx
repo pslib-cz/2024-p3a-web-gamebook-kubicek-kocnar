@@ -2,14 +2,20 @@ import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { FirstPersonController } from "../lib/FirstPersonController";
+import { sobel } from "three/examples/jsm/tsl/display/SobelOperatorNode.js";
+import { ItemsController } from "../lib/ItemsController";
 
 type FirstPersonControllerComponentProps = {
   camera: THREE.Camera;
   scene: THREE.Scene;
+  onPointerDown : any;
 };
 
-const FirstPersonControllerComponent = ({ camera, scene }: FirstPersonControllerComponentProps) => {
+const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPersonControllerComponentProps) => {
   const controllerRef = useRef<FirstPersonController | null>(null);
+
+  const itemsControllerRef = useRef<ItemsController | null>(null);
+
   const { gl } = useThree();
   const clock = new THREE.Clock()
 
@@ -18,6 +24,9 @@ const FirstPersonControllerComponent = ({ camera, scene }: FirstPersonController
   useEffect(() => {
     const controller = new FirstPersonController(camera, scene);
     controllerRef.current = controller;
+
+    const itemsController = new ItemsController(camera, scene);
+    itemsControllerRef.current = itemsController;
 
     const handlePointerLockChange = () => {
       const isLocked = document.pointerLockElement === gl.domElement;
@@ -53,6 +62,11 @@ const FirstPersonControllerComponent = ({ camera, scene }: FirstPersonController
 
   const handleClick = () => {
     gl.domElement.requestPointerLock(); // Use the canvas element for pointer locking
+    if (onPointerDown) onPointerDown();
+
+    console.log(itemsControllerRef.current);
+
+    itemsControllerRef.current?.OnCLick();
   };
 
   gl.domElement.onpointerdown = handleClick;

@@ -4,7 +4,7 @@ import { Canvas } from '@react-three/fiber'
 import React, { useState } from 'react';
 import * as THREE from 'three';
 import { AppContextProvider } from './components/AppContextProvider';
-import ToolBar from './components/editor/ToolBar';
+import ToolBar, { Tool } from './components/editor/ToolBar';
 //@ts-expect-error types are missing
 import 'react-material-symbols/outlined';
 import ConfigPanel from './components/editor/ConfigPanel';
@@ -16,6 +16,12 @@ import Blocks from './lib/Blocks';
 import { LevelMenu } from './LevelMenu';
 import MainMenu from './MainMenu';
 import './styles/UI.css';
+import { useContext } from 'react';
+
+import { AppContext } from './components/AppContextProvider';
+import { getHandlePlayerMouseClick } from './components/ItemController';
+
+import { ItemUI } from './components/ItemController';
 
 function App() {
   return (
@@ -37,6 +43,7 @@ function LevelEditor()
   const { gameid, levelid } = useParams();
   const [scene, setScene] = useState<THREE.Scene | null>(null);
   const [level, setLevel] = useState<Level | null>(null);
+
   //const [blocks, setBlocks] = useState<Blocks | null>(null);
 
   React.useEffect(() => {
@@ -58,20 +65,24 @@ function LevelEditor()
     });
   }, [gameid, levelid, scene])
 
-  
-  
+  const { tool } = useContext(AppContext);
+
+
+
   return (
     <AppContextProvider>
       {!level &&  <div className="loader"></div>}
       <ToolBar />
       {level && <ConfigPanel level={level}/>}
       <div className='canvas'>
-      <Canvas onCreated={(state) => {
-          state.camera.position.set(0, 2, 0);
-          setScene(state.scene);
-        }}>
-        {level && <Map level={level}/>}
-      </Canvas>
+        <Canvas onCreated={(state) => {
+            state.camera.position.set(0, 2, 0);
+            setScene(state.scene);
+          }}>
+          {level && <Map level={level} onPointerDown={getHandlePlayerMouseClick()}/>}
+        </Canvas>
+        {/* {tool.current === Tool.PlayerCamera && <ItemUI/>} */}
+        <ItemUI/>
       </div>
     </AppContextProvider>
   )
