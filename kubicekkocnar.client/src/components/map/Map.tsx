@@ -109,6 +109,7 @@ const Map = ({level, onPointerDown} : {level : Level, onPointerDown : () => void
         <FirstPersonControllerComponent camera={camera} scene={scene} onPointerDown={onPointerDown}/> : 
         <OrbitControls camera={camera} />
       }
+
       <Stats className='stats'/>
       <axesHelper args={[20]} /> // x = red, y = green, z = blue
 
@@ -124,6 +125,7 @@ const Map = ({level, onPointerDown} : {level : Level, onPointerDown : () => void
       <Model path='/crystal.glb' position={new THREE.Vector3(-2, 0.5, -1)}/>
       <Model path='/crystal.glb' position={new THREE.Vector3(-2.6, 3, 0)} rotation={new THREE.Euler(0,0,-Math.PI/2)}/>
 
+      <Model path='/crystal.glb' name='portal-5' position={new THREE.Vector3(-8, 0.5, 7)}/>
 
       <mesh position={[0, 0, 0]}>          
         <meshStandardMaterial color={0x00ff00} />
@@ -134,4 +136,4 @@ const Map = ({level, onPointerDown} : {level : Level, onPointerDown : () => void
   //never rerender :D
 }//); , () => true
 
-  export default Map;
+export default Map;

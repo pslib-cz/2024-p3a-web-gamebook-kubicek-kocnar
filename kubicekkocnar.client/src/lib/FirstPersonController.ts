@@ -187,6 +187,25 @@ export class FirstPersonController {
       this.isGrounded = true;
       this.acceleration = 0;
     }
+
+    // portals:
+    const portals = this.scene.children
+    .filter((child) => child.name.includes('portal'))
+
+    console.log("Portals", portals)
+
+    // check distance and if portal is close teleport player to the target level
+    for (const portal of portals) {
+
+      if (this.playerPosition.distanceTo(portal.position) < 2) {
+        console.log("Teleporting player to the target level")
+        //this.playerPosition = new THREE.Vector3(-8, 0.5, 7);
+
+        const targetLevel = parseInt(portal.name.split('-')[1]);
+
+        window.location.href = `/games/1/levels/${targetLevel}`;
+      }
+    }
   }
 
   private checkCollisions(newPosition: THREE.Vector3): boolean {
@@ -205,12 +224,10 @@ export class FirstPersonController {
     // Check for intersections with collidable objects
     for (const object of obstacles) {
       //const objectBox = new THREE.Box3().setFromObject(object);
-      if (playerBox.intersectsBox(object)) {
-        return true; // Collision detected
-      }
+      if (playerBox.intersectsBox(object)) 
+        return true;
     }
-
-    return false; // No collision
+    return false;
   }
 
 }

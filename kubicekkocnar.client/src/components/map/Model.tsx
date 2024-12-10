@@ -6,28 +6,29 @@ import { GLTFLoader, GLTF } from '../../loaders/GLTFLoader.js';
 import { Euler, Vector3 } from 'three';
 
 interface ModelProps {
-    path: string;
-    position: Vector3;
-    rotation?: Euler;
+  path: string;
+  position: Vector3;
+  rotation?: Euler;
+  name?: string;
 }
 
-const Model: React.FC<ModelProps> = ({ path, position, rotation = new Euler(0, 0, 0) }) => {
-    const gltf = useLoader<GLTF>(GLTFLoader, path);
-    const modelRef = useRef<THREE.Group>(null);
+const Model: React.FC<ModelProps> = ({ path, position, rotation = new Euler(0, 0, 0), name="NewModel" }) => {
+  const gltf = useLoader<GLTF>(GLTFLoader, path);
+  const modelRef = useRef<THREE.Group>(null);
 
-    const clonedScene = useMemo(() => gltf.scene.clone(), [gltf.scene]);
+  const clonedScene = useMemo(() => gltf.scene.clone(), [gltf.scene]);
 
-    console.log(`Loaded model from ${path}`, gltf);
+  console.log(`Loaded model from ${path}`, gltf);
 
-    return (
-    <group position={position} rotation={rotation}>
-        <primitive
-            ref={modelRef}
-            object={clonedScene}
-            dispose={null}
-        />
-    </group>
-    );
+  return (
+  <group position={position} rotation={rotation} name={name}>
+      <primitive
+          ref={modelRef}
+          object={clonedScene}
+          dispose={null}
+      />
+  </group>
+  );
 };
 
 export default Model;
