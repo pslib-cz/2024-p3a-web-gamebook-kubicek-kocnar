@@ -18,6 +18,12 @@ namespace KubicekKocnar.Server.Data
         public DbSet<Feature> Features { get; set; }
         public DbSet<Texture> Textures { get; set; }
 
+        // items 
+        public DbSet<Item> Items { get; set; }
+        public DbSet<Upgrade> Upgrades { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
+        public DbSet<ItemRecipe> Recipes { get; set; }
+
         // Authorization
         public DbSet<User> Users { get; set; }
         public DbSet<IdentityUserClaim<string>> UserClaims { get; set; }

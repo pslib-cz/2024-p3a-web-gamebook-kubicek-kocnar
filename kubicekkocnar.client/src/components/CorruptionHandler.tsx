@@ -28,7 +28,7 @@ export function CorruptionHandler({allBlocks, corruptedBlocks} : {allBlocks : Pl
           
           corruptedBlocks.push(block);
 
-          console.log("Corrupted block", block);
+          //console.log("Corrupted block", block);
         });
       });
 

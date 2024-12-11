@@ -10,9 +10,10 @@ import MapEditor from '../../lib/MapEditor';
 import FirstPersonControllerComponent from '../FirstPersonController';
 import Model from './Model';
 import { CorruptionHandler } from '../CorruptionHandler';
+import { Item } from '../../types/Item';
 
 // React.memo(
-const Map = ({level, onPointerDown} : {level : Level, onPointerDown : () => void | null}) => {
+const Map = ({level, onPointerDown} : {level : Level, onPointerDown : (item : Item | null) => void | null}) => {
 
   console.log("Loading level");
 

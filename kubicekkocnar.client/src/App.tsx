@@ -41,8 +41,6 @@ function LevelEditor()
   const [scene, setScene] = useState<THREE.Scene | null>(null);
   const [level, setLevel] = useState<Level | null>(null);
 
-  //const [blocks, setBlocks] = useState<Blocks | null>(null);
-
   React.useEffect(() => {
     if (!scene) {
       console.error("Scene not ready yet...");

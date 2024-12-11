@@ -18,7 +18,7 @@ export class ItemsController {
 
     
     console.warn("ONLICK => This shit is not implemented yet, you have an array of block that were hit tho", this.getColliders(positionsd))
-  }    
+  }
 
   private getColliders(positionToCheck: THREE.Vector3): THREE.Box3[] {
 

@@ -192,7 +192,7 @@ export class FirstPersonController {
     const portals = this.scene.children
     .filter((child) => child.name.includes('portal'))
 
-    console.log("Portals", portals)
+    //console.log("Portals", portals)
 
     // check distance and if portal is close teleport player to the target level
     for (const portal of portals) {

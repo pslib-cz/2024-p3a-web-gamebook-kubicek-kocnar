@@ -3,16 +3,19 @@ import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { FirstPersonController } from "../lib/FirstPersonController";
 import { ItemsController } from "../lib/ItemsController";
+import { Inventory } from "../lib/Inventory";
+import { Item } from "../types/Item";
 
 type FirstPersonControllerComponentProps = {
   camera: THREE.Camera;
   scene: THREE.Scene;
-  onPointerDown : () => void | null;
+  onPointerDown : (item : Item | null) => void | null;
 };
 
 const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPersonControllerComponentProps) => {
   const controllerRef = useRef<FirstPersonController | null>(null);
   const itemsControllerRef = useRef<ItemsController | null>(null);
+  const inventory = useRef<Inventory | null>(null);
 
   const { gl } = useThree();
   const clock = new THREE.Clock()
@@ -21,8 +24,9 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPe
     const controller = new FirstPersonController(camera, scene);
     controllerRef.current = controller;
 
-    const itemsController = new ItemsController(camera, scene);
-    itemsControllerRef.current = itemsController;
+    itemsControllerRef.current = new ItemsController(camera, scene);
+
+    inventory.current = new Inventory();
 
     const handlePointerLockChange = () => {
       const isLocked = document.pointerLockElement === gl.domElement;
@@ -58,7 +62,10 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPe
   
   const handleClick = () => {
     gl.domElement.requestPointerLock(); // Use the canvas element for pointer locking
-    if (onPointerDown) onPointerDown();
+    if (onPointerDown) onPointerDown(inventory.current? inventory.current.GetSelectedItem() : null);
+
+    console.log("Calling OnPointerDown");
+    console.log(onPointerDown(null));
 
     itemsControllerRef.current?.onCLick();
   };

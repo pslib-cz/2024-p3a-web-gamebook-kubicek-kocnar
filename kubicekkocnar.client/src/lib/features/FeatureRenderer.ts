@@ -1,4 +1,4 @@
-import GenericFeature, { FeatureType } from "../types/Feature";
+import GenericFeature, { FeatureType } from "../../types/Feature";
 import * as THREE from 'three';
 
 interface Light extends GenericFeature {

@@ -16,45 +16,49 @@ const demoItem : Item = {
 const ItemContext = createContext<{ setUseItem: React.Dispatch<React.SetStateAction<boolean>> | null }>({ setUseItem: null });
 
 interface HandlePlayerMouseClickProps {
-    (): void;
+  (item : Item | null): void;
 }
 
 let handlePlayerMouseClick: HandlePlayerMouseClickProps | null = null;
 
 export function ItemUI() {
-    const [useItem, setUseItem] = useState(false);
+  const [useItem, setUseItem] = useState(false);
 
-    handlePlayerMouseClick = () => {
-        setUseItem(true);
-    };
+  handlePlayerMouseClick = (item : Item | null) => {
 
-    React.useEffect(() => {
-        if (useItem) {
+    console.log(`Using item ${item}`);
 
-            setImg(demoItem.imgUsed);
-   
-            setTimeout(() => {
-                setImg(demoItem.img);
-            }, 500);
+    setUseItem(true);
+  };
 
-            console.log("Item used");
-            setUseItem(false); // Reset the state
-        }
-    }, [useItem]);
+  React.useEffect(() => {
+    if (useItem) {
 
-    const [img, setImg] = useState<string>(demoItem.img);
+      setImg(demoItem.imgUsed);
 
-    return (
-        <ItemContext.Provider value={{ setUseItem }}>
-            <div className='overlay'>
-                <div className="ui-item">
-                    <img src={img}></img>
-                </div>
-            </div>
-        </ItemContext.Provider>
-    )
+      setTimeout(() => {
+          setImg(demoItem.img);
+      }, 500);
+
+      console.log("Item used");
+      setUseItem(false); // Reset the state
+    }
+  }, [useItem]);
+
+  const [img, setImg] = useState<string>(demoItem.img);
+
+  return (
+    <ItemContext.Provider value={{ setUseItem }}>
+      <div className='overlay'>
+        <div className="ui-item">
+          <img src={img}></img>
+        </div>
+      </div>
+    </ItemContext.Provider>
+  )
 }
 
-export function getHandlePlayerMouseClick() {
-    return handlePlayerMouseClick;
+export function getHandlePlayerMouseClick(item: Item | null) {
+
+  return () => handlePlayerMouseClick && handlePlayerMouseClick(item);
 }

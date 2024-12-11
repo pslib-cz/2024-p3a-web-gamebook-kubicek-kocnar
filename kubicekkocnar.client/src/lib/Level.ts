@@ -3,7 +3,7 @@ import LevelType from "../types/Level"
 import PlacedBlock from "../types/PlacedBlock";
 import MapRenderer from "./MapRenderer";
 import GenericFeature from "../types/Feature";
-import FeatureRenderer from "./FeatureRenderer";
+import FeatureRenderer from "./features/FeatureRenderer";
 
 interface LevelOptions {
     name: string
