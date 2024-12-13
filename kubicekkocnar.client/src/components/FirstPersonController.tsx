@@ -5,14 +5,20 @@ import { FirstPersonController } from "../lib/FirstPersonController";
 import { ItemsController } from "../lib/ItemsController";
 import { Inventory } from "../lib/Inventory";
 import { Item } from "../types/Item";
+import { AppContext } from "./AppContextProvider";
+import { useContext } from "react";
 
 type FirstPersonControllerComponentProps = {
   camera: THREE.Camera;
   scene: THREE.Scene;
-  onPointerDown : (item : Item | null) => void | null;
+  onPointerDown : () => (item : Item | null) => void | null;
 };
 
 const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPersonControllerComponentProps) => {
+ 
+
+  const { playerInventory } = useContext(AppContext);
+
   const controllerRef = useRef<FirstPersonController | null>(null);
   const itemsControllerRef = useRef<ItemsController | null>(null);
   const inventory = useRef<Inventory | null>(null);
@@ -27,6 +33,8 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPe
     itemsControllerRef.current = new ItemsController(camera, scene);
 
     inventory.current = new Inventory();
+
+    playerInventory.current = inventory.current;
 
     const handlePointerLockChange = () => {
       const isLocked = document.pointerLockElement === gl.domElement;
@@ -62,10 +70,13 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPe
   
   const handleClick = () => {
     gl.domElement.requestPointerLock(); // Use the canvas element for pointer locking
-    if (onPointerDown) onPointerDown(inventory.current? inventory.current.GetSelectedItem() : null);
+
+    const item = inventory.current? inventory.current.GetSelectedItem() : null;
+
+    if (onPointerDown) onPointerDown()(item);
 
     console.log("Calling OnPointerDown");
-    console.log(onPointerDown(null));
+    //console.log(onPointerDown(null));
 
     itemsControllerRef.current?.onCLick();
   };

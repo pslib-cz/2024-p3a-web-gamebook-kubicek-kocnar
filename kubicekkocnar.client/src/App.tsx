@@ -19,6 +19,7 @@ import './styles/UI.css';
 import { getHandlePlayerMouseClick } from './components/ItemController';
 
 import { ItemUI } from './components/ItemController';
+import { UIOverlay } from './components/UIOverlay';
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
-    );
+  );
 }
 
 function LevelEditor()
@@ -62,7 +63,7 @@ function LevelEditor()
 
   return (
     <AppContextProvider>
-      {!level &&  <div className="loader"></div>}
+      {!level && <div className="loader"></div>}
       <ToolBar />
       {level && <ConfigPanel level={level}/>}
       <div className='canvas'>
@@ -71,9 +72,10 @@ function LevelEditor()
             state.scene.background = new THREE.Color(0x0e0726);
             setScene(state.scene);
           }}>
-          {level && <Map level={level} onPointerDown={getHandlePlayerMouseClick()}/>}
+          {level && <Map level={level} onPointerDown={getHandlePlayerMouseClick}/>}
         </Canvas>
         <ItemUI/>
+        <UIOverlay/>
       </div>
     </AppContextProvider>
   )

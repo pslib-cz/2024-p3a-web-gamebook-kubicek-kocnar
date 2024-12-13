@@ -2,11 +2,16 @@
 import { useState, createContext } from 'react';
 import './ItemController.css'
 import React from 'react';
+import { Item } from '../types/Item';
+import { useContext } from 'react';
+import { AppContext } from './AppContextProvider';
 
+/*
 interface Item {
     img : string;
     imgUsed : string;
 }
+*/
 
 const demoItem : Item = {
     img: "/Fr.png",
@@ -16,7 +21,7 @@ const demoItem : Item = {
 const ItemContext = createContext<{ setUseItem: React.Dispatch<React.SetStateAction<boolean>> | null }>({ setUseItem: null });
 
 interface HandlePlayerMouseClickProps {
-  (item : Item | null): void;
+  (): void;
 }
 
 let handlePlayerMouseClick: HandlePlayerMouseClickProps | null = null;
@@ -24,9 +29,11 @@ let handlePlayerMouseClick: HandlePlayerMouseClickProps | null = null;
 export function ItemUI() {
   const [useItem, setUseItem] = useState(false);
 
-  handlePlayerMouseClick = (item : Item | null) => {
+  const { playerInventory } = useContext(AppContext);
 
-    console.log(`Using item ${item}`);
+  handlePlayerMouseClick = () => {
+
+    console.log(`Using item ${playerInventory.current?.GetSelectedItem()?.img}`);
 
     setUseItem(true);
   };
@@ -58,7 +65,7 @@ export function ItemUI() {
   )
 }
 
-export function getHandlePlayerMouseClick(item: Item | null) {
+export function getHandlePlayerMouseClick() : (item : Item | null) => void | null {
 
-  return () => handlePlayerMouseClick && handlePlayerMouseClick(item);
+  return () => handlePlayerMouseClick && handlePlayerMouseClick();
 }

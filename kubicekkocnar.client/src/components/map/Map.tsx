@@ -13,7 +13,7 @@ import { CorruptionHandler } from '../CorruptionHandler';
 import { Item } from '../../types/Item';
 
 // React.memo(
-const Map = ({level, onPointerDown} : {level : Level, onPointerDown : (item : Item | null) => void | null}) => {
+const Map = ({level, onPointerDown} : {level : Level, onPointerDown : () => (item: Item | null) => void | null}) => {
 
   console.log("Loading level");
 
@@ -131,7 +131,6 @@ const Map = ({level, onPointerDown} : {level : Level, onPointerDown : (item : It
       <mesh position={[0, 0, 0]}>          
         <meshStandardMaterial color={0x00ff00} />
       </mesh>
-      {/* <Player /> */}
     </>
   );
   //never rerender :D
