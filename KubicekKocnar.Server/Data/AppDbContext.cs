@@ -20,9 +20,9 @@ namespace KubicekKocnar.Server.Data
 
         // items 
         public DbSet<Item> Items { get; set; }
-        public DbSet<Upgrade> Upgrades { get; set; }
-        public DbSet<Currency> Currencies { get; set; }
-        public DbSet<ItemRecipe> Recipes { get; set; }
+        public DbSet<PlayerUpgrade> PlayerUpgrades { get; set; }
+        public DbSet<Coinage> Coinages { get; set; }
+        public DbSet<ItemUpgrade> ItemUpgrades { get; set; }
 
         // Authorization
         public DbSet<User> Users { get; set; }
@@ -116,7 +116,36 @@ namespace KubicekKocnar.Server.Data
                 .HasForeignKey(b => b.Texture5Id)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            modelBuilder.Entity<Item>()
+                .HasMany(i => i.Icons)
+                .WithOne(t => t.Item)
+                .HasForeignKey(t => t.ItemId)
+                .OnDelete(DeleteBehavior.SetNull);
 
+            modelBuilder.Entity<Coinage>()
+                .HasOne(c => c.Icon)
+                .WithMany(t => t.Coinages)
+                .HasForeignKey(c => c.IconId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<PlayerUpgrade>()
+                .HasOne(p => p.Icon)
+                .WithMany(t => t.PlayerUpgrades)
+                .HasForeignKey(p => p.IconId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<PlayerUpgrade>()
+                .HasMany(p => p.Costs);
+
+            modelBuilder.Entity<ItemUpgrade>()
+                .HasMany(i => i.Costs);
+
+            modelBuilder.Entity<Cost>()
+                .HasOne(c => c.Coinage)
+                .WithMany(c => c.Costs)
+                .HasForeignKey(c => c.CoinageId)
+                .OnDelete(DeleteBehavior.Cascade);
+                
 
 
 

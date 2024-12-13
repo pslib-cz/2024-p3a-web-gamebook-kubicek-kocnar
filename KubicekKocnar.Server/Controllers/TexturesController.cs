@@ -3,30 +3,29 @@ using KubicekKocnar.Server.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Any;
+using Mono.TextTemplating;
+using System.Linq;
 
 namespace KubicekKocnar.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TexturesController : ControllerBase
-    {
+    public class TexturesController : ControllerBase {
         private readonly AppDbContext _context;
 
-        public TexturesController(AppDbContext context)
-        {
+        public TexturesController(AppDbContext context) {
             _context = context;
         }
 
         // GET: api/Textures
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Texture>>> GetTextures()
-        {
+        public async Task<ActionResult<IEnumerable<Texture>>> GetTextures() {
             return await _context.Textures.ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Texture>> GetTexture(uint id)
-        {
+        public async Task<ActionResult<Texture>> GetTexture(uint id) {
             var texture = await _context.Textures.FindAsync(id);
 
             if (texture == null) return NotFound();
@@ -35,27 +34,19 @@ namespace KubicekKocnar.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTexture(uint id, Texture texture)
-        {
-            if (id != texture.TextureId)
-            {
+        public async Task<IActionResult> PutTexture(uint id, Texture texture) {
+            if (id != texture.TextureId) {
                 return BadRequest();
             }
 
             _context.Entry(texture).State = EntityState.Modified;
 
-            try
-            {
+            try {
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TextureExists(id))
-                {
+            } catch (DbUpdateConcurrencyException) {
+                if (!TextureExists(id)) {
                     return NotFound();
-                }
-                else
-                {
+                } else {
                     throw;
                 }
             }
@@ -64,20 +55,16 @@ namespace KubicekKocnar.Server.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchTexture(uint id, [FromBody] JsonPatchDocument<Texture> patchDoc)
-        {
-            if (patchDoc == null)
-            {
+        public async Task<IActionResult> PatchTexture(uint id, [FromBody] JsonPatchDocument<Texture> patchDoc) {
+            if (patchDoc == null) {
                 return BadRequest();
             }
             var texture = await _context.Textures.FindAsync(id);
-            if (texture == null)
-            {
+            if (texture == null) {
                 return NotFound();
             }
             patchDoc.ApplyTo(texture, ModelState);
-            if (!TryValidateModel(texture))
-            {
+            if (!TryValidateModel(texture)) {
                 return ValidationProblem(ModelState);
             }
             await _context.SaveChangesAsync();
@@ -85,49 +72,47 @@ namespace KubicekKocnar.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Texture>> PostTexture(string name, IFormFile file)
-        {
-            // check if file is an image and set it into texture.contetn
-            if (file == null)
-            {
+        public async Task<ActionResult<Texture>> PostTexture(string name, IFormFile file, [FromQuery] Dictionary<string, string> query) {
+            // check if file is an image and set it into texture.content
+            if (file == null) {
                 return BadRequest("File is missing");
             }
+            Console.WriteLine(query);
 
-            byte[] fr = null;
+            uint state = query.ContainsKey("state") ? uint.Parse(query["state"]) : 0;
+
+            byte[] fr;
 
             int width = 0;
             int height = 0;
             int size = 0;
 
-            string type = file.ContentType;
+            string contentType = file.ContentType;
 
             if (!file.ContentType.Contains("image")) return BadRequest("File is not an image");
             if (file.ContentType == "image/svg+xml") return BadRequest("SVG format is not supported.");
 
             // get width of this image 
-            using (var image = System.Drawing.Image.FromStream(file.OpenReadStream()))
-            {
+            using (var image = System.Drawing.Image.FromStream(file.OpenReadStream())) {
                 width = image.Width;
                 height = image.Height;
-                size = (int)file.Length;                
+                size = (int)file.Length;
             }
 
-            using (var memoryStream = new MemoryStream())
-            {
+            using (var memoryStream = new MemoryStream()) {
                 await file.CopyToAsync(memoryStream);
                 fr = memoryStream.ToArray();
             }
 
-
-            Texture texture = new Texture()
-            {
+            Texture texture = new Texture() {
                 Name = name,
-                Type = type,
+                Type = contentType,
                 Content = fr,
                 Created = DateTime.Now,
                 Width = width,
                 Height = height,
-                Size = size
+                Size = size,
+                State = state
             };
 
             _context.Textures.Add(texture);
