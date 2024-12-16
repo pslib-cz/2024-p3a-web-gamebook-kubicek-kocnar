@@ -5,17 +5,18 @@ import GenericFeature from "../types/Feature";
 import { Inventory } from "../lib/Inventory";
 
 interface AppContextType {
-    tool: MutableRefObject<Tool>;
-    toolState: Tool;
-    setTool: (tool: Tool) => void;
-    block: MutableRefObject<PlacedBlock|null>;
-    setBlock: (block: PlacedBlock) => void;
-    blockState: PlacedBlock|null;
-    feature: MutableRefObject<GenericFeature|null>;
-    setFeature: (block: GenericFeature) => void;
-    featureState: GenericFeature|null;
+  tool: MutableRefObject<Tool>;
+  toolState: Tool;
+  setTool: (tool: Tool) => void;
+  block: MutableRefObject<PlacedBlock|null>;
+  setBlock: (block: PlacedBlock) => void;
+  blockState: PlacedBlock|null;
+  feature: MutableRefObject<GenericFeature|null>;
+  setFeature: (block: GenericFeature) => void;
+  featureState: GenericFeature|null;
 
-    playerInventory: MutableRefObject<Inventory | null>;
+  playerInventory: Inventory | null;
+  setPlayerInventory: (inventory: Inventory) => void
 }
 
 const defaultContext: AppContextType = {
@@ -29,7 +30,8 @@ const defaultContext: AppContextType = {
   featureState: null,
   feature: {current: null},
 
-  playerInventory: {current: null}
+  playerInventory: null,
+  setPlayerInventory: () => {}
 };
 
 const AppContext = React.createContext<AppContextType>(defaultContext);
@@ -56,11 +58,11 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
       setFeatureState(newFeature);
     };
 
-    const playerInventory = useRef<Inventory | null>(null);
+    const [playerInventory, setPlayerInventory] = useState<Inventory | null>(null);
 
     const contextValue = useMemo(() => ({
-      tool, setTool, toolState, block, blockState, setBlock, feature, featureState, setFeature, playerInventory
-    }), [toolState, blockState, featureState]);
+      tool, setTool, toolState, block, blockState, setBlock, feature, featureState, setFeature, playerInventory, setPlayerInventory
+    }), [toolState, blockState, featureState, playerInventory]);
 
     return (
       <AppContext.Provider value={contextValue}>

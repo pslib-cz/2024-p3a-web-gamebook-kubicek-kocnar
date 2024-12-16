@@ -2,18 +2,50 @@
 /* eslint-disable react-refresh/only-export-components */
 import './ItemController.css'
 import { AppContext } from './AppContextProvider';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { Coinage } from '../types/Coinage';
 
 export function UIOverlay() {
   
   const { playerInventory } = useContext(AppContext);
 
+  const [opened, setOpened] = useState<boolean>(false);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyPress);
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []);
+
+  const handleKeyPress = (event : any) => {
+
+    if (event.key === 'e') {
+      setOpened((a) => !a);
+    }
+
+  };
+
+  useEffect(
+    () => console.log("INVENTORY " + playerInventory)
+  ,[playerInventory]);
+
   return (
     <div className='overlay'>
       <div className='ui-item'>
-        <div>
-          <h1>This inventory shall be ({playerInventory.current ? playerInventory.current.GetSelectedItem()?.toString() : 'NULL'})</h1>
-        </div>
+        {
+          opened && 
+          <div>
+            <div> <h1>This inventory shall be ({playerInventory ? "1" : "fr"})</h1>
+              {
+                playerInventory?.coinage.map((a : Coinage, x : number) =>{
+                  return <p key={x}>{a.name}</p>
+                })
+              }
+            </div>
+          </div>
+        }
       </div>
     </div>
   )

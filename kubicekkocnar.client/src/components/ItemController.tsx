@@ -1,22 +1,10 @@
 /* eslint-disable react-refresh/only-export-components */
-import { useState, createContext } from 'react';
+import { useState, createContext, useEffect } from 'react';
 import './ItemController.css'
 import React from 'react';
 import { Item } from '../types/Item';
 import { useContext } from 'react';
 import { AppContext } from './AppContextProvider';
-
-/*
-interface Item {
-    img : string;
-    imgUsed : string;
-}
-*/
-
-const demoItem : Item = {
-    img: "/Fr.png",
-    imgUsed: "/Fr1.png",
-}
 
 const ItemContext = createContext<{ setUseItem: React.Dispatch<React.SetStateAction<boolean>> | null }>({ setUseItem: null });
 
@@ -31,20 +19,25 @@ export function ItemUI() {
 
   const { playerInventory } = useContext(AppContext);
 
+  const [img, setImg] = useState<string>("");
+
   handlePlayerMouseClick = () => {
 
-    console.log(`Using item ${playerInventory.current?.GetSelectedItem()?.img}`);
+    console.log(`Using item ${playerInventory?.selectedItem?.img}`);
 
     setUseItem(true);
   };
 
   React.useEffect(() => {
     if (useItem) {
+      
+      const s = playerInventory?.selectedItem      
+      if (!s) return;
 
-      setImg(demoItem.imgUsed);
+      setImg(s.imgUsed);
 
       setTimeout(() => {
-          setImg(demoItem.img);
+        setImg(s.img);
       }, 500);
 
       console.log("Item used");
@@ -52,13 +45,23 @@ export function ItemUI() {
     }
   }, [useItem]);
 
-  const [img, setImg] = useState<string>(demoItem.img);
+  useEffect(() =>{
+
+    console.log(playerInventory + " sdds");
+
+    if (playerInventory && playerInventory.selectedItem)
+      setImg(playerInventory.selectedItem.img)
+
+  }, [playerInventory, playerInventory?.selectedItem]);
 
   return (
     <ItemContext.Provider value={{ setUseItem }}>
       <div className='overlay'>
         <div className="ui-item">
-          <img src={img}></img>
+          {
+            img != "" && 
+            <img src={img}></img>
+          }
         </div>
       </div>
     </ItemContext.Provider>
