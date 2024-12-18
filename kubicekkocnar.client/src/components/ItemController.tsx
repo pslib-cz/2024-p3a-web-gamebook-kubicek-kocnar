@@ -29,8 +29,18 @@ export function ItemUI() {
   };
 
   React.useEffect(() => {
-    if (useItem) {
-      
+
+    console.log("Item selected");
+
+    const s = playerInventory?.selectedItem      
+    if (!s) return;
+
+    setImg(s.img);
+
+  }, [playerInventory?.selectedItem]);
+
+  React.useEffect(() => {
+    if (useItem) {      
       const s = playerInventory?.selectedItem      
       if (!s) return;
 
@@ -47,7 +57,7 @@ export function ItemUI() {
 
   useEffect(() =>{
 
-    console.log(playerInventory + " sdds");
+    //console.log(playerInventory + " sdds");
 
     if (playerInventory && playerInventory.selectedItem)
       setImg(playerInventory.selectedItem.img)

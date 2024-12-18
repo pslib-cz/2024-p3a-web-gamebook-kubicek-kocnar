@@ -32,7 +32,7 @@ builder.Services.AddSwaggerGen(c =>
 
     // Nastavení pro JWT
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
+    {   
         Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer",

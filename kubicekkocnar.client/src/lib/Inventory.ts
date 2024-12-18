@@ -1,17 +1,21 @@
 import { Item } from "../types/Item";
 import { Coinage } from "../types/Coinage";
 
-
 const demoItem : Item = {
   img: "/Fr.png",
   imgUsed: "/Fr1.png",
+}
+
+const emptyItem : Item = {
+  img: "/",
+  imgUsed: "/",
 }
 
 export class Inventory {
 
   public selectedItem : Item | null = demoItem;
 
-  public hotbar : Item[] = [demoItem];
+  public hotbar : Item[] = [demoItem, emptyItem];
 
   private selectedItemId : number = 0;
 
@@ -33,12 +37,4 @@ export class Inventory {
 
     this.selectedItem = this.hotbar[this.selectedItemId];
   }
-
-  /*
-  public GetSelectedItem() : Item | null
-  {
-    return this.hotbar[this.selectedItem]
-  }
-  */
-
 }

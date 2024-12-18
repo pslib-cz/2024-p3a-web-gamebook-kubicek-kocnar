@@ -112,7 +112,7 @@ namespace KubicekKocnar.Server.Controllers
                 Width = width,
                 Height = height,
                 Size = size,
-                State = state
+                //State = state
             };
 
             _context.Textures.Add(texture);
