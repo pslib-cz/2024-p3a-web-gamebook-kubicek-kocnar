@@ -20,9 +20,14 @@ export class FirstPersonController {
   private scene: THREE.Scene;
   private playerPosition: THREE.Vector3 = new THREE.Vector3();
 
-  constructor(camera: THREE.Camera, scene: THREE.Scene) {
+  private navigate;
+
+  public stopped: boolean = false;
+
+  constructor(camera: THREE.Camera, scene: THREE.Scene, navigate: (levelId: string) => void) {
     this.camera = camera;
     this.scene = scene;
+    this.navigate = navigate;
 
     this.playerPosition = this.camera.position.clone();
   }
@@ -130,6 +135,7 @@ export class FirstPersonController {
   }
 
   public update(delta: number) {
+    if (this.stopped) return;
     const speed = 6; // Movement speed
 
     // Update velocity based on input
@@ -190,20 +196,27 @@ export class FirstPersonController {
 
     // portals:
     const portals = this.scene.children
-    .filter((child) => child.name.includes('portal'))
-
-    //console.log("Portals", portals)
+    .filter((child) => child.name.includes('feature Portal'))
 
     // check distance and if portal is close teleport player to the target level
+    const playerBox = new THREE.Box3().setFromCenterAndSize(
+      this.playerPosition,
+      new THREE.Vector3(.75, 2, .75) // Collider size
+    );
     for (const portal of portals) {
 
-      if (this.playerPosition.distanceTo(portal.position) < 2) {
-        console.log("Teleporting player to the target level")
+
+      // check distance for any size of portal
+      if (playerBox.intersectsBox(new THREE.Box3().setFromObject(portal))) {
+        this.stopped = true;
+        console.log('teleporting to ', portal.userData.destination);
         //this.playerPosition = new THREE.Vector3(-8, 0.5, 7);
 
-        const targetLevel = parseInt(portal.name.split('-')[1]);
+        // use react router to change the level
+        this.playerPosition = new THREE.Vector3(0, 3, 0);
+        this.navigate(portal.userData.destination || '/');
+        window.location.reload();
 
-        window.location.href = `/games/1/levels/${targetLevel}`;
       }
     }
   }

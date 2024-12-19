@@ -12,9 +12,10 @@ type FirstPersonControllerComponentProps = {
   camera: THREE.Camera;
   scene: THREE.Scene;
   onPointerDown : () => (item : Item | null) => void | null;
+  navigate: (levelId: string) => void;
 };
 
-const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPersonControllerComponentProps) => {
+const FirstPersonControllerComponent = ({ camera, scene, onPointerDown, navigate}: FirstPersonControllerComponentProps) => {
   
   const { setPlayerInventory } = useContext(AppContext);
 
@@ -26,7 +27,7 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPe
   const clock = new THREE.Clock()
 
   useEffect(() => {
-    const controller = new FirstPersonController(camera, scene);
+    const controller = new FirstPersonController(camera, scene, navigate);
     controllerRef.current = controller;
 
     itemsControllerRef.current = new ItemsController(camera, scene);
@@ -67,7 +68,7 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown}: FirstPe
       document.removeEventListener("touchstart", handleTouchStart);
       document.removeEventListener("touchmove", handleTouchMove);
     };
-  }, [camera, gl, scene]);
+  }, [camera, gl, scene, setPlayerInventory]);
 
   useFrame(() => {
     controllerRef.current?.update(clock.getDelta());

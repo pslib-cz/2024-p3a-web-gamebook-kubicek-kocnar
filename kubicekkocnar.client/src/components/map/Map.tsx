@@ -11,13 +11,17 @@ import FirstPersonControllerComponent from '../FirstPersonController';
 import Model from './Model';
 import { CorruptionHandler } from '../CorruptionHandler';
 import { Item } from '../../types/Item';
+import { useNavigate } from 'react-router-dom';
 
 // React.memo(
-const Map = ({level, onPointerDown} : {level : Level, onPointerDown : () => (item: Item | null) => void | null}) => {
+  const Map = ({level, onPointerDown} : {level : Level, onPointerDown : () => (item: Item | null) => void | null}) => {
+    
+    const navigate = useNavigate();
 
   console.log("Loading level");
 
   const scene = level.mapRenderer.scene
+
 
   const { tool, setBlock } = useContext(AppContext);
   const threeRef = React.useRef(useThree());
@@ -107,7 +111,7 @@ const Map = ({level, onPointerDown} : {level : Level, onPointerDown : () => (ite
       <CorruptionHandler allBlocks={level.blocks} corruptedBlocks={level.blocks.filter((block) => block.block.attributes[0] == "corrupt")}/>
 
       {tool.current == Tool.PlayerCamera ? 
-        <FirstPersonControllerComponent camera={camera} scene={scene} onPointerDown={onPointerDown}/> : 
+        <FirstPersonControllerComponent camera={camera} scene={scene} onPointerDown={onPointerDown} navigate={(levelId) => navigate(`/games/${level.gameId}/levels/${levelId}?source=${level.levelId}`)}/> : 
         <OrbitControls camera={camera} />
       }
 
@@ -123,10 +127,10 @@ const Map = ({level, onPointerDown} : {level : Level, onPointerDown : () => (ite
         <lineBasicMaterial attach="material" color="yellow" />
       </lineSegments>
 
-      <Model path='/crystal.glb' position={new THREE.Vector3(-2, 0.5, -1)}/>
-      <Model path='/crystal.glb' position={new THREE.Vector3(-2.6, 3, 0)} rotation={new THREE.Euler(0,0,-Math.PI/2)}/>
+      <Model path='/models/crystal.glb' position={new THREE.Vector3(-2, 0.5, -1)}/>
+      <Model path='/models/crystal.glb' position={new THREE.Vector3(-2.6, 3, 0)} rotation={new THREE.Euler(0,0,-Math.PI/2)}/>
 
-      <Model path='/crystal.glb' name='portal-5' position={new THREE.Vector3(-8, 0.5, 7)}/>
+      <Model path='/models/crystal.glb' name='portal-5' position={new THREE.Vector3(-8, 0.5, 7)}/>
 
       <mesh position={[0, 0, 0]}>          
         <meshStandardMaterial color={0x00ff00} />

@@ -17,11 +17,13 @@ interface GenericFeature {
 
 enum FeatureType {
     "Light"=1,
-    "Crystal"=2
+    "Crystal"=2,
+    "Portal"=3,
 }
 enum FeatureTypeIcon {
     "light_mode"=1,
-    "diamond"=2
+    "diamond"=2,
+    "call_split"=3,
 }
 
 // the FeatureParams type is used to define the properties of a feature -> its content depends on the FeatureType

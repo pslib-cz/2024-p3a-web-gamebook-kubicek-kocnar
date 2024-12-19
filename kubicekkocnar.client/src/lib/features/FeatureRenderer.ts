@@ -1,12 +1,10 @@
 import GenericFeature, { FeatureType } from "../../types/Feature";
 import * as THREE from 'three';
+import renderLight, { Light } from "./Light";
+import renderPortal, { Portal } from "./Portal";
 
-interface Light extends GenericFeature {
-    params: {
-        color: string;
-        intensity: string;
-    };
-}
+const source = window.location.search.includes('source=') ? window.location.search.split('source=')[1].split('&')[0] : null;
+
 
 class FeatureRenderer {
     scene: THREE.Scene;
@@ -30,11 +28,30 @@ class FeatureRenderer {
             case FeatureType.Light:
                 this.renderLight(feature as Light);
                 break;
+
+            case FeatureType.Portal:
+                this.renderPortal(feature as Portal);
+                break;
+
             default:
                 return console.error("Unknown feature type", feature.type);
         }
+        // check if query params contain source=number, if yes, then set the camera position to the source portal
+        if (source && feature.type === FeatureType.Portal && feature.params.destination == source) {
+            console.log('tp ', feature.featureId);
+            const tpPos = new THREE.Vector3(-feature.position!.x, -feature.position!.y, -feature.position!.z);
+            switch (feature.params.facing) {
+                case 'X+': tpPos.x -= .5; break;
+                case 'X-': tpPos.x += .5; break;
+                case 'Y+': tpPos.y -= .5; break;
+                case 'Y-': tpPos.y += .5; break;
+                case 'Z+': tpPos.z -= .5; break;
+                case 'Z-': tpPos.z += .5; break;
+            }
+            this.scene.position.add(tpPos);
+        }
 
-        feature.object.name = 'feature ' + feature.type + ' ' + feature.featureId;
+        feature.object.name = 'feature ' + FeatureType[feature.type] + ' ' + feature.featureId;
         feature.object.position.set(feature.position!.x, feature.position!.y, feature.position!.z);
         console.log("FeatureRenderer -> ADD ", feature.object.name, feature.object.position);
 
@@ -42,9 +59,8 @@ class FeatureRenderer {
         this.scene.add(feature.object);
     }
 
-    renderLight(light: Light) {
-        light.object = new THREE.PointLight( light.params.color, parseFloat(light.params.intensity) || 1 )
-    }
+    renderLight = renderLight;
+    renderPortal = renderPortal;
 
     removeFeature(feature: GenericFeature) {
         const removedFeature = this.features.find(f => f.featureId === feature.featureId);

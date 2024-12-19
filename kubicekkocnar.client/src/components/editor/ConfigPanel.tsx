@@ -33,6 +33,8 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ level }) => {
                 return {intensity: '1', color: '#ffffff'};
             case FeatureType.Crystal:
                 return {};
+            case FeatureType.Portal:
+                return { source: level.levelId, destination: '2', color: '#ffffff', facing: 'X', width: '2', height: '3' };
         }
     }
 
