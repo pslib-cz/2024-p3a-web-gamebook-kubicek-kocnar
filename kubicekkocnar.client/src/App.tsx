@@ -20,6 +20,7 @@ import { getHandlePlayerMouseClick } from './components/ItemController';
 
 import { ItemUI } from './components/ItemController';
 import { UIOverlay } from './components/UIOverlay';
+import { TooltipProvider } from '@radix-ui/react-tooltip';
 
 function App() {
   return (
@@ -62,22 +63,25 @@ function LevelEditor()
   }, [gameid, levelid, scene])
 
   return (
-    <AppContextProvider>
-      {!level && <div className="loader"></div>}
-      <ToolBar />
-      {level && <ConfigPanel level={level}/>}
-      <div className='canvas'>
-        <Canvas onCreated={(state) => {
-            state.camera.position.set(0, 2.251, 0);
-            state.scene.background = new THREE.Color(0x0e0726);
-            setScene(state.scene);
-          }}>
-          {level && <Map level={level} onPointerDown={getHandlePlayerMouseClick}/>}
-        </Canvas>
-        <ItemUI/>
-        <UIOverlay/>
-      </div>
-    </AppContextProvider>
+    <TooltipProvider>
+      <AppContextProvider>
+        {!level && <div className="loader"></div>}
+        <ToolBar />
+        {level && <ConfigPanel level={level}/>}
+        <div className='canvas'>
+          <Canvas onCreated={(state) => {
+              state.camera.position.set(0, 3, 0);
+              state.scene.userData.camera = state.camera;
+              state.scene.background = new THREE.Color(0x0e0726);
+              setScene(state.scene);
+            }}>
+            {level && <Map level={level} onPointerDown={getHandlePlayerMouseClick}/>}
+          </Canvas>
+          <ItemUI/>
+          <UIOverlay/>
+        </div>
+      </AppContextProvider>
+    </TooltipProvider>
   )
 }
 

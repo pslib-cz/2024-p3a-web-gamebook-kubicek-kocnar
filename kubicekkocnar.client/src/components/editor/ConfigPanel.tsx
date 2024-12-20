@@ -21,7 +21,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ level }) => {
 
     const [isOpen, setIsOpen] = useState(true);
 
-    const [openAddModal, setOpenAddModal] = useState(false);
+    const [openAddFeatureModal, setOpenAddFeatureModal] = useState(false);
 
     const togglePanel = () => {
         setIsOpen(!isOpen);
@@ -50,12 +50,13 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ level }) => {
                 {isOpen ? <MaterialSymbol icon='chevron_right' size={24}/> : <MaterialSymbol icon='chevron_left' size={24}/>}
             </button>
             <div className='configpanel__info'>
-                <ConfigPanelView level={level} setOpenAddModal={setOpenAddModal}/>
+                <ConfigPanelView level={level} setOpenAddFeatureModal={setOpenAddFeatureModal}/>
             </div>
         </div>
 
 
-        {openAddModal && <div className='modal configpanel__addmodal'>
+        {openAddFeatureModal && <div className='modal configpanel__addmodal'>
+            <button className="configpanel__addmodal__close" onClick={() => setOpenAddFeatureModal(false)}><MaterialSymbol icon='close' size={24}/></button>
             
             {modalFeature ?
             <>
@@ -98,7 +99,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ level }) => {
 
                 <button className="configpanel__addmodal__addbtn" onClick={() => {
                     level.addFeature(modalFeature);
-                    setOpenAddModal(false);
+                    setOpenAddFeatureModal(false);
                 }}>Add</button>
             </div>
             </>

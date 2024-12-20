@@ -10,7 +10,7 @@ namespace KubicekKocnar.Server.Models
 
         public required string Type { get; set; } = "image/png";
 
-        //public uint State { get; set; } = 0;
+        public uint State { get; set; } = 0;
         public required byte[] Content { get; set; }
 
         public int Width { get; set; }

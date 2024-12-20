@@ -34,20 +34,22 @@ void main() {
     float angle = atan(centeredUV.y, centeredUV.x);
     float radius = length(centeredUV);
 
-    // Add more twist by distorting the angle with time and radius
+    // Add twisting effect
     float twistedAngle = angle + sin(radius * 15.0 - time * 2.0) * 0.5;
 
-    // Create a spiral effect with tighter, twisted spirals
+    // Create a spiral effect
     float spiral = sin(30.0 * radius - time * 5.0 + twistedAngle * 15.0);
-
-    // Smooth the spiral bands
     float wave = smoothstep(0.3, 0.6, spiral);
+
+    // Add transparency based on the wave intensity
+    float alpha = wave * 0.4 + 0.4; // Slightly transparent where the wave is less intense
 
     // Apply the spiral effect as the color
     vec3 color = portalColor * wave;
 
-    gl_FragColor = vec4(color, 1.0);
+    gl_FragColor = vec4(color, alpha);
 }
+
 
 `
 
@@ -60,7 +62,7 @@ function render (portal: Portal) {
     };
 
     const geometry = new THREE.BoxGeometry( parseFloat(portal.params.width), parseFloat(portal.params.height), 0.1 );
-    const material = new THREE.ShaderMaterial({vertexShader, fragmentShader, uniforms});
+    const material = new THREE.ShaderMaterial({vertexShader, fragmentShader, uniforms, transparent: true, depthWrite: false});
     portal.object = new THREE.Mesh( geometry, material );
     portal.object.position.set(portal.position!.x, portal.position!.y, portal.position!.z);
     // facing

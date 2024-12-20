@@ -23,7 +23,7 @@ import { useNavigate } from 'react-router-dom';
   const scene = level.mapRenderer.scene
 
 
-  const { tool, setBlock } = useContext(AppContext);
+  const { tool, setBlock, addBlockParams } = useContext(AppContext);
   const threeRef = React.useRef(useThree());
   const { gl, camera } = threeRef.current;
   
@@ -75,6 +75,15 @@ import { useNavigate } from 'react-router-dom';
           const newPos = intersects[0].object.position.clone().add(intersects[0].face?.normal);
           const newBlock = {...selectedBlock, position: newPos, placedBlockId: 1000000 + level.mapRenderer.blockCounter++};
           newBlock.position = newPos;
+          if (addBlockParams.current) {
+            console.log("Adding block with params", addBlockParams.current);
+            if (addBlockParams.current.state) {
+              newBlock.state = addBlockParams.current.state;
+            }
+            if (addBlockParams.current.blockId) {
+              newBlock.blockId = addBlockParams.current.blockId;
+            }
+          }
           level.addBlock(newBlock);
           break; 
         } case Tool.Remove: {
@@ -87,7 +96,7 @@ import { useNavigate } from 'react-router-dom';
       }
 
     }
-  }, [tool, setBlock, level, scene, camera]);
+  }, [tool, setBlock, level, scene, camera, addBlockParams]);
 
   useEffect(() => {
     console.log("Adding event listeners");

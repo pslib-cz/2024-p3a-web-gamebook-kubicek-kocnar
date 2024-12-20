@@ -4,6 +4,11 @@ import PlacedBlock from "../types/PlacedBlock";
 import GenericFeature from "../types/Feature";
 import { Inventory } from "../lib/Inventory";
 
+interface AddBlockParams {
+  blockId?: number;
+  state?: string;
+}
+
 interface AppContextType {
   tool: MutableRefObject<Tool>;
   toolState: Tool;
@@ -17,6 +22,10 @@ interface AppContextType {
 
   playerInventory: Inventory | null;
   setPlayerInventory: (inventory: Inventory) => void
+
+  addBlockParams: MutableRefObject<AddBlockParams|null>;
+  setAddBlockParams: (block: AddBlockParams) => void;
+  addBlockParamsState: AddBlockParams|null;
 }
 
 const defaultContext: AppContextType = {
@@ -31,7 +40,11 @@ const defaultContext: AppContextType = {
   feature: {current: null},
 
   playerInventory: null,
-  setPlayerInventory: () => {}
+  setPlayerInventory: () => {},
+
+  addBlockParams: {current: null},
+  setAddBlockParams: () => {},
+  addBlockParamsState: null,
 };
 
 const AppContext = React.createContext<AppContextType>(defaultContext);
@@ -58,11 +71,18 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
       setFeatureState(newFeature);
     };
 
+    const addBlockParams = useRef<AddBlockParams|null>(null);
+    const [addBlockParamsState, setAddBlockState] = useState<AddBlockParams|null>(null);
+    const setAddBlockParams = (newBlock: AddBlockParams) => {
+      addBlockParams.current = newBlock;
+      setAddBlockState(newBlock);
+    };
+
     const [playerInventory, setPlayerInventory] = useState<Inventory | null>(null);
 
     const contextValue = useMemo(() => ({
-      tool, setTool, toolState, block, blockState, setBlock, feature, featureState, setFeature, playerInventory, setPlayerInventory
-    }), [toolState, blockState, featureState, playerInventory]);
+      tool, setTool, toolState, block, blockState, setBlock, feature, featureState, setFeature, playerInventory, setPlayerInventory, addBlockParams, setAddBlockParams, addBlockParamsState
+    }), [toolState, blockState, featureState, playerInventory, addBlockParamsState]);
 
     return (
       <AppContext.Provider value={contextValue}>

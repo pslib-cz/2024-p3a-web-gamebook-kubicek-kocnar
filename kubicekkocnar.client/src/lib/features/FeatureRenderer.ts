@@ -38,7 +38,6 @@ class FeatureRenderer {
         }
         // check if query params contain source=number, if yes, then set the camera position to the source portal
         if (source && feature.type === FeatureType.Portal && feature.params.destination == source) {
-            console.log('tp ', feature.featureId);
             const tpPos = new THREE.Vector3(-feature.position!.x, -feature.position!.y, -feature.position!.z);
             switch (feature.params.facing) {
                 case 'X+': tpPos.x -= .5; break;
@@ -48,7 +47,12 @@ class FeatureRenderer {
                 case 'Z+': tpPos.z -= .5; break;
                 case 'Z-': tpPos.z += .5; break;
             }
-            this.scene.position.add(tpPos);
+            console.log("Teleporting to ", tpPos);
+            
+            this.scene.position.set(tpPos.x, tpPos.y-.51, tpPos.z);
+            //set the camera position to the 0,0,0
+            console.log(this.scene.getObjectsByProperty('isCamera', 'true '))
+            this.scene.userData.camera?.position.set(0, 0, 0);            
         }
 
         feature.object.name = 'feature ' + FeatureType[feature.type] + ' ' + feature.featureId;

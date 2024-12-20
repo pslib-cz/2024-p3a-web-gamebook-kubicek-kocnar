@@ -53,7 +53,7 @@ export function ItemUI() {
       console.log("Item used");
       setUseItem(false); // Reset the state
     }
-  }, [useItem]);
+  }, [useItem, playerInventory?.selectedItem]);
 
   useEffect(() =>{
 

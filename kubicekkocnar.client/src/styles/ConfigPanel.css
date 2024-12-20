@@ -55,6 +55,12 @@
     image-rendering: pixelated;
 }
 
+.configpanel__texture__image_sm {
+    width: 48px;
+    height: 48px;
+    image-rendering: pixelated;
+}
+
 .configpanel__info {
     display: flex;
     flex-direction: column;
@@ -151,4 +157,54 @@
     display: flex;
     flex-direction: column;
     gap: .5rem;
+}
+
+.configpanel__blockeditor {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: .5rem;
+}
+
+.configpanel__addblocks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 128px);
+    justify-content: center;
+    gap: 1rem;
+}
+
+.configpanel__addblock {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid transparent;
+}
+
+.configpanel__addblock:hover {
+    background: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.configpanel__addblock--selected {
+    border: 1px solid white;
+    cursor: pointer;
+}
+
+.configpanel input {
+    padding: .5rem;
+    border-radius: 4px;
+    border: 1px solid white;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.configpanel__fullinput {
+    width: 384px;
+    align-self: center;
+}
+
+.configpanel__checkbox {
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+    margin-left: 1rem;
 }
