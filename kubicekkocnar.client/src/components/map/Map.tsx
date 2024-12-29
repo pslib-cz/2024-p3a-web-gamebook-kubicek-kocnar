@@ -23,7 +23,7 @@ import { useNavigate } from 'react-router-dom';
   const scene = level.mapRenderer.scene
 
 
-  const { tool, setBlock, addBlockParams } = useContext(AppContext);
+  const { toolState, setBlock, addBlockParamsState } = useContext(AppContext);
   const threeRef = React.useRef(useThree());
   const { gl, camera } = threeRef.current;
   
@@ -65,7 +65,7 @@ import { useNavigate } from 'react-router-dom';
       console.log("Intersected with block", intersects[0]);
       const selectedBlock = level.mapRenderer.blocks.find(block => block.mesh?.id === intersects[0].object.id);
       if (!selectedBlock) return;
-      switch (tool.current) {
+      switch (toolState) {
         case Tool.Mouse: {
           if (selectedBlock) setBlock(selectedBlock);
           scene.getObjectByName("selectioncube")?.position.set(intersects[0].object.position.x, intersects[0].object.position.y, intersects[0].object.position.z);
@@ -75,13 +75,13 @@ import { useNavigate } from 'react-router-dom';
           const newPos = intersects[0].object.position.clone().add(intersects[0].face?.normal);
           const newBlock = {...selectedBlock, position: newPos, placedBlockId: 1000000 + level.mapRenderer.blockCounter++};
           newBlock.position = newPos;
-          if (addBlockParams.current) {
-            console.log("Adding block with params", addBlockParams.current);
-            if (addBlockParams.current.state) {
-              newBlock.state = addBlockParams.current.state;
+          if (addBlockParamsState) {
+            console.log("Adding block with params", addBlockParamsState);
+            if (addBlockParamsState.state) {
+              newBlock.state = addBlockParamsState.state;
             }
-            if (addBlockParams.current.blockId) {
-              newBlock.blockId = addBlockParams.current.blockId;
+            if (addBlockParamsState.blockId) {
+              newBlock.blockId = addBlockParamsState.blockId;
             }
           }
           level.addBlock(newBlock);
@@ -96,7 +96,7 @@ import { useNavigate } from 'react-router-dom';
       }
 
     }
-  }, [tool, setBlock, level, scene, camera, addBlockParams]);
+  }, [toolState, setBlock, level, scene, camera, addBlockParamsState]);
 
   useEffect(() => {
     console.log("Adding event listeners");
@@ -119,7 +119,7 @@ import { useNavigate } from 'react-router-dom';
     <>
       <CorruptionHandler allBlocks={level.blocks} corruptedBlocks={level.blocks.filter((block) => block.block.attributes[0] == "corrupt")}/>
 
-      {tool.current == Tool.PlayerCamera ? 
+      {toolState == Tool.PlayerCamera ? 
         <FirstPersonControllerComponent camera={camera} scene={scene} onPointerDown={onPointerDown} navigate={(levelId) => navigate(`/games/${level.gameId}/levels/${levelId}?source=${level.levelId}`)}/> : 
         <OrbitControls camera={camera} />
       }

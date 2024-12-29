@@ -17,11 +17,11 @@ interface ConfigPanelProps {
 }
 
 const ConfigPanelView: React.FC<ConfigPanelProps> = ({level, setOpenAddFeatureModal}) => {
-    const { toolState, blockState, featureState, setFeature, setTool, setAddBlockParams, addBlockParamsState } = useContext(AppContext);
+    const { toolState, blockState, featureState, setFeature, setToolState, setAddBlockParams, addBlockParamsState } = useContext(AppContext);
 
     const selectFeature = (feature: GenericFeature) => {
         setFeature(feature);
-        setTool(Tool.FeatureView);
+        setToolState(Tool.FeatureView);
     }
 
     const [block, setBlock] = useState<Block | null>(null);
@@ -74,7 +74,7 @@ const ConfigPanelView: React.FC<ConfigPanelProps> = ({level, setOpenAddFeatureMo
                             <MaterialSymbol icon={FeatureTypeIcon[featureState.type] as SymbolCodepoints}/> {FeatureType[featureState.type]} {featureState.featureId}
                         </h2> 
                         <button className='configpanel__deletebtn' 
-                            onClick={async () => {await level.removeFeature(featureState); setTool(Tool.List)}}>
+                            onClick={async () => {await level.removeFeature(featureState); setToolState(Tool.List)}}>
                         <MaterialSymbol icon='delete'/></button>
                         <button className='configpanel__copybtn' 
                             onClick={async () => {const newFeature = await level.addFeature({...featureState, featureId: 0}); if (newFeature) setFeature(newFeature)}}>
@@ -129,7 +129,7 @@ const ConfigPanelView: React.FC<ConfigPanelProps> = ({level, setOpenAddFeatureMo
                 </h2>
                 <button className='configpanel__addbtn'  onClick={() => setOpenAddFeatureModal(true)}><MaterialSymbol icon='add'/></button>
                 {level.mapRenderer.blocksReference.blocks.map((block, index) => (
-                    <div key={index} className='configpanel__blockeditor' onClick={() => {setBlock(block); setTool(Tool.BlockEditor)}}>
+                    <div key={index} className='configpanel__blockeditor' onClick={() => {setBlock(block); setToolState(Tool.BlockEditor)}}>
                         <img className='configpanel__texture__image_sm' src={block.texture0 ? URL.createObjectURL(MapRenderer.loadTexture(block.texture0)) : '/missing.png'} alt={`texture ${index}`}/>
                         <h3>{block.name}</h3>
                         <p>Attributes: {block.attributes}</p>
