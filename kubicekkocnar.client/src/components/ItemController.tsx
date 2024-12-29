@@ -16,28 +16,30 @@ let handlePlayerMouseClick: HandlePlayerMouseClickProps | null = null;
 
 export function ItemUI() {
   const [useItem, setUseItem] = useState(false);
-
   const { playerInventory } = useContext(AppContext);
-
   const [img, setImg] = useState<string>("");
 
   handlePlayerMouseClick = () => {
-
     console.log(`Using item ${playerInventory?.selectedItem?.img}`);
-
     setUseItem(true);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
+    const handleScroll = (event: WheelEvent) => {
+      playerInventory?.Scroll(event.deltaY > 0);
 
-    console.log("Item selected");
+      const s = playerInventory?.selectedItem;
+      if (!s) return;
 
-    const s = playerInventory?.selectedItem      
-    if (!s) return;
+      setImg(s.img);
+    };
 
-    setImg(s.img);
+    window.addEventListener('wheel', handleScroll);
 
-  }, [playerInventory?.selectedItem]);
+    return () => {
+      window.removeEventListener('wheel', handleScroll);
+    };
+  }, [playerInventory]);
 
   React.useEffect(() => {
     if (useItem) {      
@@ -53,12 +55,9 @@ export function ItemUI() {
       console.log("Item used");
       setUseItem(false); // Reset the state
     }
-  }, [useItem, playerInventory?.selectedItem]);
+  }, [useItem]);
 
   useEffect(() =>{
-
-    //console.log(playerInventory + " sdds");
-
     if (playerInventory && playerInventory.selectedItem)
       setImg(playerInventory.selectedItem.img)
 

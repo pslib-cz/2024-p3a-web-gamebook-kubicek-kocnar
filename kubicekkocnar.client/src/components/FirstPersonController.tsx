@@ -56,9 +56,11 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown, navigate
     document.addEventListener("touchmove", handleTouchMove);
 
     // add scroll event to inventory
+    /*
     window.addEventListener('wheel', (event) => {
       inventory.current?.Scroll(event.deltaY > 0);
     });
+    */
 
     return () => {
       gl.domElement.removeEventListener("pointerlockchange", handlePointerLockChange);

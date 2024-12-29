@@ -14,7 +14,6 @@ const emptyItem : Item = {
 export class Inventory {
 
   public selectedItem : Item | null = demoItem;
-
   public hotbar : Item[] = [demoItem, emptyItem];
 
   private selectedItemId : number = 0;
