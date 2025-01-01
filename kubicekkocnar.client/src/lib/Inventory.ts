@@ -1,9 +1,15 @@
 import { Item } from "../types/Item";
 import { Coinage } from "../types/Coinage";
+import { ItemUpgrade } from "../types/ItemUpgrade";
 
 const demoItem : Item = {
   img: "/Fr.png",
   imgUsed: "/Fr1.png",
+}
+
+const demoItem1 : Item = {
+  img: "/Fr.png",
+  imgUsed: "/",
 }
 
 const emptyItem : Item = {
@@ -15,6 +21,21 @@ export class Inventory {
 
   public selectedItem : Item | null = demoItem;
   public hotbar : Item[] = [demoItem, emptyItem];
+
+  public upgrades : ItemUpgrade[] = [
+    {
+      inputItem: demoItem,
+      outputItem: demoItem1,
+      description: "This is insane upgrade 123",
+      cost: [
+        {
+          coinage: {name: "primary"}, 
+          cost: 1
+        }
+      ]
+
+    }
+  ]
 
   private selectedItemId : number = 0;
 

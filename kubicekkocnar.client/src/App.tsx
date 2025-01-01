@@ -51,8 +51,7 @@ function LevelEditor()
     if (!gameid || !levelid) {
       console.error("Invalid URL");
       return;
-    }
-  
+    }  
     
     new Blocks((blocks) => {
       const mapRenderer = new MapRenderer(scene, blocks);

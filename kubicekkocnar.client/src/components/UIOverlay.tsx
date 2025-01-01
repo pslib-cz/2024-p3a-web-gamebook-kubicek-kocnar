@@ -37,10 +37,20 @@ export function UIOverlay() {
         {
           opened && 
           <div>
-            <div> <h1>This inventory shall be ({playerInventory ? "1" : "fr"})</h1>
+            <div> 
+              <h1>This inventory shall be ({playerInventory ? "1" : "fr"})</h1>
               {
                 playerInventory?.coinage.map((a : Coinage, x : number) =>{
                   return <p key={x}>{a.name}</p>
+                })
+              }
+              <p>------- UPGRADES</p>
+              {
+                playerInventory?.upgrades.map((a, x) => {
+                  return <div key={x}>
+                    <p>{a.description}</p>
+                    <p>Cost: {a.cost[0].cost} {a.cost[0].coinage.name}</p>                    
+                  </div>
                 })
               }
             </div>

@@ -35,12 +35,15 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown, navigate
     inventory.current = new Inventory();
     setPlayerInventory(inventory.current);
 
-    console.log("Setting inventory", inventory.current);
-
+    /*
+    THIS FUNCTION IS NOT BEING EXECUTED BTW
     const handlePointerLockChange = () => {
       const isLocked = document.pointerLockElement === gl.domElement;
       controller.handlePointerLockChange(isLocked);
+
+      console.warn("Pointer lock change");
     };
+    */
 
     const handleMouseMove = (event: MouseEvent) => controller.handleMouseMove(event);
     const handleKeyDown = (event: KeyboardEvent) => controller.handleKeyDown(event);
@@ -48,22 +51,15 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown, navigate
     const handleTouchStart = (event: TouchEvent) => controller.handleTouchStart(event);
     const handleTouchMove = (event: TouchEvent) => controller.handleTouchMove(event);
 
-    gl.domElement.addEventListener("pointerlockchange", handlePointerLockChange);
+    //gl.domElement.addEventListener("pointerlockchange", handlePointerLockChange);
     gl.domElement.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("keyup", handleKeyUp);
     document.addEventListener("touchstart", handleTouchStart);
     document.addEventListener("touchmove", handleTouchMove);
 
-    // add scroll event to inventory
-    /*
-    window.addEventListener('wheel', (event) => {
-      inventory.current?.Scroll(event.deltaY > 0);
-    });
-    */
-
     return () => {
-      gl.domElement.removeEventListener("pointerlockchange", handlePointerLockChange);
+      //gl.domElement.removeEventListener("pointerlockchange", handlePointerLockChange);
       gl.domElement.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("keyup", handleKeyUp);

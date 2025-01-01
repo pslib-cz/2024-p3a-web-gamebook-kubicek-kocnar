@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../AppContextProvider';
 import '../../styles/ToolBar.css';
-import { MaterialSymbol } from 'react-material-symbols';
+import { MaterialSymbol, MaterialSymbolProps } from 'react-material-symbols';
 import { Tooltip, TooltipTrigger } from '../ui/Tooltip';
 import { TooltipContent } from '@radix-ui/react-tooltip';
 
@@ -21,7 +21,7 @@ const ToolBar: React.FC = () => {
 
     // add a keybord shortcut for switching tools (1, 2, 3, 4)
     const handleKeyDown = (e: KeyboardEvent) => {
-        console.log(e);
+        //console.log(e);
         // dont switch tools when typing in an input
         if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
         
@@ -52,7 +52,17 @@ const ToolBar: React.FC = () => {
         }
     };
     window.addEventListener('keydown', handleKeyDown);
-    
+
+    function TooltipItem({ className, onClick, icon, text }: { className: string, onClick: () => void, icon: MaterialSymbolProps['icon'], text: string }) {
+      return (
+        <Tooltip>
+          <TooltipTrigger className={className} onClick={onClick}>
+            <MaterialSymbol icon={icon} size={24} fill />
+          </TooltipTrigger>
+          <TooltipContent>{text}</TooltipContent>
+        </Tooltip>
+      );
+    }
 
     return (
         <>
@@ -60,24 +70,65 @@ const ToolBar: React.FC = () => {
         <div className='toolbar'>
             <div className="toolbar__buttons">
                 
-                <Tooltip><TooltipTrigger className={`toolbar__button${toolState === Tool.List ? ' toolbar__button--active' : ''}`} onClick={() => setToolState(Tool.List)}><MaterialSymbol icon="category" size={24} fill/>
-                </TooltipTrigger><TooltipContent>List</TooltipContent></Tooltip>
+                <TooltipItem 
+                  className={`toolbar__button${toolState === Tool.List ? ' toolbar__button--active' : ''}`} 
+                  onClick={() => setToolState(Tool.List)} 
+                  icon="category" 
+                  text="List" 
+                  />
+
                 {toolState === Tool.FeatureView && 
-                <Tooltip><TooltipTrigger className="toolbar__button toolbar__button--active" onClick={() => setToolState(Tool.FeatureView)}><MaterialSymbol icon="motion_mode" size={24} fill/>
-                </TooltipTrigger><TooltipContent>Feature View</TooltipContent></Tooltip>}
-                <Tooltip><TooltipTrigger className={`toolbar__button${toolState === Tool.BlockList ? ' toolbar__button--active' : ''}`} onClick={() => setToolState(Tool.BlockList)}><MaterialSymbol icon="view_in_ar" size={24} fill/>
-                </TooltipTrigger><TooltipContent>Block List</TooltipContent></Tooltip>
-                {toolState === Tool.BlockEditor &&
-                <Tooltip><TooltipTrigger className="toolbar__button toolbar__button--active" onClick={() => setToolState(Tool.BlockEditor)}><MaterialSymbol icon="edit_square" size={24} fill/>
-                </TooltipTrigger><TooltipContent>Block Editor</TooltipContent></Tooltip>}
-                <Tooltip><TooltipTrigger className={`toolbar__button${toolState === Tool.Mouse ? ' toolbar__button--active' : ''}`} onClick={() => setToolState(Tool.Mouse)}><MaterialSymbol icon="arrow_selector_tool" size={24} fill/>
-                </TooltipTrigger><TooltipContent>Mouse</TooltipContent></Tooltip>
-                <Tooltip><TooltipTrigger className={`toolbar__button${toolState === Tool.Add ? ' toolbar__button--active' : ''}`} onClick={() => setToolState(Tool.Add)}><MaterialSymbol icon="add" size={24} fill/>
-                </TooltipTrigger><TooltipContent>Add</TooltipContent></Tooltip>
-                <Tooltip><TooltipTrigger className={`toolbar__button${toolState === Tool.Remove ? ' toolbar__button--active' : ''}`} onClick={() => setToolState(Tool.Remove)}><MaterialSymbol icon="remove" size={24} fill/>
-                </TooltipTrigger><TooltipContent>Remove</TooltipContent></Tooltip>
-                <Tooltip><TooltipTrigger className={`toolbar__button${toolState === Tool.PlayerCamera ? ' toolbar__button--active' : ''}`} onClick={() => setToolState(Tool.PlayerCamera)}><MaterialSymbol icon="video_camera_front" size={24} fill/>
-                </TooltipTrigger><TooltipContent>Player Camera</TooltipContent></Tooltip>
+                <TooltipItem 
+                  className="toolbar__button toolbar__button--active" 
+                  onClick={() => setToolState(Tool.FeatureView)} 
+                  icon="motion_mode" 
+                  text="Feature View" 
+                  />}
+
+                <TooltipItem 
+                  className={`toolbar__button${toolState === Tool.BlockList ? ' toolbar__button--active' : ''}`} 
+                  onClick={() => setToolState(Tool.BlockList)} 
+                  icon="view_in_ar" 
+                  text="Block List" 
+                  />
+
+                {
+                toolState === Tool.BlockEditor &&
+                  <TooltipItem 
+                    className="toolbar__button toolbar__button--active" 
+                    onClick={() => setToolState(Tool.BlockEditor)} 
+                    icon="edit_square" 
+                    text="Block Editor" 
+                    />
+                }
+
+                <TooltipItem 
+                  className={`toolbar__button${toolState === Tool.Mouse ? ' toolbar__button--active' : ''}`} 
+                  onClick={() => setToolState(Tool.Mouse)} 
+                  icon="arrow_selector_tool" 
+                  text="Mouse" 
+                />
+
+                <TooltipItem 
+                  className={`toolbar__button${toolState === Tool.Add ? ' toolbar__button--active' : ''}`} 
+                  onClick={() => setToolState(Tool.Add)} 
+                  icon="add" 
+                  text="Add" 
+                />
+
+                <TooltipItem 
+                  className={`toolbar__button${toolState === Tool.Remove ? ' toolbar__button--active' : ''}`} 
+                  onClick={() => setToolState(Tool.Remove)} 
+                  icon="remove" 
+                  text="Remove" 
+                />
+
+                <TooltipItem 
+                  className={`toolbar__button${toolState === Tool.PlayerCamera ? ' toolbar__button--active' : ''}`} 
+                  onClick={() => setToolState(Tool.PlayerCamera)} 
+                  icon="video_camera_front" 
+                  text="Player Camera" 
+                />
             </div>
             <div className="toolbar__heading">
 

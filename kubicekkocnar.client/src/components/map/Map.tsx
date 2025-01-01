@@ -119,7 +119,8 @@ import { useNavigate } from 'react-router-dom';
     <>
       <CorruptionHandler allBlocks={level.blocks} corruptedBlocks={level.blocks.filter((block) => block.block.attributes[0] == "corrupt")}/>
 
-      {toolState == Tool.PlayerCamera ? 
+      {
+        toolState == Tool.PlayerCamera ? 
         <FirstPersonControllerComponent camera={camera} scene={scene} onPointerDown={onPointerDown} navigate={(levelId) => navigate(`/games/${level.gameId}/levels/${levelId}?source=${level.levelId}`)}/> : 
         <OrbitControls camera={camera} />
       }
