@@ -24,7 +24,7 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown, navigate
   const inventory = useRef<Inventory | null>(null);
 
   const { gl } = useThree();
-  const clock = new THREE.Clock()
+  const clock = new THREE.Clock();
 
   useEffect(() => {
     const controller = new FirstPersonController(camera, scene, navigate);
@@ -34,16 +34,6 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown, navigate
 
     inventory.current = new Inventory();
     setPlayerInventory(inventory.current);
-
-    /*
-    THIS FUNCTION IS NOT BEING EXECUTED BTW
-    const handlePointerLockChange = () => {
-      const isLocked = document.pointerLockElement === gl.domElement;
-      controller.handlePointerLockChange(isLocked);
-
-      console.warn("Pointer lock change");
-    };
-    */
 
     const handleMouseMove = (event: MouseEvent) => controller.handleMouseMove(event);
     const handleKeyDown = (event: KeyboardEvent) => controller.handleKeyDown(event);
@@ -73,7 +63,8 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown, navigate
   });
   
   const handleClick = () => {
-    gl.domElement.requestPointerLock(); // Use the canvas element for pointer locking
+    
+    gl.domElement.requestPointerLock();    
 
     const item = inventory.current? inventory.current.selectedItem : null;
 

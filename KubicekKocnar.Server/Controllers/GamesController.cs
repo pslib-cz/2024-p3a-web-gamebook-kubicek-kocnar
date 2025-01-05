@@ -37,8 +37,6 @@ namespace KubicekKocnar.Server.Controllers
             return game;
         }
 
-
-
         // PATCH: api/Games/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPatch("{id}")]

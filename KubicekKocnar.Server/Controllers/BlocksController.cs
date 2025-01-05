@@ -43,9 +43,7 @@ namespace KubicekKocnar.Server.Controllers
             var block = await _context.Blocks.FindAsync(id);
 
             if (block == null)
-            {
                 return NotFound();
-            }
 
             return block;
         }
@@ -54,9 +52,7 @@ namespace KubicekKocnar.Server.Controllers
         public async Task<IActionResult> PutBlock(uint id, Block block)
         {
             if (id != block.BlockId)
-            {
                 return BadRequest();
-            }
 
             _context.Entry(block).State = EntityState.Modified;
 
@@ -67,13 +63,9 @@ namespace KubicekKocnar.Server.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!BlockExists(id))
-                {
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
 
             return NoContent();

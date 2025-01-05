@@ -1,6 +1,7 @@
 import { Item } from "../types/Item";
 import { Coinage } from "../types/Coinage";
 import { ItemUpgrade } from "../types/ItemUpgrade";
+import { Cost } from "../types/Cost";
 
 const demoItem : Item = {
   img: "/Fr.png",
@@ -19,27 +20,38 @@ const emptyItem : Item = {
 
 export class Inventory {
 
+  constructor()
+  {
+    this.initializeServerUpgrades();
+  }
+
+  async initializeServerUpgrades() {
+
+    console.log("UPGRADES INITIALIZED");
+
+    try {
+        const blocksResponse = await fetch('https://localhost:7097/api/ItemUpgrades');
+        if (!blocksResponse.ok) {
+            throw new Error(`Response status: ${blocksResponse.status}`);
+        }
+        this.upgrades = (await blocksResponse.json());
+
+        console.log(this.upgrades);
+        
+    } catch (err: unknown) {
+        console.error(err);
+    }
+}
+
   public selectedItem : Item | null = demoItem;
   public hotbar : Item[] = [demoItem, emptyItem];
 
-  public upgrades : ItemUpgrade[] = [
-    {
-      inputItem: demoItem,
-      outputItem: demoItem1,
-      description: "This is insane upgrade 123",
-      cost: [
-        {
-          coinage: {name: "primary"}, 
-          cost: 1
-        }
-      ]
-
-    }
-  ]
+  public upgrades : ItemUpgrade[] = []
 
   private selectedItemId : number = 0;
 
   public coinage : Coinage[] = [{name: "primary"}, {name: "secondary"}];
+  public coinageAmount : number[] = [0, 0];
 
   public Scroll(up : boolean)
   {
@@ -57,4 +69,27 @@ export class Inventory {
 
     this.selectedItem = this.hotbar[this.selectedItemId];
   }
+
+  public IsCostSufficient(cost : Cost[]) : boolean
+  {    
+    if (cost == null) return true;
+
+    for (let i = 0; i < cost.length; i++)
+    {
+      for (let j = 0; j < this.coinage.length; j++)
+      {
+        if (cost[i].coinage.name == this.coinage[j].name)
+        {
+          if (cost[i].cost > this.coinageAmount[j])
+          {
+            return false;
+          }
+        }
+      }
+    }
+
+    return true;
+
+  }
+
 }
