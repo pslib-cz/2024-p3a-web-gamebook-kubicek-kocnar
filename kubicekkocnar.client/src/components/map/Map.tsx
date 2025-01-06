@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback } from "react";
+import React, { useContext, useEffect, useCallback, useState, useRef } from "react";
 import { OrbitControls, Stats } from "@react-three/drei";
 import * as THREE from "three";
 import { useThree } from "@react-three/fiber";
@@ -11,6 +11,7 @@ import FirstPersonControllerComponent from "../FirstPersonController";
 import Model from "./Model";
 import { CorruptionHandler } from "../CorruptionHandler";
 import { useNavigate } from "react-router-dom";
+import { EnemyObj } from "../Enemy";
 
 // React.memo(
 const Map = ({ level, isEditor=false }: { level: Level, isEditor?: boolean }) => {
@@ -198,9 +199,14 @@ const Map = ({ level, isEditor=false }: { level: Level, isEditor?: boolean }) =>
             name="portal-5"
             position={new THREE.Vector3(-8, 0.5, 7)}
         />
+
+        <EnemyObj />
+
         </>
     );
     //never rerender :D
 }; //); , () => true
+
+
 
 export default Map;
