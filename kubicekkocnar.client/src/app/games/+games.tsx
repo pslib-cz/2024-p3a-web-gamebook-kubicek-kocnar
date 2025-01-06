@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Game from "./types/Game";
-import { Link } from "react-router-dom";
 
-export function GamesMenu()
+import { Link } from "react-router-dom";
+import Game from "../../types/Game";
+
+export default function GamesMenu()
 {
 	const GAMESROUTE = 'https://localhost:7097/api/Games/';
 

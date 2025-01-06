@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import Level from "./types/Level";
+
 import { useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
+import Level from "../../../../types/Level";
 
-export function LevelMenu()
+export default function LevelMenu()
 {
 	const { gameid } = useParams();
 

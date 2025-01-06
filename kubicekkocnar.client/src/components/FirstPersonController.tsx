@@ -56,7 +56,7 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown, navigate
       document.removeEventListener("touchstart", handleTouchStart);
       document.removeEventListener("touchmove", handleTouchMove);
     };
-  }, [camera, gl, scene, setPlayerInventory]);
+  }, [camera, gl, navigate, scene, setPlayerInventory]);
 
   useFrame(() => {
     controllerRef.current?.update(clock.getDelta());

@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useRef, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { Tool } from "./editor/ToolBar";
 import PlacedBlock from "../types/PlacedBlock";
 import GenericFeature from "../types/Feature";
