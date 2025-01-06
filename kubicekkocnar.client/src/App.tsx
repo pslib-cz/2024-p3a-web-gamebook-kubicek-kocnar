@@ -6,6 +6,7 @@ import GamesMenu from './app/games/+games';
 import LevelMenu from './app/games/[gameid]/levels/+levels';
 import MainMenu from './app/+index';
 import Level from './app/games/[gameid]/levels/[levelid]/+level';
+import LevelEditor from './app/games/[gameid]/levels/[levelid]/editor/+editor';
 import './styles/UI.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="games" element={<GamesMenu />} />
           <Route path="games/:gameid/levels" element={<LevelMenu />} />
           <Route path="games/:gameid/levels/:levelid" element={<Level/>} />
+          <Route path="games/:gameid/levels/:levelid/editor" element={<LevelEditor/>} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -55,7 +55,7 @@ export function ItemUI() {
       console.log("Item used");
       setUseItem(false); // Reset the state
     }
-  }, [useItem]);
+  }, [playerInventory?.selectedItem, useItem]);
 
   useEffect(() =>{
     if (playerInventory && playerInventory.selectedItem)
