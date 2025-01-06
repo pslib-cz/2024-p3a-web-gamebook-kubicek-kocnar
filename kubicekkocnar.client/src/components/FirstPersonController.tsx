@@ -4,18 +4,17 @@ import * as THREE from "three";
 import { FirstPersonController } from "../lib/FirstPersonController";
 import { ItemsController } from "../lib/ItemsController";
 import { Inventory } from "../lib/Inventory";
-import { Item } from "../types/Item";
 import { AppContext } from "./AppContextProvider";
 import { useContext } from "react";
+import { getHandlePlayerMouseClick } from "./ItemController";
 
 type FirstPersonControllerComponentProps = {
   camera: THREE.Camera;
   scene: THREE.Scene;
-  onPointerDown : () => (item : Item | null) => void | null;
   navigate: (levelId: string) => void;
 };
 
-const FirstPersonControllerComponent = ({ camera, scene, onPointerDown, navigate}: FirstPersonControllerComponentProps) => {
+const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonControllerComponentProps) => {
   
   const { setPlayerInventory } = useContext(AppContext);
 
@@ -68,7 +67,7 @@ const FirstPersonControllerComponent = ({ camera, scene, onPointerDown, navigate
 
     const item = inventory.current? inventory.current.selectedItem : null;
 
-    if (onPointerDown) onPointerDown()(item);
+    if (getHandlePlayerMouseClick) getHandlePlayerMouseClick()(item);
 
     console.log("Calling OnPointerDown");
     

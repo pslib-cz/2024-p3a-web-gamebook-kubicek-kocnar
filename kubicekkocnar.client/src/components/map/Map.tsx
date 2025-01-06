@@ -11,10 +11,9 @@ import FirstPersonControllerComponent from "../FirstPersonController";
 import Model from "./Model";
 import { CorruptionHandler } from "../CorruptionHandler";
 import { useNavigate } from "react-router-dom";
-import { Item } from "../../types/Item";
 
 // React.memo(
-const Map = ({ level, onPointerDown, isEditor=false }: { level: Level, onPointerDown : () => (item: Item | null) => void | null, isEditor?: boolean }) => {
+const Map = ({ level, isEditor=false }: { level: Level, isEditor?: boolean }) => {
     const navigate = useNavigate();
 
     const scene = level.mapRenderer.scene;
@@ -139,7 +138,6 @@ const Map = ({ level, onPointerDown, isEditor=false }: { level: Level, onPointer
             )}
         />
         <FirstPersonControllerComponent
-            onPointerDown={onPointerDown}
             camera={camera}
             scene={scene}
             navigate={(levelId) =>
@@ -172,7 +170,6 @@ const Map = ({ level, onPointerDown, isEditor=false }: { level: Level, onPointer
         </lineSegments>
         {toolState == Tool.PlayerCamera ? (
             <FirstPersonControllerComponent
-            onPointerDown={onPointerDown}
             camera={camera}
             scene={scene}
             navigate={(levelId) =>

@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContextProvider } from "../../../../../components/AppContextProvider";
-import { getHandlePlayerMouseClick, ItemUI } from "../../../../../components/ItemController";
+import { ItemUI } from "../../../../../components/ItemController";
 import { UIOverlay } from "../../../../../components/UIOverlay";
 import Blocks from "../../../../../lib/Blocks";
 import Level from "../../../../../lib/Level";
@@ -47,7 +47,7 @@ function LevelPlayer()
               state.scene.background = new THREE.Color(0x0e0726);
               setScene(state.scene);
             }}>
-            {level && <Map level={level}  onPointerDown={getHandlePlayerMouseClick}/>}
+            {level && <Map level={level}/>}
           </Canvas>
           <ItemUI/>
           <UIOverlay/>

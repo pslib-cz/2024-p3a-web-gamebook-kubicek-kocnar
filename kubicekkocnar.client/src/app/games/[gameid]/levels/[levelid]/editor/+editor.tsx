@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { AppContextProvider } from "../../../../../../components/AppContextProvider";
 import ConfigPanel from "../../../../../../components/editor/ConfigPanel";
 import ToolBar from "../../../../../../components/editor/ToolBar";
-import { ItemUI, getHandlePlayerMouseClick } from "../../../../../../components/ItemController";
+import { ItemUI } from "../../../../../../components/ItemController";
 import { UIOverlay } from "../../../../../../components/UIOverlay";
 import Blocks from "../../../../../../lib/Blocks";
 import Level from "../../../../../../lib/Level";
@@ -51,7 +51,7 @@ function LevelEditor()
               state.scene.background = new THREE.Color(0x0e0726);
               setScene(state.scene);
             }}>
-            {level && <Map level={level} isEditor onPointerDown={getHandlePlayerMouseClick}/>}
+            {level && <Map level={level} isEditor/>}
           </Canvas>
           <ItemUI/>
           <UIOverlay/>
