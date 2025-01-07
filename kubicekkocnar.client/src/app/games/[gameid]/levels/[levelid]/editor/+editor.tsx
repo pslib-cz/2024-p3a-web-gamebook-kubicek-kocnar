@@ -6,7 +6,7 @@ import { AppContextProvider } from "../../../../../../components/AppContextProvi
 import ConfigPanel from "../../../../../../components/editor/ConfigPanel";
 import ToolBar from "../../../../../../components/editor/ToolBar";
 import { ItemUI } from "../../../../../../components/ItemController";
-import { UIOverlay } from "../../../../../../components/UIOverlay";
+import { UIOverlay } from "../../../../../../components/InventoryOverlay";
 import Blocks from "../../../../../../lib/Blocks";
 import Level from "../../../../../../lib/Level";
 import MapRenderer from "../../../../../../lib/MapRenderer";

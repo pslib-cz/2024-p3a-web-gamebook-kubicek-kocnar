@@ -1,5 +1,4 @@
 
-/* eslint-disable react-refresh/only-export-components */
 import './ItemController.css'
 import { AppContext } from './AppContextProvider';
 import { useContext, useEffect, useState } from 'react';
@@ -18,9 +17,9 @@ export function UIOverlay() {
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
-  }, []);
+  });
 
-  const handleKeyPress = (event : any) => {
+  const handleKeyPress = (event : KeyboardEvent) => {
 
     if (event.key === 'e') {
       setOpened((a) => !a);

@@ -4,12 +4,13 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContextProvider } from "../../../../../components/AppContextProvider";
 import { ItemUI } from "../../../../../components/ItemController";
-import { UIOverlay } from "../../../../../components/UIOverlay";
+import { UIOverlay } from "../../../../../components/InventoryOverlay";
 import Blocks from "../../../../../lib/Blocks";
 import Level from "../../../../../lib/Level";
 import MapRenderer from "../../../../../lib/MapRenderer";
 import Map from '../../../../../components/map/Map';
 import * as THREE from 'three';
+import PlayerHUD from "../../../../../components/game/PlayerHUD";
 
 
 function LevelPlayer()
@@ -40,7 +41,7 @@ function LevelPlayer()
     <TooltipProvider>
       <AppContextProvider>
         {!level && <div className="loader"></div>}
-        <div className='canvas'>
+        <div className='canvas' id="gameroot">
           <Canvas onCreated={(state) => {
               state.camera.position.set(0, 3, 0);
               state.scene.userData.camera = state.camera;
@@ -51,6 +52,7 @@ function LevelPlayer()
           </Canvas>
           <ItemUI/>
           <UIOverlay/>
+          <PlayerHUD/>
         </div>
       </AppContextProvider>
     </TooltipProvider>

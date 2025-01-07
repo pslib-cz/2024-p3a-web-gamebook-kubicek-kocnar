@@ -41,7 +41,7 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
     const handleTouchMove = (event: TouchEvent) => controller.handleTouchMove(event);
 
     //gl.domElement.addEventListener("pointerlockchange", handlePointerLockChange);
-    gl.domElement.addEventListener("mousemove", handleMouseMove);
+    document.getElementById("gameroot")?.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("keyup", handleKeyUp);
     document.addEventListener("touchstart", handleTouchStart);
@@ -49,21 +49,24 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
 
     return () => {
       //gl.domElement.removeEventListener("pointerlockchange", handlePointerLockChange);
-      gl.domElement.removeEventListener("mousemove", handleMouseMove);
+      document.getElementById("gameroot")?.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("keyup", handleKeyUp);
       document.removeEventListener("touchstart", handleTouchStart);
       document.removeEventListener("touchmove", handleTouchMove);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [camera, gl, scene, setPlayerInventory]);
 
   useFrame(() => {
     controllerRef.current?.update(clock.getDelta());
   });
   
-  const handleClick = () => {
-    
-    gl.domElement.requestPointerLock();    
+  const handleClick = async () => {
+    if (window.innerHeight !== screen.height) {
+        await document.getElementById("gameroot")?.requestFullscreen();
+        await document.getElementById("gameroot")?.requestPointerLock(); 
+    }   
 
     const item = inventory.current? inventory.current.selectedItem : null;
 
@@ -74,7 +77,7 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
     itemsControllerRef.current?.onCLick();
   };
 
-  gl.domElement.onpointerdown = handleClick;
+  document.getElementById("gameroot")!.onpointerdown = handleClick;
 
   return null;
 };

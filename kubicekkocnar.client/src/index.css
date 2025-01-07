@@ -64,23 +64,6 @@ h1 {
   margin: 1em;
 }
 
-.crosshair {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ffffff;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 1000;
-}
-
-.crosshair--hidden {
-  display: none;
-}
-
 .flexrow {
   display: flex;
   flex-direction: row;

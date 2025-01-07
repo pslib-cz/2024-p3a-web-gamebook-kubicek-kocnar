@@ -7,7 +7,7 @@ export function EnemyObj() {
 
   return (
     <mesh position={[0, 2, 0]} name="enemy-1" userData={{ enemy }}>
-      <boxGeometry args={[1, 1, 1]} />
+      <sphereGeometry args={[1, 8, 8]} />
       <meshStandardMaterial color="hotpink" />
     </mesh>
   );

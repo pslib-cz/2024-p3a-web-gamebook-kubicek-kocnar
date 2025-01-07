@@ -1,0 +1,124 @@
+.player-hud {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.player-hud__health-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 300px;
+}
+
+.player-hud__health-bar-container {
+  flex-grow: 1;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.player-hud__health-bar {
+  height: 100%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.player-hud__health-text {
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  min-width: 40px;
+  text-align: right;
+}
+
+.player-hud__weapons-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.player-hud__weapon-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 8px 12px;
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+}
+
+.player-hud__weapon-name {
+  font-size: 14px;
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+.player-hud__weapon-ammo {
+  font-size: 16px;
+  font-weight: bold;
+  min-width: 70px;
+  text-align: right;
+}
+
+.crosshair {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+}
+
+.crosshair__dot {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  backdrop-filter: invert(1) contrast(1000%);
+  
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.crosshair__line {
+  position: absolute;
+  
+  backdrop-filter: invert(1) contrast(1000%);
+}
+
+.crosshair__line--vertical {
+  width: 2px;
+  height: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.crosshair__line--vertical-top {
+  top: -4px;
+}
+
+.crosshair__line--vertical-bottom {
+  bottom: -4px;
+}
+
+.crosshair__line--horizontal {
+  height: 2px;
+  width: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.crosshair__line--horizontal-left {
+  left: -4px;
+}
+
+.crosshair__line--horizontal-right {
+  right: -4px;
+}
