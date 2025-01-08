@@ -42,7 +42,7 @@ export function UIOverlay() {
   return (
     <>
     { opened &&
-      <div>
+      <div id="inventoryui">
         <div className='ui-item'>
         <div>
         <div> 

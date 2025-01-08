@@ -63,9 +63,11 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
   });
   
   const handleClick = async () => {
-    if (window.innerHeight !== screen.height) {
-        await document.getElementById("gameroot")?.requestFullscreen();
-        await document.getElementById("gameroot")?.requestPointerLock(); 
+    console.log(!document.getElementById("inventoryui"), window.innerHeight !== screen.height)
+    if (window.innerHeight !== screen.height || !document.getElementById("inventoryui")) {
+      try { await document.getElementById("gameroot")?.requestFullscreen() } catch (e) { console.error(e); }
+      console.log("Requesting Pointerlock");
+      await document.getElementById("gameroot")?.requestPointerLock(); 
     }   
 
     const item = inventory.current? inventory.current.selectedItem : null;
