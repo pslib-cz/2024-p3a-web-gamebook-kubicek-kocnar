@@ -24,7 +24,7 @@ export function UIOverlay() {
     if (event.key === 'e') {
       setOpened((a) => !a);
 
-      if (opened) {        
+      if (!opened) {
         document.exitPointerLock();
       }
       else 

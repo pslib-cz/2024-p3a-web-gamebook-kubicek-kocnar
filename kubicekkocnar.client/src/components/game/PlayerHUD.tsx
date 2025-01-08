@@ -1,13 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import '../../styles/game/PlayerHUD.css';
+import { AppContext } from '../AppContextProvider';
 
 const GameHUD = () => {
   // Example weapons data
-  const weapons = [
-    { name: "PRIMARY", ammo: "30/120" },
-    { name: "SECONDARY", ammo: "15/45" },
-    { name: "GADGET", ammo: "2/2" }
-  ];
+
+  const { playerInventory } = useContext(AppContext);
 
   const [health] = useState(75); // Example health value
 
@@ -45,10 +43,10 @@ const GameHUD = () => {
 
       {/* Weapons List */}
       <div className="player-hud__weapons-section">
-        {weapons.map((weapon, index) => (
+        {playerInventory?.hotbar?.map((weapon, index) => (         
           <div key={index} className="player-hud__weapon-item">
-            <span className="player-hud__weapon-name">{weapon.name}</span>
-            <span className="player-hud__weapon-ammo">{weapon.ammo}</span>
+            <span className="player-hud__weapon-name">{weapon.img}</span>
+            <span className="player-hud__weapon-ammo">{weapon.description}</span>
           </div>
         ))}
       </div>
