@@ -4,6 +4,7 @@ import { AppContext } from './AppContextProvider';
 import { useContext, useEffect, useState } from 'react';
 import { Coinage } from '../types/Coinage';
 import { ItemUpgrade } from '../types/ItemUpgrade';
+import { Inventory } from '../lib/Inventory';
 
 export function UIOverlay() {
   
@@ -74,12 +75,19 @@ function CoinageDrawer({coinage} : {coinage: Coinage})
 
 function ItemUpgradeDrawer({upgrade} : {upgrade: ItemUpgrade})
 {
-  const { playerInventory } = useContext(AppContext);
+  const { playerInventory, setPlayerInventory} = useContext(AppContext);
 
   return (
     <div
       onClick={
-        () => console.log("UPGRADE CLICKED")
+        () => {          
+
+          console.log("UPGRADE " + upgrade.description);
+
+          playerInventory?.RemoveItemFromHotbar(upgrade.inputItem);
+          playerInventory?.AddItemIntoHotbar(upgrade.outputItem);
+          setPlayerInventory(playerInventory!.Clone());
+        }
       }
       style={{border: "1px solid black", width: "fit-content", margin: "auto"}}
     >

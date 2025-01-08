@@ -16,11 +16,11 @@ type FirstPersonControllerComponentProps = {
 
 const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonControllerComponentProps) => {
   
-  const { setPlayerInventory } = useContext(AppContext);
+  const { setPlayerInventory, playerInventory } = useContext(AppContext);
 
   const controllerRef = useRef<FirstPersonController | null>(null);
   const itemsControllerRef = useRef<ItemsController | null>(null);
-  const inventory = useRef<Inventory | null>(null);
+  //const inventory = useRef<Inventory | null>(null);
 
   const { gl } = useThree();
   const clock = new THREE.Clock();
@@ -31,8 +31,8 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
 
     itemsControllerRef.current = new ItemsController(camera, scene);
 
-    inventory.current = new Inventory();
-    setPlayerInventory(inventory.current);
+    //inventory.current = new Inventory();
+    setPlayerInventory(new Inventory());
 
     const handleMouseMove = (event: MouseEvent) => controller.handleMouseMove(event);
     const handleKeyDown = (event: KeyboardEvent) => controller.handleKeyDown(event);
@@ -63,14 +63,13 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
   });
   
   const handleClick = async () => {
-    console.log(!document.getElementById("inventoryui"), window.innerHeight !== screen.height)
-    if (window.innerHeight !== screen.height || !document.getElementById("inventoryui")) {
+    if (!document.getElementById("inventoryui")) {
       try { await document.getElementById("gameroot")?.requestFullscreen() } catch (e) { console.error(e); }
       console.log("Requesting Pointerlock");
       await document.getElementById("gameroot")?.requestPointerLock(); 
     }   
 
-    const item = inventory.current? inventory.current.selectedItem : null;
+    const item = playerInventory? playerInventory.selectedItem : null;
 
     if (getHandlePlayerMouseClick) getHandlePlayerMouseClick()(item);
 

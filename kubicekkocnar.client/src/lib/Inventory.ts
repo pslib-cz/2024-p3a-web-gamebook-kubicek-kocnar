@@ -46,6 +46,24 @@ export class Inventory {
   public selectedItem : Item | null = demoItem;
   public hotbar : Item[] = [demoItem, emptyItem];
 
+  public AddItemIntoHotbar(item : Item)
+  {
+    this.hotbar.push(item);
+    
+    console.log("added item into hotbar " + item.name);
+    console.log(this.hotbar);
+  }
+
+  public Clone() : Inventory
+  {
+    return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+  }
+
+  public RemoveItemFromHotbar(item : Item)
+  {
+    this.hotbar = this.hotbar.filter((a) => a != item);
+  }
+
   public upgrades : ItemUpgrade[] = []
 
   private selectedItemId : number = 0;
