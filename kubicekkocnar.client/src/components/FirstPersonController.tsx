@@ -46,6 +46,7 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
     document.addEventListener("keyup", handleKeyUp);
     document.addEventListener("touchstart", handleTouchStart);
     document.addEventListener("touchmove", handleTouchMove);
+    document.getElementById("gameroot")!.addEventListener("pointerdown", handleClick)
 
     return () => {
       //gl.domElement.removeEventListener("pointerlockchange", handlePointerLockChange);
@@ -54,6 +55,7 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
       document.removeEventListener("keyup", handleKeyUp);
       document.removeEventListener("touchstart", handleTouchStart);
       document.removeEventListener("touchmove", handleTouchMove);
+      document.getElementById("gameroot")!.removeEventListener("pointerdown", handleClick)
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [camera, gl, scene, setPlayerInventory]);
@@ -77,8 +79,6 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
     
     itemsControllerRef.current?.onCLick();
   };
-
-  document.getElementById("gameroot")!.onpointerdown = handleClick;
 
   return null;
 };
