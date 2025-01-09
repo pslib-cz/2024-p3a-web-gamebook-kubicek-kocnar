@@ -2,6 +2,8 @@ import { Item } from "../types/Item";
 import { Coinage } from "../types/Coinage";
 import { ItemUpgrade } from "../types/ItemUpgrade";
 import { Cost } from "../types/Cost";
+import { GetCoinages } from "../api/Coinages";
+import { GetUpgrades } from "../api/Upgrades";
 
 const demoItem : Item = {
   name: "item1",
@@ -23,41 +25,13 @@ export class Inventory {
     this.initializeServerCoinages();
   }
 
-  async initializeServerCoinages() {  
-
-    console.log("UPGRADES INITIALIZED");
-
-    try {
-        const blocksResponse = await fetch('https://localhost:7097/api/Coinages');
-        if (!blocksResponse.ok) {
-            throw new Error(`Response status: ${blocksResponse.status}`);
-        }
-        this.coinage = (await blocksResponse.json());
-
-        console.log(this.coinage);
-        
-    } catch (err: unknown) {
-        console.error(err);
-    }
+  async initializeServerCoinages() {
+    this.coinage = await GetCoinages();
   }
 
-  async initializeServerUpgrades() {  
-
-    console.log("UPGRADES INITIALIZED");
-
-    try {
-        const blocksResponse = await fetch('https://localhost:7097/api/ItemUpgrades');
-        if (!blocksResponse.ok) {
-            throw new Error(`Response status: ${blocksResponse.status}`);
-        }
-        this.upgrades = (await blocksResponse.json());
-
-        console.log(this.upgrades);
-        
-    } catch (err: unknown) {
-        console.error(err);
-    }
-}
+  async initializeServerUpgrades() {
+    this.upgrades = await GetUpgrades();
+  }
 
   public selectedItem : Item | null = demoItem;
   public hotbar : Item[] = [demoItem, emptyItem];
