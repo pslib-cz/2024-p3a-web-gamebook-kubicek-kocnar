@@ -16,8 +16,8 @@ let handlePlayerMouseClick: HandlePlayerMouseClickProps | null = null;
 
 export function ItemUI() {
   const [useItem, setUseItem] = useState(false);
-  const { playerInventory } = useContext(AppContext);
-  const [img, setImg] = useState<string>("");
+  const { playerInventory, setPlayerInventory } = useContext(AppContext);
+  const [img, setImg] = useState("");
 
   handlePlayerMouseClick = () => {
     console.log(`Using item ${playerInventory?.selectedItem?.img}`);
@@ -28,10 +28,10 @@ export function ItemUI() {
     const handleScroll = (event: WheelEvent) => {
       playerInventory?.Scroll(event.deltaY > 0);
 
-      const s = playerInventory?.selectedItem;
-      if (!s) return;
+        const s = playerInventory?.selectedItem;
+        if (!s) return;
 
-      setImg(s.img);
+        setPlayerInventory(playerInventory.Clone());
     };
 
     window.addEventListener('wheel', handleScroll);
@@ -61,7 +61,7 @@ export function ItemUI() {
     if (playerInventory && playerInventory.selectedItem)
       setImg(playerInventory.selectedItem.img)
 
-  }, [playerInventory, playerInventory?.selectedItem]);
+  }, [playerInventory]);
 
   return (
     <ItemContext.Provider value={{ setUseItem }}>

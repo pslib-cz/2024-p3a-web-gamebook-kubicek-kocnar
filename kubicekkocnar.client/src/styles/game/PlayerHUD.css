@@ -54,6 +54,10 @@
   backdrop-filter: blur(4px);
 }
 
+.player-hud__weapon-item--selected{
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 .player-hud__weapon-name {
   font-size: 14px;
   opacity: 0.8;
