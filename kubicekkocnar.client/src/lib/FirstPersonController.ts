@@ -6,23 +6,27 @@ export class FirstPersonController {
   private rotation: THREE.Quaternion = new THREE.Quaternion(); // Base quaternion
   private pitch: THREE.Quaternion = new THREE.Quaternion(); // For up/down rotation
   private yaw: THREE.Quaternion = new THREE.Quaternion(); // For left/right rotation
-  private move: { forward: boolean; backward: boolean; left: boolean; right: boolean } = {
+  private move: { forward: boolean; backward: boolean; left: boolean; right: boolean, up: boolean } = {
     forward: false,
     backward: false,
     left: false,
     right: false,
+    up: false
   };
   private touchStart: { x: number; y: number } = { x: 0, y: 0 };
   private viewBobPhase: number = 0; // For view bobbing effect
 
   private acceleration: number = 0; // Acceleration
   private isGrounded: boolean = true; // Check if player is on the ground
+  private lastGrounded: boolean = true; // Check if player was on the ground last frame
   private scene: THREE.Scene;
   private playerPosition: THREE.Vector3 = new THREE.Vector3();
 
   private navigate;
 
   public stopped: boolean = false;
+
+  private canJump: boolean = true;
 
   constructor(camera: THREE.Camera, scene: THREE.Scene, navigate: (levelId: string) => void) {
     this.camera = camera;
@@ -67,7 +71,7 @@ export class FirstPersonController {
 
   public handlePointerLockChange(isLocked: boolean) {
     if (!isLocked) {
-      this.move = { forward: false, backward: false, left: false, right: false };
+      this.move = { forward: false, backward: false, left: false, right: false, up: false };
     }
   }
 
@@ -96,7 +100,20 @@ export class FirstPersonController {
     }
   }
 
+  public handleJump() {
+    console.log("jumping", this.isGrounded, this.lastGrounded);
+    if (this.canJump && (this.isGrounded || this.lastGrounded)) {
+      this.move.up = true;
+      this.isGrounded = false;
+      this.canJump = false;
+      setTimeout(() => {
+        this.canJump = true;
+      }, 500)
+    }
+  }
+
   public handleKeyDown(event: KeyboardEvent) {
+    
     switch (event.code) {
       case "KeyW":
         this.move.forward = true;
@@ -111,7 +128,7 @@ export class FirstPersonController {
         this.move.right = true;
         break;
       case "Space":
-        // handle jumping
+        this.handleJump();
         break;
     }
   }
@@ -130,11 +147,15 @@ export class FirstPersonController {
       case "KeyD":
         this.move.right = false;
         break;
+      case "Space":
+        this.move.up = false;
+        break;
     }
   }
 
   public update(delta: number) {
     if (this.stopped) return;
+    this.lastGrounded = this.isGrounded;
     const speed = 6; // Movement speed
 
     // Update velocity based on input
@@ -146,6 +167,11 @@ export class FirstPersonController {
 
     this.velocity.normalize().multiplyScalar(speed * delta);    
 
+    if (this.move.up) {
+      this.acceleration -= .5; // Jump
+      this.move.up = false;
+    }
+
     // Calculate the forward and right directions based on the camera's rotation
     const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(this.camera.quaternion).normalize();
 
@@ -153,11 +179,14 @@ export class FirstPersonController {
     forward.y = 0;
 
     const right = new THREE.Vector3(1, 0, 0).applyQuaternion(this.camera.quaternion).normalize();
+    const up = new THREE.Vector3(0, 1, 0);
 
     // Move the camera
     const movement = new THREE.Vector3()
         .add(forward.multiplyScalar(this.velocity.z)) // Forward/backward
-        .add(right.multiplyScalar(this.velocity.x)); // Left/right
+        .add(right.multiplyScalar(this.velocity.x)) // Left/right
+        .add(up.multiplyScalar(this.velocity.y));
+        
    
     // Vertical movement (gravity)
     if (!this.isGrounded) {
@@ -175,7 +204,7 @@ export class FirstPersonController {
     this.camera.position.copy(this.playerPosition);
 
     // View bobbing effect
-    if (this.move.forward || this.move.backward || this.move.left || this.move.right) {
+    if (this.move.forward || this.move.backward || this.move.left || this.move.right && !this.move.up) {
       this.viewBobPhase += delta * 10; // Adjust bobbing speed
       this.camera.position.y += Math.sin(this.viewBobPhase) * 0.15; // Bobbing amplitude, the 2 is the player's height and its only temporary, sice you will be able to go up later
     } else {
@@ -183,7 +212,7 @@ export class FirstPersonController {
     }
 
     // Test vertical movement for collisions
-    const proposedVerticalPosition = this.playerPosition.clone().add(verticalMovement);
+    const proposedVerticalPosition = this.playerPosition.clone().add(new THREE.Vector3(0, verticalMovement.y, 0));
     if (!this.checkCollisions(proposedVerticalPosition)) {
       this.playerPosition.add(verticalMovement); // Apply vertical movement if no collision
       this.isGrounded = false;
@@ -192,6 +221,8 @@ export class FirstPersonController {
       this.isGrounded = true;
       this.acceleration = 0;
     }
+
+    console.log(this.isGrounded)
 
     // portals:
     const portals = this.scene.children
@@ -236,7 +267,7 @@ export class FirstPersonController {
     // Check for intersections with collidable objects
     for (const object of obstacles) {
       //const objectBox = new THREE.Box3().setFromObject(object);
-      if (playerBox.intersectsBox(object)) 
+      if (playerBox.intersectsBox(object))
         return true;
     }
     return false;

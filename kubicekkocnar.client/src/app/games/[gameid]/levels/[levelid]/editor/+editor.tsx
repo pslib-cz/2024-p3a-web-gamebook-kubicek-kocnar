@@ -44,7 +44,7 @@ function LevelEditor()
         {!level && <div className="loader"></div>}
         <ToolBar />
         {level && <ConfigPanel level={level}/>}
-        <div className='canvas'>
+        <div className='canvas'  id="gameroot">
           <Canvas onCreated={(state) => {
               state.camera.position.set(0, 3, 0);
               state.scene.userData.camera = state.camera;

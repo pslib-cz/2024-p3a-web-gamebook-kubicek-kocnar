@@ -49,6 +49,7 @@ const Map = ({
   const handleMapPointerDown = useCallback(
     (event: MouseEvent) => {
       //get the block that was clicked
+      console.log("Pointer down", event);
 
       const mouse = new THREE.Vector2(0, 0);
       // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
