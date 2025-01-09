@@ -8,6 +8,7 @@ import MainMenu from './app/+index';
 import Level from './app/games/[gameid]/levels/[levelid]/+level';
 import LevelEditor from './app/games/[gameid]/levels/[levelid]/editor/+editor';
 import './styles/UI.css';
+import Editor from './app/+editor';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="games/:gameid/levels" element={<LevelMenu />} />
           <Route path="games/:gameid/levels/:levelid" element={<Level/>} />
           <Route path="games/:gameid/levels/:levelid/editor" element={<LevelEditor/>} />
+          <Route path="editor" element={<Editor/>} />
         </Route>
       </Routes>
     </BrowserRouter>
