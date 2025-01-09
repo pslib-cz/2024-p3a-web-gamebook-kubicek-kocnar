@@ -82,7 +82,8 @@ function ItemUpgradeDrawer({upgrade} : {upgrade: ItemUpgrade})
       onClick={
         () => {          
 
-          console.log("UPGRADE " + upgrade.description);
+          if (!playerInventory?.ItemIsInHotbar(upgrade.inputItem) ||
+              !playerInventory?.IsCostSufficient(upgrade.cost)) return;
 
           playerInventory?.RemoveItemFromHotbar(upgrade.inputItem);
           playerInventory?.AddItemIntoHotbar(upgrade.outputItem);
@@ -95,6 +96,7 @@ function ItemUpgradeDrawer({upgrade} : {upgrade: ItemUpgrade})
       <p>{upgrade.inputItem.name} to {upgrade.outputItem.name}</p>
       {upgrade.cost && upgrade.cost.map((a, x) => <CoinageDrawer key={x} coinage={a.coinage} />)}
       {playerInventory?.IsCostSufficient(upgrade.cost) ? <p>Can afford</p> : <p>Cannot afford</p>}
+      {playerInventory?.ItemIsInHotbar(upgrade.inputItem) ? <p>Item in hotbar</p> : <p>Item not in hotbar</p>}
     </div>
   )
 }

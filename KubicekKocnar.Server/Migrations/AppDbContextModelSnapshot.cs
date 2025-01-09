@@ -79,7 +79,7 @@ namespace KubicekKocnar.Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<uint>("IconId")
+                    b.Property<uint?>("IconId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -523,8 +523,7 @@ namespace KubicekKocnar.Server.Migrations
                     b.HasOne("KubicekKocnar.Server.Models.Texture", "Icon")
                         .WithMany("Coinages")
                         .HasForeignKey("IconId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Icon");
                 });

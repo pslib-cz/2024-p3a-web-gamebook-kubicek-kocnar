@@ -1,6 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import '../../styles/game/PlayerHUD.css';
 import { AppContext } from '../AppContextProvider';
+import { color } from 'three/webgpu';
 
 const GameHUD = () => {
   // Example weapons data
@@ -43,8 +44,8 @@ const GameHUD = () => {
 
       {/* Weapons List */}
       <div className="player-hud__weapons-section">
-        {playerInventory?.hotbar?.map((weapon, index) => (         
-          <div key={index} className="player-hud__weapon-item">
+        {playerInventory?.hotbar?.map((weapon, index) => (
+          <div key={index} className={`player-hud__weapon-item ${playerInventory.selectedItemId == index ? "" : "player-hud__weapon-item--selected"}`}>
             <span className="player-hud__weapon-name">{weapon.img}</span>
             <span className="player-hud__weapon-ammo">{weapon.description}</span>
           </div>

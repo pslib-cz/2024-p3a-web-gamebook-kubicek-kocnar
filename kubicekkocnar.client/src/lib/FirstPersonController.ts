@@ -62,7 +62,6 @@ export class FirstPersonController {
     this.camera.quaternion.copy(this.rotation);
   }
 
-
   public handleTouchStart(event: TouchEvent) {
     if (event.touches.length === 1) {
       const touch = event.touches[0];
