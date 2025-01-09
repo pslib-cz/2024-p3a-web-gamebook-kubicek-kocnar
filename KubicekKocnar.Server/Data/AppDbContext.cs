@@ -121,6 +121,7 @@ namespace KubicekKocnar.Server.Data
                 .WithOne(t => t.Item)
                 .HasForeignKey(t => t.ItemId)
                 .OnDelete(DeleteBehavior.SetNull);
+            
 
             modelBuilder.Entity<Coinage>()
                 .HasOne(c => c.Icon)
