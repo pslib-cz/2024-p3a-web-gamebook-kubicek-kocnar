@@ -53,7 +53,7 @@ const Editor: React.FC = () => {
                 <p>{item.img}</p>
                 <img src={item.img} alt={item.name} />
                 <p onClick={async() => {
-                  DeleteItem(item.itemId); 
+                  DeleteItem(item.itemId!); 
                   
                   // this use state is broken af
                   setItems(await GetItems());

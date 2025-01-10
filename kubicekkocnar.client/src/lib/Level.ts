@@ -4,6 +4,7 @@ import PlacedBlock from "../types/PlacedBlock";
 import MapRenderer from "./MapRenderer";
 import GenericFeature from "../types/Feature";
 import FeatureRenderer from "./features/FeatureRenderer";
+import { FetchLevel } from "../api/Levels";
 
 interface LevelOptions {
     name: string
@@ -34,12 +35,14 @@ class Level implements LevelType {
 
     async initializeServerLevel(onReady: (level: Level) => void) {
         try {
-            const levelResponse = await fetch(APIROUTE(this.gameId, this.levelId));
-            if (!levelResponse.ok) {
-                throw new Error(`Response status: ${levelResponse.status}`);
-            }
-            const level: LevelType = await levelResponse.json();
+            // const levelResponse = await fetch(APIROUTE(this.gameId, this.levelId));
+            // if (!levelResponse.ok) {
+            //     throw new Error(`Response status: ${levelResponse.status}`);
+            // }
+            // const level: LevelType = await levelResponse.json();
             
+            const level : LevelType = await FetchLevel(this.gameId, this.levelId) as LevelType;
+
             this.name = level.name;
             this.description = level.description;
             this.nextLevel = level.nextLevel;
