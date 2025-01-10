@@ -1,0 +1,53 @@
+.mainmenu {
+    box-sizing: border-box;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem;
+    background: url("/mainmenubg.avif");
+    background-size: cover;
+    font-family: fancy;
+}
+
+.mainmenu__heading {
+    font-size: 8rem;
+    -webkit-text-stroke-width: 12px;
+    -webkit-text-stroke-color: black;
+    paint-order: stroke fill;
+    color: rgb(187, 47, 187);
+    margin-top: 0;
+}
+
+.mainmenu__subheading {
+    font-size: 2rem;
+    -webkit-text-stroke-width: 6px;
+    -webkit-text-stroke-color: black;
+    paint-order: stroke fill;
+}
+
+.mainmenu__buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.mainmenu__buttons a {
+    font-size: 2rem;
+    margin: 0;
+    -webkit-text-stroke-width: 4px;
+    -webkit-text-stroke-color: black;
+    paint-order: stroke fill;
+}
+
+.mainmenu__buttons a:hover {
+    color: rgb(187, 47, 187);
+} 
+
+.mainmenu__semi {
+    opacity: .6;
+}

@@ -1,6 +1,0 @@
-{
-  "dependencies": { "@radix-ui/react-tooltip": "^1.1.6", "lodash": "^4.17.21" },
-  "devDependencies": {
-    "@types/lodash": "^4.17.13"
-  }
-}
