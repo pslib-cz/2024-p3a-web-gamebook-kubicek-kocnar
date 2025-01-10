@@ -3,55 +3,22 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 import Level from "../../../../types/Level";
+import { FetchLevels, PostLevel } from "../../../../api/Levels";
 
 export default function LevelMenu()
 {
 	const { gameid } = useParams();
 
-	const LEVELSROUTE = `https://localhost:7097/api/Games/${gameid}/Levels`;
-
 	const [levels_, setLevels] = useState<Level[]>();
 
-	async function fetchLevels() {
-		try {
-			const response = await fetch(LEVELSROUTE);
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
-			const levels: Level[] = await response.json();
-			setLevels(levels);
-		} catch (error) {
-			console.error('There was a problem with the fetch operation:', error);
-		}
-	}
-
 	useEffect(() => {
+		const fetchLevels = async () => {
+			setLevels(await FetchLevels(Number(gameid!)));
+		};
 		fetchLevels();
-	})
+	}, [gameid]);
 
   const {register, getValues} = useForm();
-  
-	async function PostLevel(level : Level) {
-
-    console.log("Posting level");
-
-		try {
-			const response = await fetch(LEVELSROUTE, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(level)
-			});
-			if (!response.ok) {
-					throw new Error('Network response was not ok');
-			}
-			const levels: Level[] = await response.json();
-			setLevels(levels);
-		} catch (error) {
-			console.error('There was a problem with the fetch operation:', error);
-		}
-  }
 
 	return (
 		<div>
@@ -66,7 +33,7 @@ export default function LevelMenu()
 							PostLevel(
 							{
 								name: getValues('level.name')
-							} as Level
+							} as Level, Number(gameid!)
 							);
 						}
 						}

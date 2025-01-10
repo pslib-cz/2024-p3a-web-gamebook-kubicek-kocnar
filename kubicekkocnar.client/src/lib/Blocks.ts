@@ -1,3 +1,4 @@
+import { FetchBlocks } from '../api/Blocks';
 import Block from '../types/Block';
 
 class Blocks {
@@ -8,18 +9,7 @@ class Blocks {
     }
     async initializeServerBlocks(onReady: (blocks: Blocks) => void) {
         try {
-            const blocksResponse = await fetch('https://localhost:7097/api/Blocks');
-            if (!blocksResponse.ok) {
-                throw new Error(`Response status: ${blocksResponse.status}`);
-            }
-            this.blocks = (await blocksResponse.json()).map((block: {attributes: string}) =>
-            {
-                return {
-                    ...block,
-                    attributes: block.attributes.split(',')
-                }
-            })
-            
+            this.blocks = await FetchBlocks();            
             onReady(this);
         } catch (err: unknown) {
             console.error(err);

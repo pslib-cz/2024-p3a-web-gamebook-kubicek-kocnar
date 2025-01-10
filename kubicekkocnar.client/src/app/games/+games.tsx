@@ -3,53 +3,22 @@ import { useForm } from "react-hook-form";
 
 import { Link } from "react-router-dom";
 import Game from "../../types/Game";
+import { FetchGames, PostGame } from "../../api/Games";
 
 export default function GamesMenu()
 {
-	const GAMESROUTE = 'https://localhost:7097/api/Games/';
-
 	const [games, setGames] = useState<Game[]>();
 
-	async function fetchGames() {
-		try {
-			const response = await fetch(GAMESROUTE);
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
-			const games: Game[] = await response.json();
-			setGames(games);
-		} catch (error) {
-			console.error('There was a problem with the fetch operation:', error);
-		}
-	}
-
 	useEffect(() => {
-		fetchGames();
+		const fetchData = async () => {
+			setGames(await FetchGames());
+		};
+		fetchData();
 	}, [])
 
   const {register, getValues} = useForm();
   
-	async function PostGame(game : Game) {
 
-    console.log("Posting game");
-
-		try {
-			const response = await fetch(GAMESROUTE, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(game)
-			});
-			if (!response.ok) {
-					throw new Error('Network response was not ok');
-			}
-			const games: Game[] = await response.json();
-			setGames(games);
-		} catch (error) {
-			console.error('There was a problem with the fetch operation:', error);
-		}
-  }
 
 	return (
 		<div>

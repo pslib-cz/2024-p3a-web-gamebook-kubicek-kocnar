@@ -9,7 +9,7 @@ interface LevelOptions {
     name: string
 }
 
-const APIROUTE = (gameId: number, levelId?: number) => `https://localhost:7097/api/Games/${gameId}/Levels${levelId ? `/${levelId}` : ''}`;
+const APIROUTE = (gameId: number, levelId?: number) => `${import.meta.env.VITE_API_URL}/Games/${gameId}/Levels${levelId ? `/${levelId}` : ''}`;
 class Level implements LevelType {
     available: boolean = false;
     gameId: number;

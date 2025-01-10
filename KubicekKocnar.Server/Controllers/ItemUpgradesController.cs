@@ -78,6 +78,16 @@ namespace KubicekKocnar.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<ItemUpgrade>> PostItemUpgrade(ItemUpgrade itemUpgrade)
         {
+            if (!_context.Items.Any(i => i.ItemId == itemUpgrade.InputItemId))
+            {
+                return BadRequest("Input item does not exist");
+            }
+
+            if (!_context.Items.Any(i => i.ItemId == itemUpgrade.OutputItemId))
+            {
+                return BadRequest("Output item does not exist");
+            }
+
             _context.ItemUpgrades.Add(itemUpgrade);
             await _context.SaveChangesAsync();
 

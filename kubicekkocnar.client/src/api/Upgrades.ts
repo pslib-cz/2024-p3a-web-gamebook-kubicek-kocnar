@@ -1,10 +1,11 @@
 import { ItemUpgrade } from "../types/ItemUpgrade";
 
+const URL : string = `${import.meta.env.VITE_API_URL}/ItemUpgrades`;
 
 export async function GetUpgrades() : Promise<ItemUpgrade[]> {  
 
   try {
-    const blocksResponse = await fetch('https://localhost:7097/api/ItemUpgrades');
+    const blocksResponse = await fetch(URL);
     if (!blocksResponse.ok) {
       throw new Error(`Response status: ${blocksResponse.status}`);
     }
@@ -22,7 +23,7 @@ export async function GetUpgrades() : Promise<ItemUpgrade[]> {
 export async function DeleteUpgrade(upgradeId : number) : Promise<void> {
   
     try {
-      const blocksResponse = await fetch(`https://localhost:7097/api/ItemUpgrades/${upgradeId}`, {
+      const blocksResponse = await fetch(`${URL}/${upgradeId}`, {
         method: 'DELETE'
       });
       if (!blocksResponse.ok) {
@@ -37,7 +38,7 @@ export async function DeleteUpgrade(upgradeId : number) : Promise<void> {
 export async function PostUpgrade(upgrade : ItemUpgrade) : Promise<void> {
     
       try {
-        const blocksResponse = await fetch(`https://localhost:7097/api/ItemUpgrades`, {
+        const blocksResponse = await fetch(URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
