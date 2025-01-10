@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useCallback } from "react";
 import { OrbitControls, Stats } from "@react-three/drei";
 import * as THREE from "three";
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 
 import { AppContext } from "../AppContextProvider";
 import { Tool } from "../editor/ToolBar";
@@ -30,6 +30,11 @@ const Map = ({
   const { gl, camera } = threeRef.current;
 
   console.log("Rerendering MapRenderer");
+
+  
+    useFrame(() => {
+      level?.enemyRenderer.update();
+    })
 
   // create a new MapEditor instance and remember it between rerenders
   const mapEditorRef = React.useRef<MapEditor | null>(null);

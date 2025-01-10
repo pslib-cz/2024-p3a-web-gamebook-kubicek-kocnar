@@ -24,6 +24,9 @@ const MainMenu: React.FC = () => {
                 <p>TOMAS KUBICEK</p>
                 <p>JAN KOCNAR</p>
             </div>
+            <div className="mainmenu__thanksto">
+                <p>Special thanks to: Filip Hudec</p>
+            </div>
         </div>
     );
 };

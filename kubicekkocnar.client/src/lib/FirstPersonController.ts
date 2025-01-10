@@ -222,8 +222,6 @@ export class FirstPersonController {
       this.acceleration = 0;
     }
 
-    console.log(this.isGrounded)
-
     // portals:
     const portals = this.scene.children
     .filter((child) => child.name.includes('feature Portal'))

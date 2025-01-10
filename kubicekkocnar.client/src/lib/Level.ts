@@ -5,6 +5,7 @@ import MapRenderer from "./MapRenderer";
 import GenericFeature from "../types/Feature";
 import FeatureRenderer from "./features/FeatureRenderer";
 import { FetchLevel } from "../api/Levels";
+import { EnemyRenderer } from "./Enemy";
 
 interface LevelOptions {
     name: string
@@ -20,12 +21,14 @@ class Level implements LevelType {
     nextLevel?: number;
     mapRenderer: MapRenderer;
     featureRenderer: FeatureRenderer;
+    enemyRenderer: EnemyRenderer;
 
     constructor(gameId: number, levelId: number, mapRenderer: MapRenderer, onReady: (level: Level) => void) {
         this.gameId = gameId;
         this.levelId = levelId
         this.mapRenderer = mapRenderer;
         this.featureRenderer = new FeatureRenderer(mapRenderer.scene);
+        this.enemyRenderer = new EnemyRenderer(mapRenderer.scene);
         this.initializeServerLevel(onReady);
     }
     created!: Date;
