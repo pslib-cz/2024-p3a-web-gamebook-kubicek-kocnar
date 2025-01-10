@@ -76,15 +76,8 @@ namespace KubicekKocnar.Server.Controllers
         // POST: api/ItemUpgrades
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ItemUpgrade>> PostItemUpgrade(uint inputItemId, uint outputItemId, string description)
+        public async Task<ActionResult<ItemUpgrade>> PostItemUpgrade(ItemUpgrade itemUpgrade)
         {
-            ItemUpgrade itemUpgrade = new ItemUpgrade
-            {
-                InputItemId = inputItemId,
-                OutputItemId = outputItemId,
-                Description = description
-            };
-
             _context.ItemUpgrades.Add(itemUpgrade);
             await _context.SaveChangesAsync();
 

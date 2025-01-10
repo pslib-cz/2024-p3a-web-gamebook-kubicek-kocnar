@@ -76,14 +76,8 @@ namespace KubicekKocnar.Server.Controllers
         // POST: api/Items
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Item>> PostItem(string name, string description)
+        public async Task<ActionResult<Item>> PostItem(Item item)
         {
-            Item item = new Item
-            {
-                Name = name,
-                Description = description
-            };
-
             _context.Items.Add(item);
             await _context.SaveChangesAsync();
 
