@@ -6,6 +6,7 @@ import GenericFeature from "../types/Feature";
 import FeatureRenderer from "./features/FeatureRenderer";
 import { FetchLevel } from "../api/Levels";
 import { EnemyRenderer } from "./Enemy";
+import { FetchBlocks } from "../api/Blocks";
 
 interface LevelOptions {
     name: string
@@ -38,12 +39,6 @@ class Level implements LevelType {
 
     async initializeServerLevel(onReady: (level: Level) => void) {
         try {
-            // const levelResponse = await fetch(APIROUTE(this.gameId, this.levelId));
-            // if (!levelResponse.ok) {
-            //     throw new Error(`Response status: ${levelResponse.status}`);
-            // }
-            // const level: LevelType = await levelResponse.json();
-            
             const level : LevelType = await FetchLevel(this.gameId, this.levelId) as LevelType;
 
             this.name = level.name;
@@ -60,8 +55,7 @@ class Level implements LevelType {
             this.blocks = (await levelBlocksResponse.json()).map(MapRenderer.transformBlock);
 
             for (let i = 0; i < this.blocks.length; i++) {
-                this.mapRenderer.addBlock(this.blocks[i]);
-                
+                this.mapRenderer.addBlock(this.blocks[i]);                
             }
 
             const levelFeaturesResponse = await fetch(APIROUTE(this.gameId, this.levelId) + '/Features');
