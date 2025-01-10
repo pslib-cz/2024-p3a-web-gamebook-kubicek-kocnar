@@ -1,10 +1,11 @@
 import { Item } from "../types/Item";
 
+const URL : string = `${import.meta.env.VITE_API_URL}/Items`;
 
 export async function GetItems() : Promise<Item[]> {
 
   try {
-    const blocksResponse = await fetch('https://localhost:7097/api/Items');
+    const blocksResponse = await fetch(URL);
     if (!blocksResponse.ok) {
       throw new Error(`Response status: ${blocksResponse.status}`);
     }
@@ -22,7 +23,7 @@ export async function GetItems() : Promise<Item[]> {
 export async function DeleteItem(itemId : number) : Promise<void> {
   
     try {
-      const blocksResponse = await fetch(`https://localhost:7097/api/Items/${itemId}`, {
+      const blocksResponse = await fetch(`${URL}/${itemId}`, {
         method: 'DELETE'
       });
       if (!blocksResponse.ok) {
@@ -37,7 +38,7 @@ export async function DeleteItem(itemId : number) : Promise<void> {
 export async function PostItem(item : Item) : Promise<void> {
     
       try {
-        const blocksResponse = await fetch(`https://localhost:7097/api/Items`, {
+        const blocksResponse = await fetch(URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

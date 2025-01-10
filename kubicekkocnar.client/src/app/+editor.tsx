@@ -37,7 +37,7 @@ const Editor: React.FC = () => {
   };
 
   return (
-    <div className='mainmenu'>
+    <div>
       <h1>EdItOr</h1>
       <div>
         <h2>Items</h2>
@@ -72,7 +72,12 @@ const Editor: React.FC = () => {
         </div>
         <ul>
           {upgrades?.map((upgrade) => (
-            <li key={upgrade.itemUpgradeId}>{upgrade.description}</li>
+            <li key={upgrade.itemUpgradeId}>
+              <div>
+                <p>{upgrade.description} ({upgrade.itemUpgradeId})</p>
+                <p>{upgrade.inputItem.name} --- {upgrade.outputItem.name}</p>
+              </div>
+            </li>
           ))}
         </ul>
       </div>
