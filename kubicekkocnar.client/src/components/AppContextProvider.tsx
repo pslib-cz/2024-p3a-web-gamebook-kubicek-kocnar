@@ -10,8 +10,6 @@ interface AddBlockParams {
 }
 
 interface AppContextType {
-  playerHealth: number;
-  setPlayerHealth: (health: number) => void;
   toolState: Tool;
   setToolState: (tool: Tool) => void;
   setBlock: (block: PlacedBlock) => void;
@@ -27,8 +25,6 @@ interface AppContextType {
 }
 
 const defaultContext: AppContextType = {
-  playerHealth: 100,
-  setPlayerHealth: () => {},
   toolState: Tool.List,
   setToolState: () => {},
   setBlock: () => {},
@@ -51,11 +47,10 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
     const [featureState, setFeature] = useState<GenericFeature|null>(null);
     const [addBlockParamsState, setAddBlockParams] = useState<AddBlockParams|null>(null);
     const [playerInventory, setPlayerInventory] = useState<Inventory | null>(null);
-    const [playerHealth, setPlayerHealth] = useState<number>(100);
 
     const contextValue = useMemo(() => ({
-      setToolState, toolState, blockState, setBlock, featureState, setFeature, playerInventory, setPlayerInventory, setAddBlockParams, addBlockParamsState, playerHealth, setPlayerHealth
-    }), [toolState, blockState, featureState, playerInventory, addBlockParamsState, playerHealth]);
+      setToolState, toolState, blockState, setBlock, featureState, setFeature, playerInventory, setPlayerInventory, setAddBlockParams, addBlockParamsState
+    }), [toolState, blockState, featureState, playerInventory, addBlockParamsState]);
 
     return (
       <AppContext.Provider value={contextValue}>

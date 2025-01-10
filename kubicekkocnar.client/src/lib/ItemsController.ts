@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Enemy } from "../components/Enemy";
+import { Enemy } from "../components/Enemies";
 
 export class ItemsController {
   private camera: THREE.Camera;

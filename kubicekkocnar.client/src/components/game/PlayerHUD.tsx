@@ -1,13 +1,20 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import '../../styles/game/PlayerHUD.css';
 import { AppContext } from '../AppContextProvider';
 import { Coinage } from '../../types/Coinage';
 import { CoinageDrawer } from '../CoinageDrawer';
+import { GameContext } from '../../contexts/GameContext';
 
 const GameHUD = () => {
   // Example weapons data
 
-  const { playerInventory, playerHealth } = useContext(AppContext);
+  const { playerHealth } = useContext(GameContext);
+  const { playerInventory } = useContext(AppContext);
+
+  
+      useEffect(() => {
+          console.log("Player health changed to", playerHealth);
+      }, [playerHealth]);
 
   // Calculate health bar color based on health value
   const getHealthColor = useMemo(() => {
@@ -23,6 +30,7 @@ const GameHUD = () => {
         playerInventory?.coinage.map((a : Coinage, x : number) => <CoinageDrawer key={x} coinage={a} />)
       }
       </div>
+      <div className="damage_overlay" style={{opacity: playerHealth>0?(0.5-(Math.max(playerHealth,0)/200)):1}}></div>
       <div className="crosshair">
           <div className="crosshair__dot"></div>
           <div className="crosshair__line crosshair__line--vertical crosshair__line--vertical-top"></div>

@@ -1,5 +1,5 @@
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContextProvider } from "../../../../../components/AppContextProvider";
@@ -11,6 +11,8 @@ import MapRenderer from "../../../../../lib/MapRenderer";
 import Map from '../../../../../components/map/Map';
 import * as THREE from 'three';
 import PlayerHUD from "../../../../../components/game/PlayerHUD";
+import { GameContextProvider } from "../../../../../contexts/GameContext";
+import { Enemies } from "../../../../../components/Enemies";
 
 
 function LevelPlayer()
@@ -52,7 +54,10 @@ function LevelPlayer()
           </Canvas>
           <ItemUI/>
           <UIOverlay/>
-          <PlayerHUD/>
+          <GameContextProvider>
+            <PlayerHUD/>
+            {level && <Enemies level={level}/>}
+          </GameContextProvider>
         </div>
       </AppContextProvider>
     </TooltipProvider>

@@ -11,7 +11,6 @@ import FirstPersonControllerComponent from "../FirstPersonController";
 import Model from "./Model";
 import { CorruptionHandler } from "../CorruptionHandler";
 import { useNavigate } from "react-router-dom";
-import { EnemyObj } from "../Enemy";
 
 // React.memo(
 const Map = ({
@@ -30,10 +29,9 @@ const Map = ({
   const { gl, camera } = threeRef.current;
 
   console.log("Rerendering MapRenderer");
-
   
     useFrame(() => {
-      level?.enemyRenderer.update();
+      level?.enemyRenderer?.update();
     })
 
   // create a new MapEditor instance and remember it between rerenders
@@ -42,6 +40,7 @@ const Map = ({
     mapEditorRef.current = isEditor ? new MapEditor(level.mapRenderer) : null;
   }
   const mapEditor = mapEditorRef.current;
+
 
   // move the cursor cube to the position of the mouse
   const handleMouseMove = useCallback(
@@ -76,8 +75,7 @@ const Map = ({
         const ball = new THREE.Mesh(ballGeometry, ballMaterial);
         ball.position.copy(intersects[0].point.sub(scene.position));
         scene.add(ball);
-
-        console.log("Added ball at", intersects[0].point, ball);
+        
         const selectedBlock = level.mapRenderer.blocks.find(
           (block) => block.mesh?.id === intersects[0].object.id
         );
@@ -236,8 +234,6 @@ const Map = ({
         name="portal-5"
         position={new THREE.Vector3(-8, 0.5, 7)}
       />
-
-      <EnemyObj />
     </>
   );
   //never rerender :D
