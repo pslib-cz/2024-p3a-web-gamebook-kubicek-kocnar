@@ -1,23 +1,20 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useMemo } from 'react';
 import '../../styles/game/PlayerHUD.css';
 import { AppContext } from '../AppContextProvider';
-import { color } from 'three/webgpu';
 import { Coinage } from '../../types/Coinage';
 import { CoinageDrawer } from '../CoinageDrawer';
 
 const GameHUD = () => {
   // Example weapons data
 
-  const { playerInventory } = useContext(AppContext);
-
-  const [health] = useState(75); // Example health value
+  const { playerInventory, playerHealth } = useContext(AppContext);
 
   // Calculate health bar color based on health value
   const getHealthColor = useMemo(() => {
-    if (health > 70) return '#44ff44';
-    if (health > 30) return '#ffae00';
+    if (playerHealth > 70) return '#44ff44';
+    if (playerHealth > 30) return '#ffae00';
     return '#ff4444';
-  }, [health]);
+  }, [playerHealth]);
 
   return (
     <div className="player-hud">
@@ -39,13 +36,13 @@ const GameHUD = () => {
             <div 
               className="player-hud__health-bar" 
               style={{
-                width: `${health}%`,
+                width: `${playerHealth}%`,
                 backgroundColor: getHealthColor
               }}
             />
           </div>
           <div className="player-hud__health-text">
-            {health}
+            {playerHealth}
           </div>
         </div>
 

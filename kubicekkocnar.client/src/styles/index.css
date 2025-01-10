@@ -11,6 +11,7 @@
     background: url("/mainmenubg.avif");
     background-size: cover;
     font-family: fancy;
+    color: white;
 }
 
 .mainmenu__heading {
@@ -47,6 +48,15 @@
 .mainmenu__buttons a:hover {
     color: rgb(187, 47, 187);
 } 
+
+.mainmenu__thanksto {
+    position: absolute;
+    bottom: .5rem;
+    right: .5rem;
+    font-size: 8px;
+    font-family: Outfit;
+    opacity: .6;
+}
 
 .mainmenu__semi {
     opacity: .6;

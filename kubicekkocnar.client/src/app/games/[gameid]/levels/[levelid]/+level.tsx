@@ -1,5 +1,5 @@
 import { TooltipProvider } from "@radix-ui/react-tooltip";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContextProvider } from "../../../../../components/AppContextProvider";
