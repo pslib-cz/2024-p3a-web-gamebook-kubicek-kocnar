@@ -76,14 +76,8 @@ namespace KubicekKocnar.Server.Controllers
         // POST: api/Coinages
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Coinage>> PostCoinage(string name, string description)
+        public async Task<ActionResult<Coinage>> PostCoinage(Coinage coinage)
         {
-            Coinage coinage = new Coinage()
-            {
-                Name = name,
-                Description = description
-            };
-
             _context.Coinages.Add(coinage);
             await _context.SaveChangesAsync();
 

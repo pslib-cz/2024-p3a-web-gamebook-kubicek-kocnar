@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContextProvider } from "../../../../../components/AppContextProvider";
 import { ItemUI } from "../../../../../components/ItemController";
-import { UIOverlay } from "../../../../../components/InventoryOverlay";
+import { UIOverlay } from "../../../../../components/game/InventoryOverlay";
 import Blocks from "../../../../../lib/Blocks";
 import Level from "../../../../../lib/Level";
 import MapRenderer from "../../../../../lib/MapRenderer";

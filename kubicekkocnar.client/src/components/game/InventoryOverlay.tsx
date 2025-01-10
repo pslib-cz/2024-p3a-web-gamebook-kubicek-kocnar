@@ -1,10 +1,10 @@
 
-import './ItemController.css'
-import { AppContext } from './AppContextProvider';
+import '../ItemController.css'
+import { AppContext } from '../AppContextProvider';
 import { useContext, useEffect, useState } from 'react';
-import { Coinage } from '../types/Coinage';
-import { ItemUpgrade } from '../types/ItemUpgrade';
-import { Inventory } from '../lib/Inventory';
+import { Coinage } from '../../types/Coinage';
+import { ItemUpgrade } from '../../types/ItemUpgrade';
+import { CoinageDrawer } from '../CoinageDrawer';
 
 export function UIOverlay() {
   
@@ -64,14 +64,7 @@ export function UIOverlay() {
   )
 }
 
-function CoinageDrawer({coinage} : {coinage: Coinage})
-{
-  return (
-    <div>
-      <p>{coinage.name}</p>
-    </div>
-  )
-}
+
 
 function ItemUpgradeDrawer({upgrade} : {upgrade: ItemUpgrade})
 {
