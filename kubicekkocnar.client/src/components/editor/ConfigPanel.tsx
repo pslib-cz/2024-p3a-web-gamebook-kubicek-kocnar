@@ -8,6 +8,7 @@ import { Vector3 } from 'three';
 import { AppContext } from '../AppContextProvider';
 import { Tool } from './ToolBar';
 import InputSlider from '../InputSlider';
+import Block from '../../types/Block';
 
 interface ConfigPanelProps {
     level: Level;
@@ -17,11 +18,15 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ level }) => {
 
     const [ modalFeature, setModalFeature ] = useState<GenericFeature | null>(null);
 
+    const [ modalBlock, setModalBlock ] = useState<Partial<Block>>({name: 'new block', attributes: []});
+
     const { toolState } = useContext(AppContext);
 
     const [isOpen, setIsOpen] = useState(true);
 
     const [openAddFeatureModal, setOpenAddFeatureModal] = useState(false);
+
+    const [openAddBlockModal, setOpenAddBlockModal] = useState(false);
 
     const togglePanel = () => {
         setIsOpen(!isOpen);
@@ -50,7 +55,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ level }) => {
                 {isOpen ? <MaterialSymbol icon='chevron_right' size={24}/> : <MaterialSymbol icon='chevron_left' size={24}/>}
             </button>
             <div className='configpanel__info'>
-                <ConfigPanelView level={level} setOpenAddFeatureModal={setOpenAddFeatureModal}/>
+                <ConfigPanelView level={level} setOpenAddFeatureModal={setOpenAddFeatureModal} setOpenAddBlockModal={setOpenAddBlockModal}/>
             </div>
         </div>
 
@@ -123,6 +128,22 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ level }) => {
             </div>
             </>
             }
+        </div>}
+        {openAddBlockModal && <div clas sName='modal configpanel__addmodal'>
+            <button className="configpanel__addmodal__close" onClick={() => setOpenAddBlockModal(false)}><MaterialSymbol icon='close' size={24}/></button>
+            <h2>Add block</h2>
+            <div className="configpanel__input">
+                <label htmlFor="blockname">Name: </label>
+                <input type="text" id="blockname"
+                onChange={(e) => setModalBlock({...modalBlock!, name: e.currentTarget.value})}
+                />
+            </div>
+            <div className="configpanel__input">
+                <label htmlFor="blockname">Attributes: </label>
+                <input type="text" id="blockname"
+                onChange={(e) => setModalBlock({...modalBlock!, name: e.currentTarget.value})}
+                />
+            </div>
         </div>}
         </>
     );

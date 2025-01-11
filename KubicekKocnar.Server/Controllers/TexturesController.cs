@@ -72,14 +72,11 @@ namespace KubicekKocnar.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Texture>> PostTexture(string name, IFormFile file, [FromQuery] Dictionary<string, string> query) {
+        public async Task<ActionResult<Texture>> PostTexture(string name, uint state, IFormFile file) {
             // check if file is an image and set it into texture.content
             if (file == null) {
                 return BadRequest("File is missing");
             }
-            Console.WriteLine(query);
-
-            uint state = query.ContainsKey("state") ? uint.Parse(query["state"]) : 0;
 
             byte[] fr;
 
@@ -112,7 +109,7 @@ namespace KubicekKocnar.Server.Controllers
                 Width = width,
                 Height = height,
                 Size = size,
-                //State = state
+                State = state
             };
 
             _context.Textures.Add(texture);

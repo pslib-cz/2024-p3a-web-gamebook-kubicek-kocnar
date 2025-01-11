@@ -14,9 +14,10 @@ import Block from "../../types/Block";
 interface ConfigPanelProps {
     level: Level;
     setOpenAddFeatureModal: (open: boolean) => void;
+    setOpenAddBlockModal: (open: boolean) => void;
 }
 
-const ConfigPanelView: React.FC<ConfigPanelProps> = ({level, setOpenAddFeatureModal}) => {
+const ConfigPanelView: React.FC<ConfigPanelProps> = ({level, setOpenAddFeatureModal, setOpenAddBlockModal}) => {
     const { toolState, blockState, featureState, setFeature, setToolState, setAddBlockParams, addBlockParamsState } = useContext(AppContext);
 
     const selectFeature = (feature: GenericFeature) => {
@@ -127,7 +128,7 @@ const ConfigPanelView: React.FC<ConfigPanelProps> = ({level, setOpenAddFeatureMo
                 <h2>
                     Block List
                 </h2>
-                <button className='configpanel__addbtn'  onClick={() => setOpenAddFeatureModal(true)}><MaterialSymbol icon='add'/></button>
+                <button className='configpanel__addbtn'  onClick={() => setOpenAddBlockModal(true)}><MaterialSymbol icon='add'/></button>
                 {level.mapRenderer.blocksReference.blocks.map((block, index) => (
                     <div key={index} className='configpanel__blockeditor' onClick={() => {setBlock(block); setToolState(Tool.BlockEditor)}}>
                         <img className='configpanel__texture__image_sm' src={block.texture0 ? URL.createObjectURL(MapRenderer.loadTexture(block.texture0)) : '/missing.png'} alt={`texture ${index}`}/>

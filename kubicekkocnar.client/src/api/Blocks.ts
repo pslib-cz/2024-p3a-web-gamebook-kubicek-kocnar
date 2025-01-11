@@ -24,3 +24,19 @@ export async function FetchBlocks() : Promise<Block[]> {
   return [];
 }
 
+export async function addBlock(block: Block) {
+  try {
+    const response = await fetch(URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(block)
+    });
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+  } catch (err: unknown) {
+    console.error(err);
+  }
+}
