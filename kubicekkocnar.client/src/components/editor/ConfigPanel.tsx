@@ -129,7 +129,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ level }) => {
             </>
             }
         </div>}
-        {openAddBlockModal && <div clas sName='modal configpanel__addmodal'>
+        {openAddBlockModal && <div className='modal configpanel__addmodal'>
             <button className="configpanel__addmodal__close" onClick={() => setOpenAddBlockModal(false)}><MaterialSymbol icon='close' size={24}/></button>
             <h2>Add block</h2>
             <div className="configpanel__input">
