@@ -4,6 +4,60 @@ import PlacedBlock from "../types/PlacedBlock";
 
 export class PathFinder
 {
+  public FindPathVisual(blocks : PlacedBlock[], startBlock : PlacedBlock, endBlock : PlacedBlock): void
+  {
+    const queue = [startBlock];
+    const visited = new Set<PlacedBlock>();
+    const parentMap = new Map<PlacedBlock, PlacedBlock>(); // Maps each block to its parent block in the path
+
+    visited.add(startBlock);
+
+    startBlock.mesh.material = new THREE.MeshStandardMaterial({color: 0x00ff00});
+    endBlock.mesh.material = new THREE.MeshStandardMaterial({color: 0xff0000});
+
+    // create coroutine to visualize the pathfinding
+    const visualizePathFinding = async () => {
+      while (queue.length > 0) {
+        const currentBlock = queue.shift();
+
+        console.log("Step");
+
+        if (currentBlock === endBlock) {
+          // Path found, reconstruct the path
+          let path = [];
+          let step = endBlock;
+          while (step !== startBlock) {
+            path.push(step);
+            step = parentMap.get(step);
+          }
+          path.push(startBlock);
+          path.reverse();
+          console.log("Path found:", path);
+          return path;
+        }
+
+        // Get neighbors of the current block
+        const neighbors = this.GetNeighbors(currentBlock, blocks);
+        for (const neighbor of neighbors) {
+          if (!visited.has(neighbor)) {
+            visited.add(neighbor);
+            parentMap.set(neighbor, currentBlock);
+            queue.push(neighbor);            
+
+            neighbor.mesh.material = new THREE.MeshStandardMaterial({color: 0x0000ff});
+          }
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 75));
+      }
+
+      console.log("No path found");
+      return [];
+    }
+
+    visualizePathFinding();
+  }
+
   public FindPath(blocks : PlacedBlock[], startBlock : PlacedBlock, endBlock : PlacedBlock): PlacedBlock[]
   {
     const queue = [startBlock];
