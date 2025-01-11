@@ -11,6 +11,7 @@ import FirstPersonControllerComponent from "../FirstPersonController";
 import Model from "./Model";
 import { CorruptionHandler } from "../CorruptionHandler";
 import { useNavigate } from "react-router-dom";
+import { PathFinding } from "../PathFinding";
 
 // React.memo(
 const Map = ({
@@ -234,6 +235,15 @@ const Map = ({
         name="portal-5"
         position={new THREE.Vector3(-8, 0.5, 7)}
       />
+
+      {
+        toolState === Tool.PathFinding &&
+        <PathFinding 
+          blocks={level.mapRenderer.blocks}
+          startBlock={level.mapRenderer.blocks[0]}
+          endBlock={level.mapRenderer.blocks.find(block => block.placedBlockId == 236)}
+        />
+      }
     </>
   );
   //never rerender :D
