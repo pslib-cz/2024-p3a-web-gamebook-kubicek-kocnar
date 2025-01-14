@@ -4,11 +4,46 @@ import PlacedBlock from "../types/PlacedBlock";
 
 export class PathFinder
 {
-  public FindPathVisual(blocks : PlacedBlock[], startBlock : PlacedBlock, endBlock : PlacedBlock): void
+  searchDirections = [
+    new Vector3(1, 0, 0),
+    new Vector3(-1, 0, 0),
+    new Vector3(0, 0, 1),
+    new Vector3(0, 0, -1),
+
+    new Vector3(1, 1, 0),
+    new Vector3(-1, 1, 0),
+    new Vector3(0, 1, 1),
+    new Vector3(0, 1, -1),
+  ];
+  
+  heightChecks = [
+    new Vector3(0, 1, 0),
+    new Vector3(0, 2, 0)
+  ]
+
+  // string conversion is necessary
+  private blockDictionary: Map<string, PlacedBlock>;  
+
+  constructor (blocks : PlacedBlock[])
   {
+    this.blockDictionary = new Map<string, PlacedBlock>();
+
+    for (const block of blocks)
+      this.blockDictionary.set(block.position.toArray().toString(), block);
+  }
+
+  public FindPathVisual(startBlock : PlacedBlock, endBlock : PlacedBlock): void
+  {
+    if (!startBlock || !endBlock) {
+      console.error("Start or end block not found");
+      return;
+    }
+
     const queue = [startBlock];
     const visited = new Set<PlacedBlock>();
     const parentMap = new Map<PlacedBlock, PlacedBlock>(); // Maps each block to its parent block in the path
+
+    console.log("Start pathfinding", this.blockDictionary);
 
     visited.add(startBlock);
 
@@ -25,22 +60,28 @@ export class PathFinder
         if (currentBlock === endBlock) {
           // Path found, reconstruct the path
           let path = [];
-          let step = endBlock;
+          let step : PlacedBlock = endBlock;
           while (step !== startBlock) {
             path.push(step);
-            step = parentMap.get(step);
+            step = parentMap.get(step)!;
           }
           path.push(startBlock);
           path.reverse();
           console.log("Path found:", path);
+
+          for (const block of path) {
+            block.mesh.material = new THREE.MeshStandardMaterial({color: 0x00ff00});
+          }
+
           return path;
         }
 
         // Get neighbors of the current block
-        const neighbors = this.GetNeighbors(currentBlock, blocks);
+        const neighbors = this.GetNeighbors(currentBlock);
         for (const neighbor of neighbors) {
           if (!visited.has(neighbor)) {
             visited.add(neighbor);
+
             parentMap.set(neighbor, currentBlock);
             queue.push(neighbor);            
 
@@ -48,7 +89,7 @@ export class PathFinder
           }
         }
 
-        await new Promise((resolve) => setTimeout(resolve, 75));
+        await new Promise((resolve) => setTimeout(resolve, 10));
       }
 
       console.log("No path found");
@@ -58,8 +99,13 @@ export class PathFinder
     visualizePathFinding();
   }
 
-  public FindPath(blocks : PlacedBlock[], startBlock : PlacedBlock, endBlock : PlacedBlock): PlacedBlock[]
+  public FindPath(startBlock : PlacedBlock, endBlock : PlacedBlock): PlacedBlock[]
   {
+    if (!startBlock || !endBlock) {
+      console.error("Start or end block not found");
+      return [];
+    }
+
     const queue = [startBlock];
     const visited = new Set<PlacedBlock>();
     const parentMap = new Map<PlacedBlock, PlacedBlock>(); // Maps each block to its parent block in the path
@@ -67,24 +113,26 @@ export class PathFinder
     visited.add(startBlock);
 
     while (queue.length > 0) {
-      const currentBlock = queue.shift();
+      const currentBlock = queue.shift()!;
 
       if (currentBlock === endBlock) {
-        // Path found, reconstruct the path
+
         let path = [];
         let step = endBlock;
+
         while (step !== startBlock) {
           path.push(step);
-          step = parentMap.get(step);
+          step = parentMap.get(step)!;
         }
+
         path.push(startBlock);
         path.reverse();
-        console.log("Path found:", path);
+        
         return path;
       }
 
       // Get neighbors of the current block
-      const neighbors = this.GetNeighbors(currentBlock, blocks);
+      const neighbors = this.GetNeighbors(currentBlock);
       for (const neighbor of neighbors) {
         if (!visited.has(neighbor)) {
           visited.add(neighbor);
@@ -93,29 +141,32 @@ export class PathFinder
         }
       }
     }
-
-    console.log("No path found");
     return [];
   }
 
-  searchDirections = [
-    new Vector3(1, 0, 0),
-    new Vector3(-1, 0, 0),
-    new Vector3(0, 0, 1),
-    new Vector3(0, 0, -1)
-  ];
-
-  public GetNeighbors(block: PlacedBlock, blocks: PlacedBlock[]): PlacedBlock[] {
+  public GetNeighbors(block: PlacedBlock): PlacedBlock[] {
 
     const neighbors = [];
 
     for (const direction of this.searchDirections) {
       const neighborPosition = block.position.clone().add(direction);
-      const neighbor = blocks.find(b => b.position.equals(neighborPosition));
+      
+      const neighbor = this.blockDictionary.get(neighborPosition.toArray().toString());
 
-      if (neighbor) neighbors.push(neighbor);
+      if (neighbor && this.IsBlockWalkable(neighbor)) neighbors.push(neighbor);
     }
 
     return neighbors;
+  }
+
+  private IsBlockWalkable(block: PlacedBlock): boolean {    
+    for (const direction of this.heightChecks) {
+      const abovePosition = block.position.clone().add(direction);
+      const aboveBlock = this.blockDictionary.get(abovePosition.toArray().toString());
+
+      if (aboveBlock) return false;
+    }
+
+    return true;    
   }
 }

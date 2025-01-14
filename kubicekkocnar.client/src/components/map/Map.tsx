@@ -243,7 +243,7 @@ const Map = ({
         <PathFindingVisual 
           blocks={level.mapRenderer.blocks}
           startBlock={level.mapRenderer.blocks[0]}
-          endBlock={level.mapRenderer.blocks.find(block => block.placedBlockId == 236)}
+          endBlock={level.mapRenderer.blocks.find(block => block.placedBlockId == 646)}
         />
       }
     </>

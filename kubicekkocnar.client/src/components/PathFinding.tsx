@@ -4,9 +4,9 @@ import PlacedBlock from "../types/PlacedBlock";
 
 export function PathFindingVisual({blocks, startBlock, endBlock} : {blocks : PlacedBlock[], startBlock : PlacedBlock, endBlock : PlacedBlock})
 {
-  const pathFinder = new PathFinder();
+  const pathFinder = new PathFinder(blocks);
 
-  pathFinder.FindPathVisual(blocks, startBlock, endBlock);
+  pathFinder.FindPathVisual(startBlock, endBlock);
 
   return null;
 }
