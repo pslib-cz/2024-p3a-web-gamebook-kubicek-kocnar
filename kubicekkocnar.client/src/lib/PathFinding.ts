@@ -22,14 +22,25 @@ export class PathFinder
   ]
 
   // string conversion is necessary
-  private blockDictionary: Map<string, PlacedBlock>;  
+  private blockDictionary: Map<string, PlacedBlock>; // walkable blocks
+  private allBlockDictionary: Map<string, PlacedBlock>; // all blocks
 
   constructor (blocks : PlacedBlock[])
   {
     this.blockDictionary = new Map<string, PlacedBlock>();
 
+    this.allBlockDictionary = new Map<string, PlacedBlock>();
+
     for (const block of blocks)
+    {
+      this.allBlockDictionary.set(block.position.toArray().toString(), block);
+    }
+    
+    for (const block of blocks)
+    {
+      if (!this.IsBlockWalkable(block)) continue;
       this.blockDictionary.set(block.position.toArray().toString(), block);
+    }
   }
 
   public FindPathVisual(startBlock : PlacedBlock, endBlock : PlacedBlock): void
@@ -162,11 +173,28 @@ export class PathFinder
   private IsBlockWalkable(block: PlacedBlock): boolean {    
     for (const direction of this.heightChecks) {
       const abovePosition = block.position.clone().add(direction);
-      const aboveBlock = this.blockDictionary.get(abovePosition.toArray().toString());
+      const aboveBlock = this.allBlockDictionary.get(abovePosition.toArray().toString());
 
       if (aboveBlock) return false;
     }
 
     return true;    
+  }
+
+  public GetClosestBlock(position: Vector3): PlacedBlock | null {
+    let closestBlock: PlacedBlock | null = null;
+    let minDistance = Infinity;
+
+    console.log("Finding closest block to", position);
+
+    for (const block of this.blockDictionary.values()) {
+      const distance = block.position.distanceTo(position);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestBlock = block;
+      }
+    }
+
+    return closestBlock;
   }
 }

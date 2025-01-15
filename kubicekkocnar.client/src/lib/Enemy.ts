@@ -62,23 +62,15 @@ export class EnemyRenderer {
         {
           //enemy.mesh.position.add(player.position.clone().sub(enemy.mesh.position).normalize().multiplyScalar(enemy.speed / 1000));
 
-          const blockBelowEnemy = this.level.blocks.find(block => 
-            block.position.x === Math.round(enemy.mesh.position.x) &&
-            block.position.z === Math.round(enemy.mesh.position.z)
-          );
+          const blockBelowEnemy = this.pathFinder.GetClosestBlock(enemy.mesh.position.clone().sub(new THREE.Vector3(0, 2, 0)));
 
-          const blockBelowPlayer = this.level.blocks.find(block =>
-            block.position.x === Math.round(player.position.x) &&
-            block.position.z === Math.round(player.position.z)
-          );
+          const blockBelowPlayer = this.pathFinder.GetClosestBlock(player.position.clone().sub(new THREE.Vector3(0, 2, 0)));
 
           const path = this.pathFinder.FindPath(blockBelowEnemy, blockBelowPlayer);
 
           console.log(path);
 
-          // path.forEach(block => {
-          //   block.mesh.material = new THREE.MeshStandardMaterial({color: 0x00ff00});
-          // });
+        
 
           if (path.length > 0)
           {
