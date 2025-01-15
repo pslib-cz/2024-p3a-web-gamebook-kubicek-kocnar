@@ -25,11 +25,18 @@ export class ItemsController {
       console.log("Hit enemy:", enemy);
 
       enemy.health -= 10;
+
+      if (enemy.health <= 0) {
+        this.scene.remove(enemyMesh)
+      }
     });
 
   }
 
   private getEnemies(positionToCheck: THREE.Vector3): THREE.Object3D[] {
+
+    console.log("sdsdfrd")
+
     const checkBox = new THREE.Box3().setFromCenterAndSize(
       positionToCheck,
       new THREE.Vector3(1, 1, 1) // Collider size
@@ -45,6 +52,9 @@ export class ItemsController {
       const enemyBox = new THREE.Box3().setFromObject(enemy);
       if (checkBox.intersectsBox(enemyBox)) hitEnemies.push(enemy);
     }
+
+    console.log("hitnemenei", hitEnemies)
+
 
     return hitEnemies;
   }
