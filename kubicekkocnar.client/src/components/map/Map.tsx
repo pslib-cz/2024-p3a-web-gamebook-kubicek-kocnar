@@ -25,6 +25,9 @@ const Map = ({
 
   const scene = level.mapRenderer.scene;
 
+  scene.userData.levelId = level.levelId;
+  console.log("Rendering Map", scene);
+
   const { toolState, setBlock, addBlockParamsState } = useContext(AppContext);
   const threeRef = React.useRef(useThree());
   const { gl, camera } = threeRef.current;

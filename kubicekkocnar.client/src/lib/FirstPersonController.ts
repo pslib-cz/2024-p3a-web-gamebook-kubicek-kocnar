@@ -22,6 +22,8 @@ export class FirstPersonController {
   private scene: THREE.Scene;
   private playerPosition: THREE.Vector3 = new THREE.Vector3();
 
+  private saveCounter: number = 0;
+
   private navigate;
 
   public stopped: boolean = false;
@@ -154,6 +156,12 @@ export class FirstPersonController {
   }
 
   public update(delta: number) {
+    this.saveCounter+=delta;
+    console.log(this.saveCounter);
+    if (this.saveCounter > 2) {
+      this.savePlayerPosition();
+      this.saveCounter = 0;
+    }
     if (this.stopped) return;
     this.lastGrounded = this.isGrounded;
     const speed = 6; // Movement speed
@@ -269,6 +277,21 @@ export class FirstPersonController {
         return true;
     }
     return false;
+  }
+
+  public savePlayerPosition() {
+    const levelId = this.scene.userData.levelId;
+    console.log("saving player position "+levelId);
+    localStorage.setItem("playerPosition"+levelId, JSON.stringify(this.playerPosition));
+  }
+
+  public loadPlayerPosition() {
+    const levelId = this.scene.userData.levelId;
+    let playerPosition = localStorage.getItem("playerPosition"+levelId);
+    if (playerPosition) {
+      playerPosition = JSON.parse(playerPosition);
+      this.playerPosition = new THREE.Vector3(parseFloat(playerPosition?.x), parseFloat(playerPosition?.y), parseFloat(playerPosition?.z));
+    }
   }
 
 }

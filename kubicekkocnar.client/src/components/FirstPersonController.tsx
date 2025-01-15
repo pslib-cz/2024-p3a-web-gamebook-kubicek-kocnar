@@ -27,6 +27,7 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
 
   useEffect(() => {
     const controller = new FirstPersonController(camera, scene, navigate);
+    controller.loadPlayerPosition();
     controllerRef.current = controller;
 
     itemsControllerRef.current = new ItemsController(camera, scene);
