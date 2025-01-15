@@ -72,7 +72,7 @@ export class EnemyRenderer {
 
         
 
-          if (path.length > 0)
+          if (path.length > 1)
           {
             const nextBlock = path[1];
             enemy.mesh.position.add(nextBlock.position.clone().add(new THREE.Vector3(0, 2, 0)).sub(enemy.mesh.position).normalize().multiplyScalar(enemy.speed / 1000));
