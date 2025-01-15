@@ -46,7 +46,9 @@ export class EnemyRenderer {
       const material = new THREE.MeshStandardMaterial({ map: loadedTexture, side: THREE.DoubleSide, transparent: true });
       const plane = new THREE.Mesh(geometry, material);
       plane.position.set(0, 2, 0);
+      plane.name = "enemy";
       enemy.mesh = plane;
+      enemy.mesh.userData.enemy = enemy;
       this.scene.add(plane);
     });
   }
@@ -74,17 +76,9 @@ export class EnemyRenderer {
 
           console.log(path);
 
-          
-          this.level.blocks.forEach(block => {
-            block.mesh.material = new THREE.MeshStandardMaterial({color: 0x0000ff});
-          });
-
-          path.forEach(block => {
-            block.mesh.material = new THREE.MeshStandardMaterial({color: 0x00ff00});
-          });
-          
-          blockBelowEnemy!.mesh.material = new THREE.MeshStandardMaterial({color: 0xff0000});
-          blockBelowPlayer!.mesh.material = new THREE.MeshStandardMaterial({color: 0xff0000});
+          // path.forEach(block => {
+          //   block.mesh.material = new THREE.MeshStandardMaterial({color: 0x00ff00});
+          // });
 
           if (path.length > 0)
           {
