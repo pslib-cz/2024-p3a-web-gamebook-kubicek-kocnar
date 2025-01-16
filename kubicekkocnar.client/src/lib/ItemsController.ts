@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { Enemy } from "../components/Enemies";
-import GenericFeature from "../types/Feature";
+import GenericFeature, { FeatureType } from "../types/Feature";
 
 export class ItemsController {
   private camera: THREE.Camera;
@@ -32,10 +32,6 @@ export class ItemsController {
         this.scene.remove(enemyMesh)
       }
     });
-
-    for (const feet of this.scene.userData.level.featureRenderer.features as GenericFeature[]) {
-      
-    } 
 
   }
 

@@ -11,7 +11,10 @@ import FirstPersonControllerComponent from "../FirstPersonController";
 import Model from "./Model";
 import { CorruptionHandler } from "../CorruptionHandler";
 import { useNavigate } from "react-router-dom";
-import { PathFindingVisual, VisualizePathfinableBlocks, VisualizeBlocksNeighbours } from "../PathFinding";
+import {
+  PathFindingVisual,
+  VisualizePathfinableBlocks,
+} from "../PathFinding";
 
 // React.memo(
 const Map = ({
@@ -33,10 +36,10 @@ const Map = ({
   const { gl, camera } = threeRef.current;
 
   console.log("Rerendering MapRenderer");
-  
-    useFrame(() => {
-      level?.enemyRenderer?.update();
-    })
+
+  useFrame(() => {
+    level?.enemyRenderer?.update();
+  });
 
   // create a new MapEditor instance and remember it between rerenders
   const mapEditorRef = React.useRef<MapEditor | null>(null);
@@ -44,7 +47,6 @@ const Map = ({
     mapEditorRef.current = isEditor ? new MapEditor(level.mapRenderer) : null;
   }
   const mapEditor = mapEditorRef.current;
-
 
   // move the cursor cube to the position of the mouse
   const handleMouseMove = useCallback(
@@ -68,42 +70,50 @@ const Map = ({
       const raycaster = new THREE.Raycaster();
       raycaster.setFromCamera(mouse, camera);
 
-      const intersects = raycaster
-        .intersectObjects(scene.children)
-        .filter((intersect) => intersect.object.name.startsWith("block"));
+      const intersects = raycaster.intersectObjects(scene.children);
 
-      if (intersects.length > 0) {
-        console.log("Intersected with block", intersects);
+      const blockIntersects = intersects.filter((intersect) =>
+        intersect.object.name.startsWith("block")
+      );
+
+      const featureIntersects = intersects.filter((intersect) =>
+        intersect.object.name.startsWith("feature")
+      );
+
+      console.log("Intersected with feature", intersects);
+
+      if (blockIntersects.length > 0) {
+        console.log("Intersected with block", blockIntersects);
 
         // spawn a ball at the intersection point
         const ballGeometry = new THREE.SphereGeometry(0.05, 8, 8);
         const ballMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
         const ball = new THREE.Mesh(ballGeometry, ballMaterial);
-        ball.position.copy(intersects[0].point.sub(scene.position));
+        ball.position.copy(blockIntersects[0].point.sub(scene.position));
         scene.add(ball);
-        
+
         const selectedBlock = level.mapRenderer.blocks.find(
-          (block) => block.mesh?.id === intersects[0].object.id
+          (block) => block.mesh?.id === blockIntersects[0].object.id
         );
         if (!selectedBlock) return;
-        if (!isEditor) return; 
+        if (!isEditor) return;
         switch (toolState) {
           case Tool.Mouse: {
             if (selectedBlock) setBlock(selectedBlock);
             scene
               .getObjectByName("selectioncube")
               ?.position.set(
-                intersects[0].object.position.x,
-                intersects[0].object.position.y,
-                intersects[0].object.position.z
+                blockIntersects[0].object.position.x,
+                blockIntersects[0].object.position.y,
+                blockIntersects[0].object.position.z
               );
             break;
           }
           case Tool.Add: {
-            if (intersects[0].face?.normal === undefined) return;
-            const newPos = intersects[0].object.position
+            if (blockIntersects[0].face?.normal === undefined) return;
+            const newPos = blockIntersects[0].object.position
               .clone()
-              .add(intersects[0].face?.normal);
+              .add(blockIntersects[0].face?.normal);
             const newBlock = {
               ...selectedBlock,
               position: newPos,
@@ -124,14 +134,13 @@ const Map = ({
           }
           case Tool.Remove: {
             const block = level.mapRenderer.blocks.find(
-              (block) => block.mesh === intersects[0].object
+              (block) => block.mesh === blockIntersects[0].object
             );
             if (block) {
               level.removeBlock(block);
             }
             break;
           }
-        
         }
       }
     },
@@ -235,26 +244,22 @@ const Map = ({
         position={new THREE.Vector3(-2.6, 3, 0)}
         rotation={new THREE.Euler(0, 0, -Math.PI / 2)}
       />
-      <Model
-        path="/models/chest.glb"
-        position={new THREE.Vector3(-8, 1, 7)}
-      />
 
-      {
-        toolState === Tool.PathFinding &&
-        <PathFindingVisual 
+      {toolState === Tool.PathFinding && (
+        <PathFindingVisual
           blocks={level.mapRenderer.blocks}
           startBlock={level.mapRenderer.blocks[0]}
-          endBlock={level.mapRenderer.blocks.find(block => block.placedBlockId == 428)}
+          endBlock={
+            level.mapRenderer.blocks.find(
+              (block) => block.placedBlockId == 428
+            ) || level.mapRenderer.blocks[0]
+          }
         />
-      }
+      )}
 
-      {
-        toolState === Tool.WalkableBlocks &&
-        <VisualizePathfinableBlocks
-          blocks={level.mapRenderer.blocks}
-        />
-      }
+      {toolState === Tool.WalkableBlocks && (
+        <VisualizePathfinableBlocks blocks={level.mapRenderer.blocks} />
+      )}
     </>
   );
   //never rerender :D

@@ -96,7 +96,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ level }) => {
                     key == "inventory" ? <></> :
                     <div key={index} className="configpanel__input">
                         <label htmlFor={key}>{key}: </label>
-                        <input type="text" id={key} defaultValue={modalFeature.params[key]}
+                        <input type="text" id={key} defaultValue={modalFeature.params[key] as string}
                         onChange={(e) => setModalFeature({...modalFeature, params: {...modalFeature.params, [key]: e.currentTarget.value}})
                         }
                         />

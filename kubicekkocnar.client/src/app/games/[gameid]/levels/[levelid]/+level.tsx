@@ -13,7 +13,7 @@ import * as THREE from 'three';
 import PlayerHUD from "../../../../../components/game/PlayerHUD";
 import { GameContextProvider } from "../../../../../contexts/GameContext";
 import { Enemies } from "../../../../../components/Enemies";
-
+import ScreenNotification from "../../../../../components/ui/ScreenNotification";
 
 function LevelPlayer()
 {
@@ -42,6 +42,7 @@ function LevelPlayer()
   return (
     <TooltipProvider>
       <AppContextProvider>
+        <ScreenNotification/>
         {!level && <div className="loader"></div>}
         <div className='canvas' id="gameroot">
           <Canvas onCreated={(state) => {

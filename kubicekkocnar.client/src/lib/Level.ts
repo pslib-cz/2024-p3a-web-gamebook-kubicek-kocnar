@@ -64,7 +64,7 @@ class Level implements LevelType {
             this.features = (await levelFeaturesResponse.json()).map(FeatureRenderer.transformFeature);
 
             for (let i = 0; i < this.features.length; i++) {
-                this.featureRenderer.addFeature(this.features[i]);
+                await this.featureRenderer.addFeature(this.features[i]);
             }
 
             onReady(this);
