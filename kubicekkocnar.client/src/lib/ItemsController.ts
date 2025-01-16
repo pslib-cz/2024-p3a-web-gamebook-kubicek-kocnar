@@ -1,10 +1,11 @@
 import * as THREE from "three";
-import { Enemy } from "../components/Enemies";
-import GenericFeature, { FeatureType } from "../types/Feature";
+import { Inventory } from "./Inventory";
+import { Enemy } from "./Enemy";
 
 export class ItemsController {
   private camera: THREE.Camera;
   private scene: THREE.Scene;
+  public playerInventory: Inventory | null = null;
 
   constructor(camera: THREE.Camera, scene: THREE.Scene) {
     this.camera = camera;
@@ -29,7 +30,10 @@ export class ItemsController {
 
       if (enemy.health <= 0) {
         this.scene.userData.level.enemyRenderer.enemies = this.scene.userData.level.enemyRenderer.enemies.filter(e => e.mesh.uuid != enemyMesh.uuid)
-        this.scene.remove(enemyMesh)
+        this.scene.remove(enemyMesh);
+        console.log("plinv",this.playerInventory)
+        this.playerInventory?.addToCoinage("coin", 100)
+        console.log("plinv2",this.playerInventory)
       }
     });
 

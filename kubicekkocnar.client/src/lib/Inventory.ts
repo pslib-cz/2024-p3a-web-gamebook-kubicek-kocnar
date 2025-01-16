@@ -27,6 +27,7 @@ export class Inventory {
 
   async initializeServerCoinages() {
     this.coinage = await GetCoinages();
+    this.coinageAmount = new Array(this.coinage.length).fill(0);
   }
 
   async initializeServerUpgrades() {
@@ -60,6 +61,15 @@ export class Inventory {
 
   public coinage : Coinage[] = [];
   public coinageAmount : number[] = [0, 0];
+
+  public addToCoinage(coinage: string, amount : number) {
+    for (let i = 0; i < this.coinage.length; i++) {
+      if (this.coinage[i].name == coinage) {
+        this.coinageAmount[i] += amount;
+        return;
+      }
+    }
+  }
 
   public Scroll(up : boolean)
   {

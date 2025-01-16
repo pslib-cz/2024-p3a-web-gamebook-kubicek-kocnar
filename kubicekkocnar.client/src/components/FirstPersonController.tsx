@@ -36,8 +36,13 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
     controllerRef.current = controller;
 
     itemsControllerRef.current = new ItemsController(camera, scene);
+    const newInv = new Inventory()
+    setPlayerInventory(newInv);
 
-    setPlayerInventory(new Inventory());
+    itemsControllerRef.current.playerInventory = newInv;
+    console.log("Setting player inventory", newInv, itemsControllerRef.current);
+
+    
 
     const handleMouseMove = (event: MouseEvent) => controller.handleMouseMove(event);
     const handleKeyDown = (event: KeyboardEvent) => controller.handleKeyDown(event);

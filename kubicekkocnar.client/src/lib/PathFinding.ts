@@ -209,8 +209,6 @@ export class PathFinder
     let closestBlock: PlacedBlock | null = null;
     let minDistance = Infinity;
 
-    console.log("Finding closest block to", position);
-
     for (const block of this.blockDictionary.values()) {
       const distance = block.position.distanceTo(position);
       if (distance < minDistance) {

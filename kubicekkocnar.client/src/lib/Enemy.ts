@@ -67,11 +67,7 @@ export class EnemyRenderer {
           const blockBelowPlayer = this.pathFinder.GetClosestBlock(player.position.clone().sub(new THREE.Vector3(0, 2, 0)));
 
           const path = this.pathFinder.FindPath(blockBelowEnemy, blockBelowPlayer);
-
-          console.log(path);
-
-        
-
+          
           if (path.length > 1)
           {
             const nextBlock = path[1];

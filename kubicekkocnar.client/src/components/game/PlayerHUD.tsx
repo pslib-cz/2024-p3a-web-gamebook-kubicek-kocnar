@@ -29,7 +29,7 @@ const GameHUD = () => {
       <Joystick />
       <div>
         {
-          playerInventory?.coinage.map((a: Coinage, x: number) => <CoinageDrawer key={x} coinage={a} />)
+          playerInventory?.coinage.map((a: Coinage, x: number) => <CoinageDrawer key={x} coinage={a} count={playerInventory?.coinageAmount[x]} />)
         }
       </div>
       <div className="damage_overlay" style={{ opacity: playerHealth > 0 ? (0.5 - (Math.max(playerHealth, 0) / 200)) : 1 }}></div>
