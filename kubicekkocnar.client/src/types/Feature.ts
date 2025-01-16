@@ -17,20 +17,22 @@ interface GenericFeature {
 
 enum FeatureType {
     "Light"=1,
-    "Crystal"=2,
+    "Chest"=2,
     "Portal"=3,
+    "Crystal"=4,
 }
 enum FeatureTypeIcon {
     "light_mode"=1,
-    "diamond"=2,
+    "orders"=2,
     "call_split"=3,
+    "diamond"=4,
 }
 
 // the FeatureParams type is used to define the properties of a feature -> its content depends on the FeatureType
 // its just a dictionary which can be extended
 
 interface FeatureParams {
-    [key: string]: string;
+    [key: string]: unknown;
 }
 
 

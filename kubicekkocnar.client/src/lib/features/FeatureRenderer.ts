@@ -2,6 +2,7 @@ import GenericFeature, { FeatureType } from "../../types/Feature";
 import * as THREE from 'three';
 import renderLight, { Light } from "./Light";
 import renderPortal, { Portal } from "./Portal";
+import renderChest, { Chest } from "./Chest";
 
 const source = window.location.search.includes('source=') ? window.location.search.split('source=')[1].split('&')[0] : null;
 
@@ -31,6 +32,10 @@ class FeatureRenderer {
 
             case FeatureType.Portal:
                 this.renderPortal(feature as Portal);
+                break;
+
+            case FeatureType.Chest:
+                this.renderChest(feature as Chest);
                 break;
 
             default:
@@ -65,6 +70,7 @@ class FeatureRenderer {
 
     renderLight = renderLight;
     renderPortal = renderPortal;
+    renderChest = renderChest
 
     removeFeature(feature: GenericFeature) {
         const removedFeature = this.features.find(f => f.featureId === feature.featureId);

@@ -40,6 +40,8 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ level }) => {
                 return {};
             case FeatureType.Portal:
                 return { source: level.levelId, destination: '2', color: '#ffffff', facing: 'X', width: '2', height: '3' };
+            case FeatureType.Chest:
+                return { inventory: "" };
         }
     }
 
@@ -91,6 +93,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ level }) => {
                 </div>
                 <h3>{FeatureType[modalFeature.type]} Properties</h3>
                 {Object.keys(modalFeature.params).map((key, index) => (
+                    key == "inventory" ? <></> :
                     <div key={index} className="configpanel__input">
                         <label htmlFor={key}>{key}: </label>
                         <input type="text" id={key} defaultValue={modalFeature.params[key]}

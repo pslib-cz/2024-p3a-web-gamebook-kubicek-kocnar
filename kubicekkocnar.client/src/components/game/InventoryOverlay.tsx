@@ -51,7 +51,7 @@ export function UIOverlay() {
           {
             playerInventory?.coinage.map((a : Coinage, x : number) => <CoinageDrawer key={x} coinage={a} />)
           }
-          <p>------- UPGRADES</p>
+          <p>UPGRADES</p>
           {
             playerInventory?.upgrades.map((a, x) => <ItemUpgradeDrawer key={x} upgrade={a} />)
           }
@@ -60,6 +60,7 @@ export function UIOverlay() {
       </div>
     </div>
     }
+    
     </>
   )
 }
@@ -93,3 +94,4 @@ function ItemUpgradeDrawer({upgrade} : {upgrade: ItemUpgrade})
     </div>
   )
 }
+

@@ -157,11 +157,15 @@ export class FirstPersonController {
 
   public update(delta: number) {
     this.saveCounter+=delta;
-    console.log(this.saveCounter);
     if (this.saveCounter > 2) {
       this.savePlayerPosition();
       this.saveCounter = 0;
     }
+
+    if (this.playerPosition.y < -100) {
+      this.playerPosition.setY(20)
+    }
+
     if (this.stopped) return;
     this.lastGrounded = this.isGrounded;
     const speed = 6; // Movement speed
@@ -185,6 +189,7 @@ export class FirstPersonController {
 
     // to calculate forward use only the x and z components
     forward.y = 0;
+    forward.normalize()
 
     const right = new THREE.Vector3(1, 0, 0).applyQuaternion(this.camera.quaternion).normalize();
     const up = new THREE.Vector3(0, 1, 0);
@@ -280,13 +285,13 @@ export class FirstPersonController {
   }
 
   public savePlayerPosition() {
-    const levelId = this.scene.userData.levelId;
+    const levelId = this.scene.userData.level.levelId;
     console.log("saving player position "+levelId);
     localStorage.setItem("playerPosition"+levelId, JSON.stringify(this.playerPosition));
   }
 
   public loadPlayerPosition() {
-    const levelId = this.scene.userData.levelId;
+    const levelId = this.scene.userData.level.levelId;
     let playerPosition = localStorage.getItem("playerPosition"+levelId);
     if (playerPosition) {
       playerPosition = JSON.parse(playerPosition);

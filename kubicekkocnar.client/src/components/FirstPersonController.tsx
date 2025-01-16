@@ -15,6 +15,8 @@ type FirstPersonControllerComponentProps = {
 };
 
 const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonControllerComponentProps) => {
+
+  scene.userData.level
   
   const { setPlayerInventory, playerInventory } = useContext(AppContext);
 

@@ -25,7 +25,7 @@ const Map = ({
 
   const scene = level.mapRenderer.scene;
 
-  scene.userData.levelId = level.levelId;
+  scene.userData.level = level;
   console.log("Rendering Map", scene);
 
   const { toolState, setBlock, addBlockParamsState } = useContext(AppContext);
@@ -236,9 +236,8 @@ const Map = ({
         rotation={new THREE.Euler(0, 0, -Math.PI / 2)}
       />
       <Model
-        path="/models/crystal.glb"
-        name="portal-5"
-        position={new THREE.Vector3(-8, 0.5, 7)}
+        path="/models/chest.glb"
+        position={new THREE.Vector3(-8, 1, 7)}
       />
 
       {
