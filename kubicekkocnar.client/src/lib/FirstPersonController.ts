@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { JoystickOutputData } from "../components/game/Joystick";
 
 export class FirstPersonController {
   private camera: THREE.Camera;
@@ -6,11 +7,11 @@ export class FirstPersonController {
   private rotation: THREE.Quaternion = new THREE.Quaternion(); // Base quaternion
   private pitch: THREE.Quaternion = new THREE.Quaternion(); // For up/down rotation
   private yaw: THREE.Quaternion = new THREE.Quaternion(); // For left/right rotation
-  private move: { forward: boolean; backward: boolean; left: boolean; right: boolean, up: boolean } = {
-    forward: false,
-    backward: false,
-    left: false,
-    right: false,
+  private move: { /*forward: boolean; backward: boolean; left: boolean; right: boolean,*/ up: boolean } = {
+    //forward: false,
+    //backward: false,
+    //left: false,
+    //right: false,
     up: false
   };
   private touchStart: { x: number; y: number } = { x: 0, y: 0 };
@@ -73,7 +74,8 @@ export class FirstPersonController {
 
   public handlePointerLockChange(isLocked: boolean) {
     if (!isLocked) {
-      this.move = { forward: false, backward: false, left: false, right: false, up: false };
+      this.move = { up: false };
+      this.joystickData = new JoystickOutputData();
     }
   }
 
@@ -118,16 +120,16 @@ export class FirstPersonController {
     
     switch (event.code) {
       case "KeyW":
-        this.move.forward = true;
+        this.joystickData.fwdValue = 1;
         break;
       case "KeyS":
-        this.move.backward = true;
+        this.joystickData.bkdValue = 1;
         break;
       case "KeyA":
-        this.move.left = true;
+        this.joystickData.lftValue = 1;
         break;
       case "KeyD":
-        this.move.right = true;
+        this.joystickData.rgtValue = 1;
         break;
       case "Space":
         this.handleJump();
@@ -138,16 +140,16 @@ export class FirstPersonController {
   public handleKeyUp(event: KeyboardEvent) {
     switch (event.code) {
       case "KeyW":
-        this.move.forward = false;
+        this.joystickData.fwdValue = 0;
         break;
       case "KeyS":
-        this.move.backward = false;
+        this.joystickData.bkdValue = 0;
         break;
       case "KeyA":
-        this.move.left = false;
+        this.joystickData.lftValue = 0;
         break;
       case "KeyD":
-        this.move.right = false;
+        this.joystickData.rgtValue = 0;
         break;
       case "Space":
         this.move.up = false;
@@ -172,10 +174,10 @@ export class FirstPersonController {
 
     // Update velocity based on input
     this.velocity.set(0, 0, 0);
-    if (this.move.forward) this.velocity.z += 1; // Move forward
-    if (this.move.backward) this.velocity.z -= 1; // Move backward
-    if (this.move.left) this.velocity.x -= 1; // Strafe left
-    if (this.move.right) this.velocity.x += 1; // Strafe right
+    if (this.joystickData.fwdValue) this.velocity.z += 1; // Move forward
+    if (this.joystickData.bkdValue) this.velocity.z -= 1; // Move backward
+    if (this.joystickData.lftValue) this.velocity.x -= 1; // Strafe left
+    if (this.joystickData.rgtValue) this.velocity.x += 1; // Strafe right
 
     this.velocity.normalize().multiplyScalar(speed * delta);    
 
@@ -217,7 +219,7 @@ export class FirstPersonController {
     this.camera.position.copy(this.playerPosition);
 
     // View bobbing effect
-    if (this.move.forward || this.move.backward || this.move.left || this.move.right && !this.move.up) {
+    if (this.joystickData.AnyMovement() && !this.move.up) {
       this.viewBobPhase += delta * 10; // Adjust bobbing speed
       this.camera.position.y += Math.sin(this.viewBobPhase) * 0.15; // Bobbing amplitude, the 2 is the player's height and its only temporary, sice you will be able to go up later
     } else {
@@ -299,4 +301,9 @@ export class FirstPersonController {
     }
   }
 
+  public joystickData : JoystickOutputData = new JoystickOutputData();
+
+  public SetJoystickData(joystickData: JoystickOutputData | null) {
+    this.joystickData = joystickData ?? new JoystickOutputData();
+  }
 }

@@ -19,19 +19,23 @@ export class PathFinder
     new Vector3(-1, -1, 0),
     new Vector3(0, -1, 1),
     new Vector3(0, -1, -1),
+
+    new Vector3(1, -2, 0),
     new Vector3(-1, -2, 0),
     new Vector3(0, -2, 1),
     new Vector3(0, -2, -1),
-    new Vector3(-1, -2, 0),
-    new Vector3(0, -3, 1),
-    new Vector3(0, -3, -1),
+
+    new Vector3(1, -3, 0),
     new Vector3(-1, -3, 0),
     new Vector3(0, -3, 1),
-    new Vector3(0, -4, -1),
+    new Vector3(0, -3, -1),
+
+    new Vector3(1, -4, 0),
     new Vector3(-1, -4, 0),
     new Vector3(0, -4, 1),
     new Vector3(0, -4, -1),
-    new Vector3(0, -5, -1),
+    
+    new Vector3(1, -5, 0),
     new Vector3(-1, -5, 0),
     new Vector3(0, -5, 1),
     new Vector3(0, -5, -1),
@@ -43,13 +47,12 @@ export class PathFinder
   ]
 
   // string conversion is necessary
-  private blockDictionary: Map<string, PlacedBlock>; // walkable blocks
-  private allBlockDictionary: Map<string, PlacedBlock>; // all blocks
+  public blockDictionary: Map<string, PlacedBlock>; // walkable blocks
+  public allBlockDictionary: Map<string, PlacedBlock>; // all blocks
 
   constructor (blocks : PlacedBlock[])
   {
     this.blockDictionary = new Map<string, PlacedBlock>();
-
     this.allBlockDictionary = new Map<string, PlacedBlock>();
 
     for (const block of blocks)
@@ -185,7 +188,7 @@ export class PathFinder
       
       const neighbor = this.blockDictionary.get(neighborPosition.toArray().toString());
 
-      if (neighbor && this.IsBlockWalkable(neighbor)) neighbors.push(neighbor);
+      if (neighbor) neighbors.push(neighbor);
     }
 
     return neighbors;
