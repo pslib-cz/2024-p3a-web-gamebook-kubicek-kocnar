@@ -14,7 +14,8 @@ enum Tool {
   Add,
   Remove,
   PlayerCamera,
-  PathFinding
+  PathFinding,
+  WalkableBlocks
 }
 
 const ToolBar: React.FC = () => {
@@ -130,9 +131,15 @@ const ToolBar: React.FC = () => {
           />
 
           <TooltipItem
-            icon="video_camera_front"
+            icon="conversion_path"
             text="Path Finding"
             tool={Tool.PathFinding}
+          />
+
+          <TooltipItem
+            icon="footprint"
+            text="Path Finding"
+            tool={Tool.WalkableBlocks}
           />
         </div>
         <div className="toolbar__heading">

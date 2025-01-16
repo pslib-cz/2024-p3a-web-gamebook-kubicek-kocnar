@@ -11,7 +11,7 @@ import FirstPersonControllerComponent from "../FirstPersonController";
 import Model from "./Model";
 import { CorruptionHandler } from "../CorruptionHandler";
 import { useNavigate } from "react-router-dom";
-import { PathFindingVisual } from "../PathFinding";
+import { PathFindingVisual, VisualizePathfinableBlocks, VisualizeBlocksNeighbours } from "../PathFinding";
 
 // React.memo(
 const Map = ({
@@ -246,7 +246,14 @@ const Map = ({
         <PathFindingVisual 
           blocks={level.mapRenderer.blocks}
           startBlock={level.mapRenderer.blocks[0]}
-          endBlock={level.mapRenderer.blocks.find(block => block.placedBlockId == 646)}
+          endBlock={level.mapRenderer.blocks.find(block => block.placedBlockId == 428)}
+        />
+      }
+
+      {
+        toolState === Tool.WalkableBlocks &&
+        <VisualizePathfinableBlocks
+          blocks={level.mapRenderer.blocks}
         />
       }
     </>

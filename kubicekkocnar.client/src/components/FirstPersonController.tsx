@@ -14,16 +14,21 @@ type FirstPersonControllerComponentProps = {
   navigate: (levelId: string) => void;
 };
 
-const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonControllerComponentProps) => {
-  
-  const { setPlayerInventory, playerInventory } = useContext(AppContext);
+const FirstPersonControllerComponent = ({ camera, scene, navigate }: FirstPersonControllerComponentProps) => {
+
+  const { setPlayerInventory, playerInventory, joytickData } = useContext(AppContext);
 
   const controllerRef = useRef<FirstPersonController | null>(null);
   const itemsControllerRef = useRef<ItemsController | null>(null);
-  //const inventory = useRef<Inventory | null>(null);
 
   const { gl } = useThree();
   const clock = new THREE.Clock();
+
+  useEffect(() => {
+    if (controllerRef.current) {
+      controllerRef.current?.SetJoystickData(joytickData);
+    }
+  }, [joytickData]);
 
   useEffect(() => {
     const controller = new FirstPersonController(camera, scene, navigate);
@@ -32,7 +37,6 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
 
     itemsControllerRef.current = new ItemsController(camera, scene);
 
-    //inventory.current = new Inventory();
     setPlayerInventory(new Inventory());
 
     const handleMouseMove = (event: MouseEvent) => controller.handleMouseMove(event);
@@ -64,20 +68,20 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
   useFrame(() => {
     controllerRef.current?.update(clock.getDelta());
   });
-  
+
   const handleClick = async () => {
     if (!document.getElementById("inventoryui")) {
       try { await document.getElementById("gameroot")?.requestFullscreen() } catch (e) { console.error(e); }
       console.log("Requesting Pointerlock");
-      await document.getElementById("gameroot")?.requestPointerLock(); 
-    }   
+      await document.getElementById("gameroot")?.requestPointerLock();
+    }
 
-    const item = playerInventory? playerInventory.selectedItem : null;
+    const item = playerInventory ? playerInventory.selectedItem : null;
 
     if (getHandlePlayerMouseClick) getHandlePlayerMouseClick()(item);
 
     console.log("Calling OnPointerDown");
-    
+
     itemsControllerRef.current?.onCLick();
   };
 

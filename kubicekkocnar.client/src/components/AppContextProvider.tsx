@@ -3,6 +3,7 @@ import { Tool } from "./editor/ToolBar";
 import PlacedBlock from "../types/PlacedBlock";
 import GenericFeature from "../types/Feature";
 import { Inventory } from "../lib/Inventory";
+import { JoystickOutputData } from "./game/Joystick";
 
 interface AddBlockParams {
   blockId?: number;
@@ -22,6 +23,9 @@ interface AppContextType {
 
   setAddBlockParams: (block: AddBlockParams) => void;
   addBlockParamsState: AddBlockParams|null;
+
+  joytickData : JoystickOutputData | null;
+  setJoystickData : (data: JoystickOutputData) => void;
 }
 
 const defaultContext: AppContextType = {
@@ -37,6 +41,9 @@ const defaultContext: AppContextType = {
 
   setAddBlockParams: () => {},
   addBlockParamsState: null,
+
+  joytickData: null,
+  setJoystickData: () => {}
 };
 
 const AppContext = React.createContext<AppContextType>(defaultContext);
@@ -47,10 +54,11 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
     const [featureState, setFeature] = useState<GenericFeature|null>(null);
     const [addBlockParamsState, setAddBlockParams] = useState<AddBlockParams|null>(null);
     const [playerInventory, setPlayerInventory] = useState<Inventory | null>(null);
+    const [joytickData, setJoystickData] = useState<JoystickOutputData | null>(null);
 
     const contextValue = useMemo(() => ({
-      setToolState, toolState, blockState, setBlock, featureState, setFeature, playerInventory, setPlayerInventory, setAddBlockParams, addBlockParamsState
-    }), [toolState, blockState, featureState, playerInventory, addBlockParamsState]);
+      setToolState, toolState, blockState, setBlock, featureState, setFeature, playerInventory, setPlayerInventory, setAddBlockParams, addBlockParamsState, joytickData, setJoystickData
+    }), [toolState, blockState, featureState, playerInventory, addBlockParamsState, joytickData]);
 
     return (
       <AppContext.Provider value={contextValue}>
