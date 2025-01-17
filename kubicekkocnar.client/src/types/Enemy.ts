@@ -4,4 +4,5 @@ export interface EnemyType {
   damage: number;
   attackSpeed: number; //ms between attacks
   speed: number;
+  isGhost : boolean;
 }

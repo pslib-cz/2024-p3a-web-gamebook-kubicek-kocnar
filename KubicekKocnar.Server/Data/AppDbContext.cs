@@ -17,6 +17,7 @@ namespace KubicekKocnar.Server.Data
         public DbSet<PlacedBlock> PlacedBlocks { get; set; }
         public DbSet<Feature> Features { get; set; }
         public DbSet<Texture> Textures { get; set; }
+        public DbSet<Enemy> Enemies { get; set; }
 
         // items 
         public DbSet<Item> Items { get; set; }

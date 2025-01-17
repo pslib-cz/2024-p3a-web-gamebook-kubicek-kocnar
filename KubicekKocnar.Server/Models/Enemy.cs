@@ -9,6 +9,8 @@
         public float AttackSpeed { get; set; }
         public float Speed { get; set; }
 
+        public bool IsGhost { get; set; }
+
         public List<Level> Levels { get; set; } = [];
     }
 }

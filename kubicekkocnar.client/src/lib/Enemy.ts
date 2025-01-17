@@ -77,7 +77,11 @@ export class EnemyRenderer {
         const distance = enemy.mesh.position.distanceTo(player.position.clone().sub(this.scene.position));
         if (distance > 1)
         {
-          //enemy.mesh.position.add(player.position.clone().sub(enemy.mesh.position).normalize().multiplyScalar(enemy.speed / 1000));
+          if (!enemy.type.isGhost)
+          {
+            enemy.mesh.position.add(player.position.clone().sub(enemy.mesh.position).normalize().multiplyScalar(enemy.speed / 1000));
+            return;
+          }          
 
           const blockBelowEnemy = this.pathFinder.GetClosestBlock(enemy.mesh.position.clone().sub(new THREE.Vector3(0, 2, 0)));
 

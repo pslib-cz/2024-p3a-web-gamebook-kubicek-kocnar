@@ -75,7 +75,7 @@ const Editor: React.FC = () => {
             <li key={upgrade.itemUpgradeId}>
               <div>
                 <p>{upgrade.description} ({upgrade.itemUpgradeId})</p>
-                <p>{upgrade.inputItem.name} --- {upgrade.outputItem.name}</p>
+                <p>{upgrade.inputItem.name} ({upgrade.inputItem.itemId}) --- {upgrade.outputItem.name} ({upgrade.outputItem.itemId})</p>
               </div>
             </li>
           ))}
@@ -119,7 +119,7 @@ function AddItemDrawer({item, postFunction} : {item : any, postFunction : any})
   }
 
   return (
-    <form onSubmit={handleSubmit((item) => {console.log(item); postFunction(item); window.location.reload(); })}>
+    <form onSubmit={handleSubmit((item) => {console.log(item); postFunction(item); })}>
       {inputs}
       <button type="submit">Add</button>
     </form>
