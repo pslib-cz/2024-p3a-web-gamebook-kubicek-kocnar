@@ -34,3 +34,7 @@ export async function addTexture(texture: Texture) {
     console.error(err);
   }
 }
+
+export function GetTextureURL(textureId: number) {
+  return `${URL}/${textureId}/Image`;
+}

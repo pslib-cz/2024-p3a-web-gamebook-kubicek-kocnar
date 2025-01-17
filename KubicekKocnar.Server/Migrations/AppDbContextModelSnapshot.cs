@@ -17,6 +17,21 @@ namespace KubicekKocnar.Server.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
 
+            modelBuilder.Entity("EnemyLevel", b =>
+                {
+                    b.Property<uint>("EnemiesEnemyId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<uint>("LevelsLevelId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("EnemiesEnemyId", "LevelsLevelId");
+
+                    b.HasIndex("LevelsLevelId");
+
+                    b.ToTable("EnemyLevel");
+                });
+
             modelBuilder.Entity("KubicekKocnar.Server.Models.Block", b =>
                 {
                     b.Property<uint>("BlockId")
@@ -120,6 +135,32 @@ namespace KubicekKocnar.Server.Migrations
                     b.HasIndex("PlayerUpgradeId");
 
                     b.ToTable("Cost");
+                });
+
+            modelBuilder.Entity("KubicekKocnar.Server.Models.Enemy", b =>
+                {
+                    b.Property<uint>("EnemyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<float>("AttackSpeed")
+                        .HasColumnType("REAL");
+
+                    b.Property<float>("Damage")
+                        .HasColumnType("REAL");
+
+                    b.Property<float>("Health")
+                        .HasColumnType("REAL");
+
+                    b.Property<bool>("IsGhost")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<float>("Speed")
+                        .HasColumnType("REAL");
+
+                    b.HasKey("EnemyId");
+
+                    b.ToTable("Enemy");
                 });
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.Feature", b =>
@@ -471,6 +512,21 @@ namespace KubicekKocnar.Server.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("RoleUser");
+                });
+
+            modelBuilder.Entity("EnemyLevel", b =>
+                {
+                    b.HasOne("KubicekKocnar.Server.Models.Enemy", null)
+                        .WithMany()
+                        .HasForeignKey("EnemiesEnemyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("KubicekKocnar.Server.Models.Level", null)
+                        .WithMany()
+                        .HasForeignKey("LevelsLevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.Block", b =>

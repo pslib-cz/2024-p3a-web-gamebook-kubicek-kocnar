@@ -2,7 +2,6 @@ import { Tool } from "./ToolBar";
 import { useContext, useState } from "react";
 import { AppContext } from "../AppContextProvider";
 import MapRender from '../../lib/MapRenderer';
-import MapRenderer from '../../lib/MapRenderer';
 import Level from "../../lib/Level";
 import { MaterialSymbol, SymbolCodepoints } from 'react-material-symbols';
 import GenericFeature, { FeatureType, FeatureTypeIcon } from "../../types/Feature";
@@ -10,6 +9,7 @@ import { applyOperation } from 'fast-json-patch';
 import InputSlider from "../InputSlider";
 import { debounce } from 'lodash';
 import Block from "../../types/Block";
+import { GetTextureURL } from "../../api/Textures";
 
 interface ConfigPanelProps {
     level: Level;
@@ -131,7 +131,7 @@ const ConfigPanelView: React.FC<ConfigPanelProps> = ({level, setOpenAddFeatureMo
                 <button className='configpanel__addbtn'  onClick={() => setOpenAddBlockModal(true)}><MaterialSymbol icon='add'/></button>
                 {level.mapRenderer.blocksReference.blocks.map((block, index) => (
                     <div key={index} className='configpanel__blockeditor' onClick={() => {setBlock(block); setToolState(Tool.BlockEditor)}}>
-                        <img className='configpanel__texture__image_sm' src={block.texture0Id != 0 ? MapRenderer.loadTexture(block.texture0Id) : '/missing.png'} alt={`texture ${index}`}/>
+                        <img className='configpanel__texture__image_sm' src={block.texture0Id != 0 ? GetTextureURL(block.texture0Id) : '/missing.png'} alt={`texture ${index}`}/>
                         <h3>{block.name}</h3>
                         <p>Attributes: {block.attributes}</p>
                     </div>
@@ -147,14 +147,14 @@ const ConfigPanelView: React.FC<ConfigPanelProps> = ({level, setOpenAddFeatureMo
                         Block Editor
                     </h2>
                     <div className="configpanel__blockeditor">
-                        <img className='configpanel__texture__image' src={block && block?.texture0Id != 0 ? MapRenderer.loadTexture(block.texture0Id) : '/missing.png'} alt={`texture 0`}/>
+                        <img className='configpanel__texture__image' src={block && block?.texture0Id != 0 ? GetTextureURL(block.texture0Id) : '/missing.png'} alt={`texture 0`}/>
                         <h3>{block?.name}</h3>
                     </div>
                     <h3>Textures</h3>
                     <div className="configpanel__textures">
                         {[block?.texture0Id, block?.texture1Id, block?.texture2Id, block?.texture3Id, block?.texture4Id, block?.texture5Id].map((texture, index) => (
                             <div key={index} className="configpanel__texture">
-                                <img className='configpanel__texture__image' src={texture ? MapRenderer.loadTexture(texture) : '/missing.png'} alt={`texture ${index}`}/>
+                                <img className='configpanel__texture__image' src={texture ? GetTextureURL(texture) : '/missing.png'} alt={`texture ${index}`}/>
                                 <p className='configpanel__texture__side'>{MapRender.translateTextureSide(index)}</p>
                             </div>
                         ))}
@@ -202,7 +202,7 @@ const ConfigPanelView: React.FC<ConfigPanelProps> = ({level, setOpenAddFeatureMo
                             key={index} 
                             className="configpanel__texture" 
                             >
-                            {texture && <img className='configpanel__texture__image' src={MapRenderer.loadTexture(texture!)} alt={`texture ${index}`}/>}
+                            {texture && <img className='configpanel__texture__image' src={GetTextureURL(texture!)} alt={`texture ${index}`}/>}
                             <p className='configpanel__texture__side'>{MapRender.translateTextureSide(index)}</p>
                             </div>
                         ))}
@@ -226,7 +226,7 @@ const ConfigPanelView: React.FC<ConfigPanelProps> = ({level, setOpenAddFeatureMo
                         </button>
                         {level.mapRenderer.blocksReference.blocks.map((block, index) => (
                             <button key={index} className={`configpanel__addblock${addBlockParamsState?.blockId==block.blockId?' configpanel__addblock--selected':''}`} onClick={() => setAddBlockParams({...addBlockParamsState, blockId: block.blockId})}>
-                                <img className='configpanel__texture__image_sm' src={block.texture0Id != 0 ? MapRenderer.loadTexture(block.texture0Id) : '/missing.png'} alt={`texture ${index}`}/>
+                                <img className='configpanel__texture__image_sm' src={block.texture0Id != 0 ? GetTextureURL(block.texture0Id) : '/missing.png'} alt={`texture ${index}`}/>
                                 <h3>{block.name}</h3>
                             </button>
                         ))}

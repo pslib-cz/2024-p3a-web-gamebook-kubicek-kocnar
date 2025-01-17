@@ -7,28 +7,14 @@ const textureLoader = new THREE.TextureLoader();
 textureLoader.setCrossOrigin('anonymous');
 
 export class Enemy {
-  // public health: number;
-  // public damage: number;
-  // public attackSpeed: number; //ms between attacks
-  // public speed :number;
-
   public type : EnemyType;
-
-  
+    
   public isOnCooldown: boolean = false;
   public mesh: THREE.Mesh | null = null;
 
   constructor(type: EnemyType) {
     this.type = type;
   }
-/*
-  constructor(health: number, damage: number, attackSpeed: number = 200, speed = 50) {
-    this.health = health;
-    this.damage = damage;
-    this.attackSpeed = attackSpeed
-    this.speed = speed;
-  }
-*/
 }
 
 const defaultEnemyType : EnemyType = {

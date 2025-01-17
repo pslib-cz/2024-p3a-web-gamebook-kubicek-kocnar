@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import type PlacedBlock from '../types/PlacedBlock';
 import Block from '../types/Block';
 import Blocks from './Blocks';
-import Texture from '../types/Texture';
+import { GetTextureURL } from '../api/Textures';
 
 const textureLoader = new THREE.TextureLoader();
 textureLoader.setCrossOrigin('anonymous');
@@ -18,12 +18,14 @@ class MapRenderer {
     this.blocksReference = blocksReference;
   }
 
+/*
   static loadTexture(textureId: number): string {
 
     console.log("Loading texture")
 
     return import.meta.env.VITE_API_URL + '/Textures/' + textureId + "/Image";
   }
+*/
 
   public addBlock(placedBlock: PlacedBlock) {
     // if the blockId exists in this.blocks, we dont add it
@@ -65,7 +67,7 @@ class MapRenderer {
         // if there is only one texture, we use it for all sides
         if (block.texture0Id == 0) {
           // create a URL from the Blob
-          const loadedTexture = textureLoader.load(MapRenderer.loadTexture(block.texture0Id));
+          const loadedTexture = textureLoader.load(GetTextureURL(block.texture0Id));
           // avoid blurring for pixel art
           loadedTexture.minFilter = THREE.NearestFilter;
           loadedTexture.magFilter = THREE.NearestFilter;
@@ -74,7 +76,7 @@ class MapRenderer {
         } else {
           block.material = [block.texture0Id, block.texture1Id, block.texture2Id, block.texture3Id, block.texture4Id, block.texture5Id].map(texture => {
             if (!texture) texture = block.texture0Id;
-            const loadedTexture = textureLoader.load(MapRenderer.loadTexture(texture!));
+            const loadedTexture = textureLoader.load(GetTextureURL(texture!));
             loadedTexture.minFilter = THREE.NearestFilter;
             loadedTexture.magFilter = THREE.NearestFilter;
             return new THREE.MeshStandardMaterial({ map: loadedTexture, blendSrc: THREE.OneFactor });
