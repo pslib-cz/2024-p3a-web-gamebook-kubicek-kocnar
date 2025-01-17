@@ -33,6 +33,15 @@ namespace KubicekKocnar.Server.Controllers
             return texture;
         }
 
+        [HttpGet("{id}/image")]
+        public async Task<ActionResult<Texture>> GetTextureImage(uint id) {
+            var texture = await _context.Textures.FindAsync(id);
+
+            if (texture == null) return NotFound();
+
+            return File(texture.Content, texture.Type, true);
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTexture(uint id, Texture texture) {
             if (id != texture.TextureId) {
