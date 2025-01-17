@@ -39,6 +39,8 @@ namespace KubicekKocnar.Server.Controllers
 
             if (texture == null) return NotFound();
 
+            if (texture.Type == string.Empty) return StatusCode(500, "Texture type is empty for some reason -_-");
+
             return File(texture.Content, texture.Type, true);
         }
 
