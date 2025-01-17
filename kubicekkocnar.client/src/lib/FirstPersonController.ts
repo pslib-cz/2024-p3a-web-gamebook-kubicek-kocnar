@@ -289,7 +289,7 @@ export class FirstPersonController {
   public savePlayerPosition() {
     const levelId = this.scene.userData.level.levelId;
     console.log("saving player position "+levelId);
-    localStorage.setItem("playerPosition"+levelId, JSON.stringify(this.playerPosition));
+    localStorage.setItem("playerPosition"+levelId, JSON.stringify(this.playerPosition.clone().sub(this.scene.position)));
   }
 
   public loadPlayerPosition() {
@@ -297,7 +297,7 @@ export class FirstPersonController {
     let playerPosition = localStorage.getItem("playerPosition"+levelId);
     if (playerPosition) {
       playerPosition = JSON.parse(playerPosition);
-      this.playerPosition = new THREE.Vector3(parseFloat(playerPosition?.x), parseFloat(playerPosition?.y), parseFloat(playerPosition?.z));
+      this.playerPosition = new THREE.Vector3(parseFloat(playerPosition?.x), parseFloat(playerPosition?.y), parseFloat(playerPosition?.z)).add(this.scene.position);
     }
   }
 

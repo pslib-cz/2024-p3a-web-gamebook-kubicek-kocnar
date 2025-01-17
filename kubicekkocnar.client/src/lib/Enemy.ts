@@ -57,14 +57,14 @@ export class EnemyRenderer {
     this.enemies.forEach(enemy => {
       if (enemy.mesh) {
         enemy.mesh.lookAt(player.position);
-        const distance = enemy.mesh.position.distanceTo(player.position);
+        const distance = enemy.mesh.position.distanceTo(player.position.clone().sub(this.scene.position));
         if (distance > 1)
         {
           //enemy.mesh.position.add(player.position.clone().sub(enemy.mesh.position).normalize().multiplyScalar(enemy.speed / 1000));
 
           const blockBelowEnemy = this.pathFinder.GetClosestBlock(enemy.mesh.position.clone().sub(new THREE.Vector3(0, 2, 0)));
 
-          const blockBelowPlayer = this.pathFinder.GetClosestBlock(player.position.clone().sub(new THREE.Vector3(0, 2, 0)));
+          const blockBelowPlayer = this.pathFinder.GetClosestBlock(player.position.clone().sub(new THREE.Vector3(0, 2, 0)).sub(this.scene.position));
 
           const path = this.pathFinder.FindPath(blockBelowEnemy, blockBelowPlayer);
           
