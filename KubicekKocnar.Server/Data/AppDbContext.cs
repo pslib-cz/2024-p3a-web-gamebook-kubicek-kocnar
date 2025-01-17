@@ -208,5 +208,6 @@ namespace KubicekKocnar.Server.Data
                 );
             });*/
         }
+        public DbSet<KubicekKocnar.Server.Models.Enemy> Enemy { get; set; } = default!;
     }
 }

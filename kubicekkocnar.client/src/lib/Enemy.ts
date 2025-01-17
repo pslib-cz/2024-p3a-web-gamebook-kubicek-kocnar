@@ -1,24 +1,41 @@
 import * as THREE from 'three';
 import { PathFinder } from './PathFinding';
 import Level from './Level';
-import { forEach } from 'lodash';
+import { EnemyType } from '../types/Enemy';
 
 const textureLoader = new THREE.TextureLoader();
 textureLoader.setCrossOrigin('anonymous');
 
 export class Enemy {
-  public health: number;
-  public damage: number;
-  public attackSpeed: number; //ms between attacks
-  public speed = 50;
+  // public health: number;
+  // public damage: number;
+  // public attackSpeed: number; //ms between attacks
+  // public speed :number;
+
+  public type : EnemyType;
+
+  
   public isOnCooldown: boolean = false;
   public mesh: THREE.Mesh | null = null;
 
-  constructor(health: number, damage: number, attackSpeed: number = 200) {
+  constructor(type: EnemyType) {
+    this.type = type;
+  }
+/*
+  constructor(health: number, damage: number, attackSpeed: number = 200, speed = 50) {
     this.health = health;
     this.damage = damage;
     this.attackSpeed = attackSpeed
+    this.speed = speed;
   }
+*/
+}
+
+const defaultEnemyType : EnemyType = {
+  health: 100,
+  damage: 10,
+  attackSpeed: 200,
+  speed: 50
 }
 
 export class EnemyRenderer {
@@ -34,7 +51,7 @@ export class EnemyRenderer {
   constructor(scene: THREE.Scene, level: Level) {
     this.scene = scene;
     this.level = level;
-    this.enemies.push(new Enemy(100, 2));
+    this.enemies.push(new Enemy(defaultEnemyType));
     this.render();
 
     this.pathFinder = new PathFinder(level.blocks);
@@ -65,22 +82,22 @@ export class EnemyRenderer {
           const blockBelowEnemy = this.pathFinder.GetClosestBlock(enemy.mesh.position.clone().sub(new THREE.Vector3(0, 2, 0)));
 
           const blockBelowPlayer = this.pathFinder.GetClosestBlock(player.position.clone().sub(new THREE.Vector3(0, 2, 0)));
-
+          
           const path = this.pathFinder.FindPath(blockBelowEnemy, blockBelowPlayer);
           
           if (path.length > 1)
           {
             const nextBlock = path[1];
-            enemy.mesh.position.add(nextBlock.position.clone().add(new THREE.Vector3(0, 2, 0)).sub(enemy.mesh.position).normalize().multiplyScalar(enemy.speed / 1000));
+            enemy.mesh.position.add(nextBlock.position.clone().add(new THREE.Vector3(0, 2, 0)).sub(enemy.mesh.position).normalize().multiplyScalar(enemy.type.speed / 1000));
           }
         }
         if (!enemy.isOnCooldown && distance < 1.5 && this.addPlayerHealth) {
           //attack player
-          this.addPlayerHealth(-enemy.damage);
+          this.addPlayerHealth(-enemy.type.damage);
           enemy.isOnCooldown = true;
           setTimeout(() => {
             enemy.isOnCooldown = false;
-          }, enemy.attackSpeed);
+          }, enemy.type.attackSpeed);
         }
       }
     });

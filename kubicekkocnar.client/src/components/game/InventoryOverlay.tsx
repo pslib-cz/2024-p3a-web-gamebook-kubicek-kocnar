@@ -49,7 +49,7 @@ export function UIOverlay() {
         <div> 
           <h1>This inventory shall be ({playerInventory ? "1" : "fr"})</h1>
           {
-            playerInventory?.coinage.map((a : Coinage, x : number) => <CoinageDrawer key={x} coinage={a} />)
+            playerInventory?.coinage.map((a : Coinage, x : number) => <CoinageDrawer key={x} coinage={a} count={-1} />)
           }
           <p>UPGRADES</p>
           {
@@ -88,7 +88,7 @@ function ItemUpgradeDrawer({upgrade} : {upgrade: ItemUpgrade})
     >
       <p>{upgrade.description}</p>
       <p>{upgrade.inputItem.name} to {upgrade.outputItem.name}</p>
-      {upgrade.cost && upgrade.cost.map((a, x) => <CoinageDrawer key={x} coinage={a.coinage} />)}
+      {upgrade.cost && upgrade.cost.map((a, x) => <CoinageDrawer key={x} coinage={a.coinage} count={a.cost} />)}
       {playerInventory?.IsCostSufficient(upgrade.cost) ? <p>Can afford</p> : <p>Cannot afford</p>}
       {playerInventory?.ItemIsInHotbar(upgrade.inputItem) ? <p>Item in hotbar</p> : <p>Item not in hotbar</p>}
     </div>
