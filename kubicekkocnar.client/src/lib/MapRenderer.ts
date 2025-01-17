@@ -18,8 +18,11 @@ class MapRenderer {
     this.blocksReference = blocksReference;
   }
 
-  static loadTexture(texture: Texture): string {
-    return import.meta.env.VITE_API_URL + '/Textures/' + texture.textureId + "/Image";
+  static loadTexture(textureId: number): string {
+
+    console.log("Loading texture")
+
+    return import.meta.env.VITE_API_URL + '/Textures/' + textureId + "/Image";
   }
 
   public addBlock(placedBlock: PlacedBlock) {
@@ -58,19 +61,19 @@ class MapRenderer {
     // if the block already has a material (its not the first one), we dont have to create the material
     if (block.material === undefined) {
       // if the block has a texture, we create a material with the texture
-      if (block.texture0) {
+      if (block.texture0Id != 0) {
         // if there is only one texture, we use it for all sides
-        if (!block.texture5) {
+        if (block.texture0Id == 0) {
           // create a URL from the Blob
-          const loadedTexture = textureLoader.load(MapRenderer.loadTexture(block.texture0));
+          const loadedTexture = textureLoader.load(MapRenderer.loadTexture(block.texture0Id));
           // avoid blurring for pixel art
           loadedTexture.minFilter = THREE.NearestFilter;
           loadedTexture.magFilter = THREE.NearestFilter;
 
           block.material = new THREE.MeshStandardMaterial({ map: loadedTexture });
         } else {
-          block.material = [block.texture0, block.texture1, block.texture2, block.texture3, block.texture4, block.texture5].map(texture => {
-            if (!texture) texture = block.texture0;
+          block.material = [block.texture0Id, block.texture1Id, block.texture2Id, block.texture3Id, block.texture4Id, block.texture5Id].map(texture => {
+            if (!texture) texture = block.texture0Id;
             const loadedTexture = textureLoader.load(MapRenderer.loadTexture(texture!));
             loadedTexture.minFilter = THREE.NearestFilter;
             loadedTexture.magFilter = THREE.NearestFilter;

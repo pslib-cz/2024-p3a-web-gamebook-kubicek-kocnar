@@ -35,7 +35,8 @@ const defaultEnemyType : EnemyType = {
   health: 100,
   damage: 10,
   attackSpeed: 200,
-  speed: 50
+  speed: 50,
+  isGhost: false
 }
 
 export class EnemyRenderer {
@@ -77,9 +78,9 @@ export class EnemyRenderer {
         const distance = enemy.mesh.position.distanceTo(player.position.clone().sub(this.scene.position));
         if (distance > 1)
         {
-          if (!enemy.type.isGhost)
+          if (enemy.type.isGhost)
           {
-            enemy.mesh.position.add(player.position.clone().sub(enemy.mesh.position).normalize().multiplyScalar(enemy.speed / 1000));
+            enemy.mesh.position.add(player.position.clone().sub(enemy.mesh.position).normalize().multiplyScalar(enemy.type.speed / 1000));
             return;
           }          
 
