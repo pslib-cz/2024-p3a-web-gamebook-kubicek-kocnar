@@ -26,13 +26,13 @@ export class ItemsController {
       const enemy = enemyMesh.userData.enemy as Enemy;
       console.log("Hit enemy:", enemy);
 
-      enemy.health -= 10;
+      enemy.type.health -= 10;
 
-      if (enemy.health <= 0) {
+      if (enemy.type.health <= 0) {
         this.scene.userData.level.enemyRenderer.enemies = this.scene.userData.level.enemyRenderer.enemies.filter(e => e.mesh.uuid != enemyMesh.uuid)
         this.scene.remove(enemyMesh);
         console.log("plinv",this.playerInventory)
-        this.playerInventory?.addToCoinage("coin", 100)
+        this.playerInventory?.addToCoinage("gold", 100)
         console.log("plinv2",this.playerInventory)
       }
     });
