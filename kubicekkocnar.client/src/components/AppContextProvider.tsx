@@ -4,6 +4,7 @@ import PlacedBlock from "../types/PlacedBlock";
 import GenericFeature from "../types/Feature";
 import { Inventory } from "../lib/Inventory";
 import { JoystickOutputData } from "./game/Joystick";
+import { EnemyRenderer } from "../lib/Enemy";
 
 interface AddBlockParams {
   blockId?: number;
@@ -26,6 +27,9 @@ interface AppContextType {
 
   joytickData : JoystickOutputData | null;
   setJoystickData : (data: JoystickOutputData) => void;
+
+  enemyHandler : EnemyRenderer | null;
+  setEnemyHandler : (handler: EnemyRenderer) => void;
 }
 
 const defaultContext: AppContextType = {
@@ -43,7 +47,10 @@ const defaultContext: AppContextType = {
   addBlockParamsState: null,
 
   joytickData: null,
-  setJoystickData: () => {}
+  setJoystickData: () => {},
+
+  enemyHandler: null,
+  setEnemyHandler: () => {}
 };
 
 const AppContext = React.createContext<AppContextType>(defaultContext);
@@ -55,10 +62,11 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
     const [addBlockParamsState, setAddBlockParams] = useState<AddBlockParams|null>(null);
     const [playerInventory, setPlayerInventory] = useState<Inventory | null>(null);
     const [joytickData, setJoystickData] = useState<JoystickOutputData | null>(null);
+    const [enemyHandler, setEnemyHandler] = useState<EnemyRenderer | null>(null);
 
     const contextValue = useMemo(() => ({
-      setToolState, toolState, blockState, setBlock, featureState, setFeature, playerInventory, setPlayerInventory, setAddBlockParams, addBlockParamsState, joytickData, setJoystickData
-    }), [toolState, blockState, featureState, playerInventory, addBlockParamsState, joytickData]);
+      setToolState, toolState, blockState, setBlock, featureState, setFeature, playerInventory, setPlayerInventory, setAddBlockParams, addBlockParamsState, joytickData, setJoystickData, enemyHandler, setEnemyHandler
+    }), [toolState, blockState, featureState, playerInventory, addBlockParamsState, joytickData, enemyHandler]);
 
     return (
       <AppContext.Provider value={contextValue}>

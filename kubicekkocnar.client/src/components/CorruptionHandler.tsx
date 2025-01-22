@@ -1,15 +1,28 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import * as THREE from "three";
 import PlacedBlock from "../types/PlacedBlock";
+import {AppContext} from "./AppContextProvider";
+import { defaultEnemyType } from "../lib/Enemy";
 
 export function CorruptionHandler({allBlocks, corruptedBlocks} : {allBlocks : PlacedBlock[], corruptedBlocks : PlacedBlock[]})
 {
+  const { enemyHandler } = useContext(AppContext);
+  
+  const enemySpawnChance = 0.01;
+
   useEffect(() => {
 
     const interval = setInterval(() => {
       
       // for each corrupted block, corrupt the adjanced blocks
       corruptedBlocks.forEach((corruptedBlock) => {
+
+        if (Math.random() < enemySpawnChance) {
+          console.log("Spawning enemy");
+          
+          enemyHandler.addEnemy(defaultEnemyType);
+        }
+
         const adjancedBlocks = allBlocks.filter((block) => block.position.distanceTo(corruptedBlock.position) < 1.5);
         adjancedBlocks.forEach((block) => {
 

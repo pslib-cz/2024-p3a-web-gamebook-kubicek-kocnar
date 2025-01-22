@@ -17,7 +17,7 @@ export class Enemy {
   }
 }
 
-const defaultEnemyType : EnemyType = {
+export const defaultEnemyType : EnemyType = {
   health: 100,
   damage: 10,
   attackSpeed: 200,
@@ -35,27 +35,32 @@ export class EnemyRenderer {
 
   public addPlayerHealth?: ((health: number) => void);
 
+  public addEnemy(type: EnemyType) {
+    const enemy : Enemy = new Enemy(type);
+
+    this.enemies.push(enemy);
+
+    const loadedTexture = textureLoader.load("/obunga.webp");
+    const geometry = new THREE.PlaneGeometry(3, 3);
+    const material = new THREE.MeshStandardMaterial({ map: loadedTexture, side: THREE.DoubleSide, transparent: true });
+    const plane = new THREE.Mesh(geometry, material);
+    plane.name = "enemy";
+    enemy.mesh = plane;
+    enemy.mesh.userData.enemy = enemy;
+    this.scene.add(plane);
+
+    plane.position.set(Math.random()*10, 2, 0);
+  }
+
   constructor(scene: THREE.Scene, level: Level) {
     this.scene = scene;
     this.level = level;
-    this.enemies.push(new Enemy(defaultEnemyType));
-    this.render();
+    
+    this.addEnemy(defaultEnemyType);
 
     this.pathFinder = new PathFinder(level.blocks);
   }
-  public render() {
-    this.enemies.forEach(enemy => {
-      const loadedTexture = textureLoader.load("/obunga.webp");
-      const geometry = new THREE.PlaneGeometry(3, 3);
-      const material = new THREE.MeshStandardMaterial({ map: loadedTexture, side: THREE.DoubleSide, transparent: true });
-      const plane = new THREE.Mesh(geometry, material);
-      plane.position.set(0, 2, 0);
-      plane.name = "enemy";
-      enemy.mesh = plane;
-      enemy.mesh.userData.enemy = enemy;
-      this.scene.add(plane);
-    });
-  }
+
   public update() {
     const player = this.scene.userData.camera
     this.enemies.forEach(enemy => {
@@ -71,7 +76,6 @@ export class EnemyRenderer {
           }          
 
           const blockBelowEnemy = this.pathFinder.GetClosestBlock(enemy.mesh.position.clone().sub(new THREE.Vector3(0, 2, 0)));
-
           const blockBelowPlayer = this.pathFinder.GetClosestBlock(player.position.clone().sub(new THREE.Vector3(0, 2, 0)).sub(this.scene.position));
 
           const path = this.pathFinder.FindPath(blockBelowEnemy, blockBelowPlayer);

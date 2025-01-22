@@ -18,6 +18,8 @@ namespace KubicekKocnar.Server.Models
         public int Size { get; set; }
         public required DateTime Created { get; set; } = DateTime.Now;
 
+        [JsonIgnore]
+        public ICollection<Enemy>? Enemies { get; set; }
         
         [JsonIgnore]
         public ICollection<Block>? Blocks0 { get; set; }

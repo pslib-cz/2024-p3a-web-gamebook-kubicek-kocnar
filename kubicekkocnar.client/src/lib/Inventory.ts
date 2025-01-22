@@ -118,5 +118,4 @@ export class Inventory {
 
     return false;
   }
-
 }

@@ -9,7 +9,9 @@ namespace KubicekKocnar.Server.Models
         public string Name { get; set; } = "";
         public string Description { get; set; } = "";
 
+        [JsonIgnore]
         public Texture? Icon { get; set; }
+
         public uint? IconId { get; set; }
 
         [JsonIgnore]

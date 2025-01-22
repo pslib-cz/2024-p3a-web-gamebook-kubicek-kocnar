@@ -11,6 +11,9 @@
 
         public bool IsGhost { get; set; }
 
+        public Texture? Texture { get; set; }
+        public uint TextureId {  get; set; }
+
         public List<Level> Levels { get; set; } = [];
     }
 }
