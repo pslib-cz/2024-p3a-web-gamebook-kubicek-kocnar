@@ -89,6 +89,7 @@ class FeatureRenderer {
       feature.position!.y,
       feature.position!.z
     );
+    feature.object.userData.feature = feature;
     console.log(
       "FeatureRenderer -> ADD ",
       feature.object.name,

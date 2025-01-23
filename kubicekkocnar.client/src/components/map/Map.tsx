@@ -31,7 +31,7 @@ const Map = ({
   scene.userData.level = level;
   console.log("Rendering Map", scene);
 
-  const { toolState, setBlock, addBlockParamsState } = useContext(AppContext);
+  const { toolState, setToolState, setBlock, setFeature, addBlockParamsState } = useContext(AppContext);
   const threeRef = React.useRef(useThree());
   const { gl, camera } = threeRef.current;
 
@@ -77,10 +77,18 @@ const Map = ({
       );
 
       const featureIntersects = intersects.filter((intersect) =>
-        intersect.object.name.startsWith("feature")
+        intersect.object.name.startsWith("feature") || intersect.object.name.startsWith("seeparent")
       );
 
-      console.log("Intersected with feature", intersects);
+      if (featureIntersects.length > 0) {
+        const obj = featureIntersects[0].object.name.startsWith("seeparent") ? featureIntersects[0].object.parent : featureIntersects[0].object;
+        console.log("Intersected with feature", obj);
+        if (obj && obj.userData.feature) {
+          console.log("Intersected with feature", obj.userData.feature);
+          setToolState(Tool.FeatureView);
+          setFeature(obj.userData.feature);
+        }
+      }
 
       if (blockIntersects.length > 0) {
         console.log("Intersected with block", blockIntersects);

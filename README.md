@@ -67,7 +67,7 @@ Hráč je jedním z posledních přeživších světa zasaženého Korupcí. Pro
 1. **Zmutovaný obyvatel:** Základní nepřítel, který se pohybuje po vesnici.
 2. **Zmutovaný golem:** Velký a pomalý nepřítel, který útočí na hráče.
 3. **Rytíř Korupce:** Rychlý a silný nepřítel, který se teleportuje.
-4. **Duch**: Prochází stěnou
+4. **Duch**: Prochází stěnou,
 
 
 ## **Požadavky:**

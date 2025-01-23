@@ -19,9 +19,9 @@ export class Enemy {
 
 export const defaultEnemyType : EnemyType = {
   health: 100,
-  damage: 10,
+  damage: 2,
   attackSpeed: 200,
-  speed: 50,
+  speed: 10,
   isGhost: false
 }
 
@@ -65,7 +65,8 @@ export class EnemyRenderer {
     const player = this.scene.userData.camera
     this.enemies.forEach(enemy => {
       if (enemy.mesh) {
-        enemy.mesh.lookAt(player.position);
+        //make the enemy look at the player, but not vertically
+        enemy.mesh.lookAt(player.position.clone().sub(this.scene.position).setY(enemy.mesh.position.y));
         const distance = enemy.mesh.position.distanceTo(player.position.clone().sub(this.scene.position));
         if (distance > 1)
         {
