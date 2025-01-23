@@ -9,7 +9,19 @@ interface Light extends GenericFeature {
 }
 
 function render (light: Light) {
-    light.object = new THREE.PointLight( light.params.color, parseFloat(light.params.intensity) || 1 )
+    const lightObject = new THREE.PointLight( light.params.color, parseFloat(light.params.intensity) || 1 );
+    if (window.location.pathname.includes("editor")) {
+        const grp = new THREE.Group();
+        const lightHelperSph = new THREE.IcosahedronGeometry( 0.3, 0 );
+        const lightHelper = new THREE.Mesh( lightHelperSph, new THREE.MeshBasicMaterial( { color: light.params.color, wireframe: true } ) );
+        lightHelper.name = "seeparent lightHelper";
+        grp.add(lightObject);
+        grp.add(lightHelper);
+        light.object = grp;
+    }
+    else {
+        light.object = lightObject;
+    }
 }
 
 export default render;
