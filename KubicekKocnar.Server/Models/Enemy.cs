@@ -4,6 +4,8 @@
     {
         public uint EnemyId { get; set; }
 
+        public string Name { get; set; } = "";
+
         public float Health { get; set; }
         public float Damage { get; set; }
         public float AttackSpeed { get; set; }

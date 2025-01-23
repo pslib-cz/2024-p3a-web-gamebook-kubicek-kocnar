@@ -6,18 +6,22 @@ import { GetUpgrades, PostUpgrade } from '../api/Upgrades';
 import { Item } from '../types/Item';
 import { DeleteItem, GetItems, PostItem } from '../api/Items';
 import { useForm } from 'react-hook-form';
+import { EnemyType } from '../types/Enemy';
+import { AddEnemy, FetchEnemies } from '../api/Enemies';
 
 const Editor: React.FC = () => {
 
   const [coinages, setCoinages] = useState<Coinage[]>();
   const [upgrades, setUpgrades] = useState<ItemUpgrade[]>();
   const [items, setItems] = useState<Item[]>();
+  const [enemies, setEnemies] = useState<EnemyType[]>();
 
   useEffect(() => {    
     (async () => {      
       setCoinages(await GetCoinages());
       setUpgrades(await GetUpgrades());
       setItems(await GetItems());
+      setEnemies(await FetchEnemies());
     })();
   }, []);
 
@@ -36,70 +40,91 @@ const Editor: React.FC = () => {
     name: ''
   };
 
+  const defaultEnemy = {
+    name: '',
+    health: 0,
+    damage: 0,
+    attackSpeed: 0,
+    speed: 0,
+    isGhost: false
+  };
+
   return (
     <div>
       <h1>EdItOr</h1>
       <div>
         <h2>Items</h2>
-        <div>
-          <AddItemDrawer item={defaultItem} postFunction={PostItem}/>
-        </div>
-        <ul>
-          {items?.map((item) => (
-            <li key={item.itemId}>
-              <div>
-                <h3>{item.name} ({item.itemId})</h3>
-                <p>{item.description}</p>
-                <p>{item.img}</p>
-                <img src={item.img} alt={item.name} />
-                <p onClick={async() => {
-                  DeleteItem(item.itemId!); 
-                  
-                  // this use state is broken af
-                  setItems(await GetItems());
-                                    
-                  window.location.reload()
-                  }}>DELETE</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <AddItemDrawer item={defaultItem} postFunction={PostItem}/>
+        <ItemDrawers items={items} deleteFunction={DeleteItem}/>
       </div>
       <div>
         <h2>Upgrades</h2>
-        <div>
-          <AddItemDrawer item={defaultUpgrade} postFunction={PostUpgrade}/>
-        </div>
-        <ul>
-          {upgrades?.map((upgrade) => (
-            <li key={upgrade.itemUpgradeId}>
-              <div>
-                <p>{upgrade.description} ({upgrade.itemUpgradeId})</p>
-                <p>{upgrade.inputItem.name} ({upgrade.inputItem.itemId}) --- {upgrade.outputItem.name} ({upgrade.outputItem.itemId})</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <AddItemDrawer item={defaultUpgrade} postFunction={PostUpgrade}/>
+        <ItemDrawers items={upgrades}/>
       </div>
       <div>
         <h2>Coinages</h2>
-        <div>
-          <AddItemDrawer item={defaultCoinage} postFunction={PostItem}/>
-        </div>
-        <ul>
-          {coinages?.map((coinage) => (
-            <li key={coinage.coinageId}>
-              <div>
-                <p>{coinage.name} ({coinage.coinageId})</p>
-                <p>{coinage.description}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <AddItemDrawer item={defaultCoinage} postFunction={PostItem}/>
+        <ItemDrawers items={coinages}/>
+      </div>
+      <div>
+        <h2>Enemies</h2>
+        <AddItemDrawer item={defaultEnemy} postFunction={AddEnemy}/> 
+        <ItemDrawers items={enemies}/>
       </div>
     </div>
   );
 };
+
+function ItemDrawers({items, deleteFunction} : {items? : any[], deleteFunction : (arg0 : number) => void})
+{
+  if (!items) return <div></div>;
+
+  const drawers : JSX.Element[] = [];
+
+  let keyId = 0;
+
+  for(const item of items)
+  {
+    drawers.push(
+      <ItemDrawer item={item} topLevel key={keyId++}/>
+    );
+  }
+
+  return (
+    <div>
+      {drawers}
+    </div>
+  );
+}
+
+function ItemDrawer({item, topLevel} : {item : any, topLevel : boolean})
+{
+  const fields : JSX.Element[] = [];
+
+  let keyId = 0;
+
+  for(const key in item)
+  {
+    if (typeof item[key] === 'object' && item[key] !== null) {
+      fields.push(
+        <div key={keyId++}>
+          <p>{key}:</p>
+          <ItemDrawer item={item[key]} topLevel={false} />
+        </div>
+      );
+    } else {
+      fields.push(<p>{key}: {item[key]}</p>);
+    }
+  }
+
+  return (
+    <div>
+      {topLevel && <p>-------------</p>}
+      {fields}
+    </div>
+  );
+}
 
 function AddItemDrawer({item, postFunction} : {item : any, postFunction : any})
 {
@@ -108,12 +133,12 @@ function AddItemDrawer({item, postFunction} : {item : any, postFunction : any})
 
   for (const key in item) {
     if (typeof key === 'string') {
-      inputs.push(<input {...register(key)} placeholder={key} type="text" id={key} name={key} />);
+      inputs.push(<input key={key} {...register(key)} placeholder={key} type="text" id={key} name={key} />);
       continue;
     }
     
     if (typeof key === 'number') {
-      inputs.push(<input {...register(key)} placeholder={key} type="number" id={key} name={key} />);
+      inputs.push(<input key={key} {...register(key)} placeholder={key} type="number" id={key} name={key} />);
       continue;
     }
   }

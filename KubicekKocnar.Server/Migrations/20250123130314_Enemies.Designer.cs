@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KubicekKocnar.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250117141314_AddEnemyTable")]
-    partial class AddEnemyTable
+    [Migration("20250123130314_Enemies")]
+    partial class Enemies
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -158,10 +158,19 @@ namespace KubicekKocnar.Server.Migrations
                     b.Property<bool>("IsGhost")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<float>("Speed")
                         .HasColumnType("REAL");
 
+                    b.Property<uint>("TextureId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("EnemyId");
+
+                    b.HasIndex("TextureId");
 
                     b.ToTable("Enemy");
                 });
@@ -606,6 +615,17 @@ namespace KubicekKocnar.Server.Migrations
                     b.Navigation("Coinage");
                 });
 
+            modelBuilder.Entity("KubicekKocnar.Server.Models.Enemy", b =>
+                {
+                    b.HasOne("KubicekKocnar.Server.Models.Texture", "Texture")
+                        .WithMany("Enemies")
+                        .HasForeignKey("TextureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Texture");
+                });
+
             modelBuilder.Entity("KubicekKocnar.Server.Models.Feature", b =>
                 {
                     b.HasOne("KubicekKocnar.Server.Models.Level", "Level")
@@ -763,6 +783,8 @@ namespace KubicekKocnar.Server.Migrations
                     b.Navigation("Blocks5");
 
                     b.Navigation("Coinages");
+
+                    b.Navigation("Enemies");
 
                     b.Navigation("PlayerUpgrades");
                 });
