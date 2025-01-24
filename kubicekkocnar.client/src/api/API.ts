@@ -1,7 +1,6 @@
 import { Item } from "../types/Item";
 
 type objTypes = "Items" | "Blocks" | "Enemies" | "Coinages" | "Games" | "Levels" | "Textures" | "Upgrades"
-type itemTypes 
 
 const URL : (obj: string) => string = (obj) => `${import.meta.env.VITE_API_URL}/${obj}`;
 
@@ -66,11 +65,11 @@ export async function PATCH(obj: objTypes, itemId : number, key : string, value:
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({
+          body: JSON.stringify([{
             "op": "replace",
             "path": "/" + key,
             "value": value
-          })
+          }])
         });
         if (!blocksResponse.ok) {
           throw new Error(`Response status: ${blocksResponse.status}`);
