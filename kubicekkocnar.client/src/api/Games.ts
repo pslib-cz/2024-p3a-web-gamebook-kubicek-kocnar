@@ -1,19 +1,11 @@
 import Game from "../types/Game";
+import { GET } from "./API";
 
 const URL = `${import.meta.env.VITE_API_URL}/Games/`;
 
 export async function FetchGames() : Promise<Game[]> {
-    try {
-        const response = await fetch(URL);
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-    }
 
-    return [];
+  return await GET("Games");
 }
 
 export async function PostGame(game : Game) : Promise<Game | null> {

@@ -1,23 +1,11 @@
 import { ItemUpgrade } from "../types/ItemUpgrade";
+import { GET } from "./API";
 
 const URL: string = `${import.meta.env.VITE_API_URL}/ItemUpgrades`;
 
 export async function GetUpgrades(): Promise<ItemUpgrade[]> {
 
-  try {
-    const blocksResponse = await fetch(URL);
-    if (!blocksResponse.ok) {
-      throw new Error(`Response status: ${blocksResponse.status}`);
-    }
-    const upgrades = (await blocksResponse.json());
-
-    return upgrades;
-
-  } catch (err: unknown) {
-    console.error(err);
-  }
-
-  return [];
+  return GET("ItemUpgrades");
 }
 
 export async function DeleteUpgrade(upgradeId: number): Promise<void> {

@@ -1,22 +1,11 @@
 import { Item } from "../types/Item";
+import { GET } from "./API";
 
 const URL: string = `${import.meta.env.VITE_API_URL}/Items`;
 
 export async function GetItems(): Promise<Item[]> {
 
-  try {
-    const blocksResponse = await fetch(URL);
-    if (!blocksResponse.ok) {
-      throw new Error(`Response status: ${blocksResponse.status}`);
-    }
-
-    return (await blocksResponse.json());
-
-  } catch (err: unknown) {
-    console.error(err);
-  }
-
-  return [];
+  return await GET("Items");
 }
 
 

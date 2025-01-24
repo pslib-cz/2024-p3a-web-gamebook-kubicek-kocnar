@@ -1,22 +1,11 @@
 import { Coinage } from "../types/Coinage";
+import { GET } from "./API";
 
 const URL : string = `${import.meta.env.VITE_API_URL}/Coinages`;
 
-export async function GetCoinages() : Promise<Coinage[]> {
-
-  try {
-      const blocksResponse = await fetch(URL);
-      if (!blocksResponse.ok) {
-        throw new Error(`Response status: ${blocksResponse.status}`);
-      }
-
-      return (await blocksResponse.json());
-      
-  } catch (err: unknown) {
-    console.error(err);
-  }
-
-  return [];
+export async function GetCoinages() : Promise<Coinage[]> 
+{
+  return await GET("Coinages");
 }
 
 export async function DeleteCoinage(coinageId : number) : Promise<void> {

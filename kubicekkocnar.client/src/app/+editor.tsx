@@ -47,7 +47,7 @@ const Editor: React.FC = () => {
         <AddItemDrawer item={defaultUpgrade} postFunction={async (item) => {await PostUpgrade(item); Reload(); }}/>
         <ItemDrawers items={upgrades} 
           deleteFunction={async (id) => {await DeleteUpgrade(id); Reload()}}
-          patchFunction={async (id, key, value) => {await PATCH("Upgrades", id, key, value); Reload();}}  
+          patchFunction={async (id, key, value) => {await PATCH("ItemUpgrades", id, key, value); Reload();}}  
           />
       </div>
       <div>
