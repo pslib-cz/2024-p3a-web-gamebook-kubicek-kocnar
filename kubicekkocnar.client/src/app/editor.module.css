@@ -1,0 +1,32 @@
+
+
+.field
+{
+  width: fit-content;
+  margin: auto;
+}
+
+.flexfield
+{
+  display: flex;
+}
+
+.field > p
+{
+  margin: 0;
+}
+
+.drawer
+{
+  width: fit-content;
+  border: 1px solid black;
+  padding: 1em;
+}
+
+.itemswrapper
+{
+  display: flex;
+  gap: 1em;
+  flex-wrap: wrap;
+  justify-content: center;
+}
