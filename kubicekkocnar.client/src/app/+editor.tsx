@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Coinage } from '../types/Coinage';
 import { ItemUpgrade } from '../types/ItemUpgrade';
-import { GetCoinages } from '../api/Coinages';
-import { GetUpgrades, PostUpgrade } from '../api/Upgrades';
+import { DeleteCoinage, GetCoinages, PostCoinage } from '../api/Coinages';
+import { DeleteUpgrade, GetUpgrades, PostUpgrade } from '../api/Upgrades';
 import { Item } from '../types/Item';
 import { DeleteItem, GetItems, PostItem } from '../api/Items';
 import { useForm } from 'react-hook-form';
 import { EnemyType } from '../types/Enemy';
-import { AddEnemy, FetchEnemies } from '../api/Enemies';
+import { AddEnemy, DeleteEnemy, FetchEnemies } from '../api/Enemies';
 
 const Editor: React.FC = () => {
 
@@ -16,14 +16,16 @@ const Editor: React.FC = () => {
   const [items, setItems] = useState<Item[]>();
   const [enemies, setEnemies] = useState<EnemyType[]>();
 
-  useEffect(() => {    
-    (async () => {      
-      setCoinages(await GetCoinages());
-      setUpgrades(await GetUpgrades());
-      setItems(await GetItems());
-      setEnemies(await FetchEnemies());
-    })();
-  }, []);
+  async function Reload()
+  {
+    console.log('Reloading');
+    setCoinages(await GetCoinages());
+    setUpgrades(await GetUpgrades());
+    setItems(await GetItems());
+    setEnemies(await FetchEnemies());
+  }
+
+  useEffect(() => { Reload(); }, []);
 
   const defaultItem = {
     name: '',
@@ -54,23 +56,23 @@ const Editor: React.FC = () => {
       <h1>EdItOr</h1>
       <div>
         <h2>Items</h2>
-        <AddItemDrawer item={defaultItem} postFunction={PostItem}/>
-        <ItemDrawers items={items} deleteFunction={DeleteItem}/>
+        <AddItemDrawer item={defaultItem} postFunction={async (item) => {await PostItem(item); Reload(); }}/>
+        <ItemDrawers items={items}  deleteFunction={async (id) => {await DeleteItem(id); Reload()}}/>
       </div>
       <div>
         <h2>Upgrades</h2>
-        <AddItemDrawer item={defaultUpgrade} postFunction={PostUpgrade}/>
-        <ItemDrawers items={upgrades}/>
+        <AddItemDrawer item={defaultUpgrade} postFunction={async (item) => {await PostUpgrade(item); Reload(); }}/>
+        <ItemDrawers items={upgrades} deleteFunction={async (id) => {await DeleteUpgrade(id); Reload()}}/>
       </div>
       <div>
         <h2>Coinages</h2>
-        <AddItemDrawer item={defaultCoinage} postFunction={PostItem}/>
-        <ItemDrawers items={coinages}/>
+        <AddItemDrawer item={defaultCoinage} postFunction={async (item) => {await PostCoinage(item); Reload(); }}/>
+        <ItemDrawers items={coinages} deleteFunction={async (id) => {await DeleteCoinage(id); Reload()}}/>
       </div>
       <div>
         <h2>Enemies</h2>
-        <AddItemDrawer item={defaultEnemy} postFunction={AddEnemy}/> 
-        <ItemDrawers items={enemies}/>
+        <AddItemDrawer item={defaultEnemy} postFunction={async (item) => {await AddEnemy(item); Reload(); }}/> 
+        <ItemDrawers items={enemies} deleteFunction={async (id) => {await DeleteEnemy(id); Reload()}}/>
       </div>
     </div>
   );
@@ -87,7 +89,7 @@ function ItemDrawers({items, deleteFunction} : {items? : any[], deleteFunction :
   for(const item of items)
   {
     drawers.push(
-      <ItemDrawer item={item} topLevel key={keyId++}/>
+      <ItemDrawer item={item} topLevel key={keyId++} deleteFunction={deleteFunction}/>
     );
   }
 
@@ -98,23 +100,22 @@ function ItemDrawers({items, deleteFunction} : {items? : any[], deleteFunction :
   );
 }
 
-function ItemDrawer({item, topLevel} : {item : any, topLevel : boolean})
+function ItemDrawer({item, topLevel, deleteFunction} : {item : any, topLevel : boolean, deleteFunction? : (arg0 : number) => void, reloadFunction? : () => void})
 {
   const fields : JSX.Element[] = [];
 
   let keyId = 0;
 
-  for(const key in item)
-  {
-    if (typeof item[key] === 'object' && item[key] !== null) {
+  for(const key in item) {
+    if (typeof item[key] === 'object') {
       fields.push(
         <div key={keyId++}>
           <p>{key}:</p>
-          <ItemDrawer item={item[key]} topLevel={false} />
+          <ItemDrawer key={key} item={item[key]} topLevel={false} />
         </div>
       );
     } else {
-      fields.push(<p>{key}: {item[key]}</p>);
+      fields.push(<p key={key}>{key}: {item[key]}</p>);
     }
   }
 
@@ -122,11 +123,16 @@ function ItemDrawer({item, topLevel} : {item : any, topLevel : boolean})
     <div>
       {topLevel && <p>-------------</p>}
       {fields}
+      {deleteFunction && <button onClick={() => 
+        {
+          deleteFunction(item.itemId || item.upgradeId || item.coinageId || item.enemyId);
+        }
+      }>Delete</button>}      
     </div>
   );
 }
 
-function AddItemDrawer({item, postFunction} : {item : any, postFunction : any})
+function AddItemDrawer({item, postFunction} : {item : any, postFunction : (arg : any) => void})
 {
   const {register, handleSubmit} = useForm();
   const inputs: JSX.Element[] = [];

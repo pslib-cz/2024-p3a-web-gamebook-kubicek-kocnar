@@ -34,3 +34,18 @@ export async function AddEnemy(enemy: EnemyType) {
     console.error(err);
   }
 }
+
+export async function DeleteEnemy(enemyId: number): Promise<void> {
+
+  try {
+    const blocksResponse = await fetch(`${URL}/${enemyId}`, {
+      method: 'DELETE'
+    });
+    if (!blocksResponse.ok) {
+      throw new Error(`Response status: ${blocksResponse.status}`);
+    }
+
+  } catch (err: unknown) {
+    console.error(err);
+  }
+}
