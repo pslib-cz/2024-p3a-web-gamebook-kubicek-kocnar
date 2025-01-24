@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using KubicekKocnar.Server.Data;
 using KubicekKocnar.Server.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace KubicekKocnar.Server.Controllers
 {
@@ -42,34 +43,18 @@ namespace KubicekKocnar.Server.Controllers
             return coinage;
         }
 
-        // PUT: api/Coinages/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCoinage(uint id, Coinage coinage)
-        {
-            if (id != coinage.CoinageId)
-            {
-                return BadRequest();
+        // PATCH: api/Blocks/5 using JsonPatchDocument
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> PatchBlock(uint id, [FromBody] JsonPatchDocument<Block> patch) {
+            var block = await _context.Blocks.FindAsync(id);
+            if (block == null) {
+                return NotFound();
             }
-
-            _context.Entry(coinage).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
+            patch.ApplyTo(block, ModelState);
+            if (!ModelState.IsValid) {
+                return BadRequest(ModelState);
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CoinageExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 
