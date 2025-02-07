@@ -92,8 +92,11 @@ namespace KubicekKocnar.Server.Controllers
         [HttpGet("{id}/Levels")]
         public async Task<ActionResult<IEnumerable<Level>>> GetLevels(uint id) => await _context.Levels.Where(l => l.GameId == id).ToListAsync();
 
-        // GET: api/Games/5/Levels/5
+        [HttpGet("{id}/Levels/{levelId}/Enemies")]
+        public async Task<ActionResult<IEnumerable<Enemy>>> GetEnemies(uint id, uint levelId) 
+            => await _context.Enemies.Where(e => e.Levels.FirstOrDefault(x => x.LevelId == levelId) != null).ToListAsync();
 
+        // GET: api/Games/5/Levels/5
         [HttpGet("{id}/Levels/{levelId}")]
         public async Task<ActionResult<Level>> GetLevel(uint id, uint levelId) {
             var level = await _context.Levels.Where(l => l.GameId == id && l.LevelId == levelId).FirstOrDefaultAsync();

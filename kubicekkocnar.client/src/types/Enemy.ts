@@ -7,4 +7,5 @@ export interface EnemyType {
   attackSpeed: number; //ms between attacks
   speed: number;
   isGhost : boolean;
+  textureId: number;
 }

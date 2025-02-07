@@ -84,6 +84,10 @@ namespace KubicekKocnar.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Enemy>> PostEnemy(EnemyDto enemyDto)
         {
+            if (enemyDto.Health <= 0) return BadRequest("Health must be greater than 0");
+            if (enemyDto.AttackSpeed <= 0) return BadRequest("AttackSpeed must be greater than 0");
+            if (enemyDto.Speed <= 0) return BadRequest("Speed must be greater than 0");
+
             Enemy enemy = enemyDto.ToEnemy();
 
             var texture = await _context.Textures.FindAsync(enemyDto.TextureId);
@@ -105,7 +109,7 @@ namespace KubicekKocnar.Server.Controllers
             }
 
             _context.Enemies.Add(enemy);
-            
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetEnemy", new { id = enemy.EnemyId }, enemy);

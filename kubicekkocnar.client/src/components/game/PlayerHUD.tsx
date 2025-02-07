@@ -8,10 +8,8 @@ import { Joystick } from './Joystick';
 
 const GameHUD = () => {
   // Example weapons data
-
   const { playerHealth } = useContext(GameContext);
   const { playerInventory } = useContext(AppContext);
-
 
   useEffect(() => {
     console.log("Player health changed to", playerHealth);
