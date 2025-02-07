@@ -1,4 +1,5 @@
 import Texture from "../types/Texture";
+import { DELETE, PATCH } from "./API";
 
 const URL = `${import.meta.env.VITE_API_URL}/Textures`;
 
@@ -33,6 +34,14 @@ export async function addTexture(texture: Texture) {
   } catch (err: unknown) {
     console.error(err);
   }
+}
+
+export async function DeleteTexture(textureId: number): Promise<void> {
+  await DELETE("Textures", textureId);
+}
+
+export async function PatchTexture(textureId: number, key: string, value: any): Promise<void> {
+  await PATCH("Textures", textureId, key, value);
 }
 
 export function GetTextureURL(textureId: number) {

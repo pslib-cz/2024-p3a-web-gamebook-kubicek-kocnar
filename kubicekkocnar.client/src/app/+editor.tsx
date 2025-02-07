@@ -11,7 +11,7 @@ import { AddEnemy, DeleteEnemy, FetchEnemies } from '../api/Enemies';
 import { PATCH } from '../api/API';
 import styles from './editor.module.css';
 import Texture from '../types/Texture';
-import { FetchTextures, GetTextureURL } from '../api/Textures';
+import { DeleteTexture, FetchTextures, GetTextureURL } from '../api/Textures';
 
 const Editor: React.FC = () => {
   const [textures, setTextures] = useState<Texture[]>();
@@ -33,27 +33,18 @@ const Editor: React.FC = () => {
   const defaultItem = { name: '', description: '' };
   const defaultUpgrade = { description: '', inputItemId: 0, outputItemId: 0 };
   const defaultCoinage = { name: '' };
-  const defaultEnemy = { name: '', health: 0, damage: 0, attackSpeed: 0, speed: 0, isGhost: false, textureId : 1 };
+  const defaultEnemy = { name: '', health: 0, damage: 0, attackSpeed: 0, speed: 0, isGhost: false, textureId: 1 };
 
   return (
     <div>
       <h1>EdItOr</h1>
       <div>
         <h2>Textures</h2>
-        {
-          // TODO: rework this into ItemDrawers
-          textures?.map((texture) => {
-            return (
-              <div key={texture.textureId}>
-                <p>{texture.textureId}</p>
-                <div>
-                  <img src={GetTextureURL(Number(texture.textureId))} alt={texture.textureId.toString()} />
-                </div>
-              </div>
-            );
-          })
-        }
-        
+        <ItemDrawers
+          items={textures}
+          deleteFunction={async (id) => { await DeleteTexture(id); Reload() }}
+          patchFunction={async (id, key, value) => { await PATCH("Textures", id, key, value); Reload(); }}
+        />
       </div>
       <div>
         <h2>Items</h2>
@@ -145,18 +136,24 @@ function ItemDrawer(
       );
     } else {
 
+      if (key == "itemId" || key == "itemUpgradeId" || key == "coinageId" || key == "enemyId" || key == "textureId") {
+        fields.push(
+          <>
+            <p className={styles.field} key={key}>{key}: {item[key]}</p>
+            {
+              key == "textureId" && <img style={{width: 100}} src={GetTextureURL(item[key])} alt="texture" />
+            }
+          </>
+        )
+        continue;
+      }
+
       if (deleteFunction) {
-
-        if (key == "itemId" || key == "itemUpgradeId" || key == "coinageId" || key == "enemyId") {
-          fields.push(<p className={styles.field} key={key}>{key}: {item[key]}</p>)
-          continue;
-        }
-
         fields.push(
           <div key={key} className={[styles.flexfield, styles.field].join(' ')}>
             <p key={keyId++}>{key}</p>
             <input defaultValue={item[key]} onChange={(e) => {
-              patchFunction && patchFunction(item.itemId || item.itemUpgradeId || item.coinageId || item.enemyId, key, e.currentTarget.value)
+              patchFunction && patchFunction(item.itemId || item.itemUpgradeId || item.coinageId || item.enemyId || item.textureId, key, e.currentTarget.value)
             }} />
           </div>
         );
@@ -172,7 +169,7 @@ function ItemDrawer(
     <div className={styles.drawer}>
       {fields}
       {deleteFunction && <button onClick={() =>
-        deleteFunction(item.itemId || item.itemUpgradeId || item.coinageId || item.enemyId)
+        deleteFunction(item.itemId || item.itemUpgradeId || item.coinageId || item.enemyId || item.textureId)
       }>Delete</button>}
     </div>
   );
