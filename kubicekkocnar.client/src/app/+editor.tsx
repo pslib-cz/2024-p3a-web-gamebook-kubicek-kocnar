@@ -10,14 +10,18 @@ import { EnemyType } from '../types/Enemy';
 import { AddEnemy, DeleteEnemy, FetchEnemies } from '../api/Enemies';
 import { PATCH } from '../api/API';
 import styles from './editor.module.css';
+import Texture from '../types/Texture';
+import { FetchTextures, GetTextureURL } from '../api/Textures';
 
 const Editor: React.FC = () => {
+  const [textures, setTextures] = useState<Texture[]>();
   const [coinages, setCoinages] = useState<Coinage[]>();
   const [upgrades, setUpgrades] = useState<ItemUpgrade[]>();
   const [items, setItems] = useState<Item[]>();
   const [enemies, setEnemies] = useState<EnemyType[]>();
 
   async function Reload() {
+    setTextures(await FetchTextures());
     setCoinages(await GetCoinages());
     setUpgrades(await GetUpgrades());
     setItems(await GetItems());
@@ -29,11 +33,28 @@ const Editor: React.FC = () => {
   const defaultItem = { name: '', description: '' };
   const defaultUpgrade = { description: '', inputItemId: 0, outputItemId: 0 };
   const defaultCoinage = { name: '' };
-  const defaultEnemy = { name: '', health: 0, damage: 0, attackSpeed: 0, speed: 0, isGhost: false };
+  const defaultEnemy = { name: '', health: 0, damage: 0, attackSpeed: 0, speed: 0, isGhost: false, textureId : 1 };
 
   return (
     <div>
       <h1>EdItOr</h1>
+      <div>
+        <h2>Textures</h2>
+        {
+          // TODO: rework this into ItemDrawers
+          textures?.map((texture) => {
+            return (
+              <div key={texture.textureId}>
+                <p>{texture.textureId}</p>
+                <div>
+                  <img src={GetTextureURL(Number(texture.textureId))} alt={texture.textureId.toString()} />
+                </div>
+              </div>
+            );
+          })
+        }
+        
+      </div>
       <div>
         <h2>Items</h2>
         <AddItemDrawer
@@ -123,7 +144,7 @@ function ItemDrawer(
         </div>
       );
     } else {
-      
+
       if (deleteFunction) {
 
         if (key == "itemId" || key == "itemUpgradeId" || key == "coinageId" || key == "enemyId") {
