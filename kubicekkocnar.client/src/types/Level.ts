@@ -1,6 +1,7 @@
 import PlacedBlock from "./PlacedBlock"
 import Game from "./Game"
 import GenericFeature from "./Feature";
+import { EnemyType } from "./Enemy";
 
 // a Level is a part of a game, which can be played and contains all blocks which are currently rendered
 interface Level
@@ -17,6 +18,8 @@ interface Level
   features: GenericFeature[];
 
   created: Date;
+
+  enemies: EnemyType[];
 }
 
 export default Level

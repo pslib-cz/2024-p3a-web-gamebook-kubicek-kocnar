@@ -1,4 +1,6 @@
-﻿namespace KubicekKocnar.Server.Models
+﻿using Newtonsoft.Json;
+
+namespace KubicekKocnar.Server.Models
 {
     public class Enemy
     {
@@ -13,9 +15,10 @@
 
         public bool IsGhost { get; set; }
 
+        [JsonIgnore]
         public Texture? Texture { get; set; }
         public uint TextureId {  get; set; }
 
-        public List<Level> Levels { get; set; } = [];
+        public List<Level> Levels { get; set; } = [];   
     }
 }

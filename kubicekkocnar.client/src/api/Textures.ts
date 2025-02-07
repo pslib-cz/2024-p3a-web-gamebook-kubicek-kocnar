@@ -2,15 +2,15 @@ import Texture from "../types/Texture";
 
 const URL = `${import.meta.env.VITE_API_URL}/Textures`;
 
-export async function FetchTextures() : Promise<Texture[]> {
+export async function FetchTextures(): Promise<Texture[]> {
   try {
     const texturesResponse = await fetch(URL);
     if (!texturesResponse.ok) {
       throw new Error(`Response status: ${texturesResponse.status}`);
     }
-    
+
     return await texturesResponse.json();
-      
+
   } catch (err: unknown) {
     console.error(err);
   }

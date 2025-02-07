@@ -11,7 +11,7 @@ namespace KubicekKocnar.Server.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(name: "Enemy");
+            migrationBuilder.DropTable(name: "Enemies");
 
             migrationBuilder.CreateTable(
                 name: "Enemy",
@@ -29,7 +29,7 @@ namespace KubicekKocnar.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Enemy", x => x.EnemyId);
+                    table.PrimaryKey("PK_Enemies", x => x.EnemyId);
                     table.ForeignKey(
                         name: "FK_Enemy_Textures_TextureId",
                         column: x => x.TextureId,

@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using KubicekKocnar.Server.Data;
+﻿using KubicekKocnar.Server.Data;
 using KubicekKocnar.Server.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace KubicekKocnar.Server.Controllers
 {
@@ -26,14 +21,14 @@ namespace KubicekKocnar.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Enemy>>> GetEnemy()
         {
-            return await _context.Enemy.ToListAsync();
+            return await _context.Enemies.ToListAsync();
         }
 
         // GET: api/Enemies/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Enemy>> GetEnemy(uint id)
         {
-            var enemy = await _context.Enemy.FindAsync(id);
+            var enemy = await _context.Enemies.FindAsync(id);
 
             if (enemy == null)
             {
@@ -45,25 +40,72 @@ namespace KubicekKocnar.Server.Controllers
 
         // PATCH: api/Blocks/5 using JsonPatchDocument
         [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchBlock(uint id, [FromBody] JsonPatchDocument<Block> patch) {
-            var block = await _context.Blocks.FindAsync(id);
-            if (block == null) {
+        public async Task<IActionResult> PatchEnemy(uint id, [FromBody] JsonPatchDocument<Enemy> patch)
+        {
+            var block = await _context.Enemies.FindAsync(id);
+            if (block == null)
+            {
                 return NotFound();
             }
             patch.ApplyTo(block, ModelState);
-            if (!ModelState.IsValid) {
+            if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
             }
             await _context.SaveChangesAsync();
             return NoContent();
         }
 
+        public class EnemyDto
+        {
+            public string Name { get; set; }
+            public float Health { get; set; }
+            public float Damage { get; set; }
+            public float AttackSpeed { get; set; }
+            public float Speed { get; set; }
+            public bool IsGhost { get; set; }
+            public uint TextureId { get; set; }
+            public List<uint> LevelIds { get; set; }
+
+            public Enemy ToEnemy() => new Enemy
+            {
+                Name = Name,
+                Health = Health,
+                Damage = Damage,
+                AttackSpeed = AttackSpeed,
+                Speed = Speed,
+                IsGhost = IsGhost,
+                TextureId = TextureId
+            };
+        }
+
         // POST: api/Enemies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Enemy>> PostEnemy(Enemy enemy)
+        public async Task<ActionResult<Enemy>> PostEnemy(EnemyDto enemyDto)
         {
-            _context.Enemy.Add(enemy);
+            Enemy enemy = enemyDto.ToEnemy();
+
+            var texture = await _context.Textures.FindAsync(enemyDto.TextureId);
+            if (texture == null) return BadRequest($"Texture with id {enemyDto.TextureId} does not exists");
+
+            // Attach existing levels to the context and add them to the enemy
+            foreach (var levelId in enemyDto.LevelIds)
+            {
+                var level = await _context.Levels.FindAsync(levelId);
+                if (level != null)
+                {
+                    enemy.Levels.Add(level);
+                    _context.Update(level);
+                }
+                else
+                {
+                    return BadRequest($"Level with id {levelId} does not exists");
+                }
+            }
+
+            _context.Enemies.Add(enemy);
+            
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetEnemy", new { id = enemy.EnemyId }, enemy);
@@ -73,13 +115,13 @@ namespace KubicekKocnar.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEnemy(uint id)
         {
-            var enemy = await _context.Enemy.FindAsync(id);
+            var enemy = await _context.Enemies.FindAsync(id);
             if (enemy == null)
             {
                 return NotFound();
             }
 
-            _context.Enemy.Remove(enemy);
+            _context.Enemies.Remove(enemy);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -87,7 +129,7 @@ namespace KubicekKocnar.Server.Controllers
 
         private bool EnemyExists(uint id)
         {
-            return _context.Enemy.Any(e => e.EnemyId == id);
+            return _context.Enemies.Any(e => e.EnemyId == id);
         }
     }
 }

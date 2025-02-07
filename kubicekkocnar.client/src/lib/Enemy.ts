@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { PathFinder } from './PathFinding';
 import Level from './Level';
 import { EnemyType } from '../types/Enemy';
+import { FetchEnemies } from '../api/Enemies';
 
 const textureLoader = new THREE.TextureLoader();
 textureLoader.setCrossOrigin('anonymous');
@@ -33,7 +34,17 @@ export class EnemyRenderer {
   public pathFinder : PathFinder;
   public level : Level;
 
+  public enemiesData : EnemyType[];
+
   public addPlayerHealth?: ((health: number) => void);
+
+  public spawnRandomEnemy(level: Level) 
+  {
+    // spawn random enemy that is on the level
+
+    
+
+  }
 
   public addEnemy(type: EnemyType) {
     const enemy : Enemy = new Enemy(type);
@@ -56,10 +67,20 @@ export class EnemyRenderer {
     this.scene = scene;
     this.level = level;
     
-    this.addEnemy(defaultEnemyType);
+    //this.addEnemy(defaultEnemyType);
+
+    //this.loadEnemies();
 
     this.pathFinder = new PathFinder(level.blocks);
   }
+  
+  /*
+  private loadEnemies() {
+    FetchEnemies().then((enemies) => {
+      this.enemiesData = enemies;
+    });
+  }
+  */
 
   public update() {
     const player = this.scene.userData.camera
