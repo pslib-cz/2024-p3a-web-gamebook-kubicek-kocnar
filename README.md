@@ -50,25 +50,11 @@ Hráč je jedním z posledních přeživších světa zasaženého Korupcí. Pro
 - Finálním bossem je *Stvůra bloků*, obří entita složená z korupčních bloků.  
 - Hráč musí aktivovat všechny čtyři Krystaly, aby oslabil bosse a zničil Korupci jednou provždy.
 
-### **Závěr: Dvě možné volby**
-1. **Zničení Korupce:** Hráč obětuje moc Krystalů a zničí Korupci. Svět se začne pomalu obnovovat, ale ztráta Krystalů znamená konec pokročilé technologie.  
-2. **Ovládnutí Korupce:** Hráč získá moc Korupce a stane se vládcem zničeného světa. Korupce se přizpůsobí a vytvoří nový řád, ale za cenu ztráty lidství.
-
----
-
-## **Hráčova základna**
-- Hráčova základna bude v prvnímm Levelu a odemkne se po jeho dokončení.  
-- V základně může hráč vylepšovat své schopnosti, vytvářet lepší vybavení, atp.
-- Po každém levelu se bude hráč vracet do zákldany a může využít nově nalezené materiály pro svůj prospěch.
-
-
-
 ## **Katalog nepřátel**
 1. **Zmutovaný obyvatel:** Základní nepřítel, který se pohybuje po vesnici.
 2. **Zmutovaný golem:** Velký a pomalý nepřítel, který útočí na hráče.
 3. **Rytíř Korupce:** Rychlý a silný nepřítel, který se teleportuje.
 4. **Duch**: Prochází stěnou,
-
 
 ## **Požadavky:**
 
