@@ -3,6 +3,7 @@ import * as THREE from "three";
 import renderLight, { Light } from "./Light";
 import renderPortal, { Portal } from "./Portal";
 import renderChest, { Chest } from "./Chest";
+import renderScroll, { Scroll } from "./Scroll";
 
 const source = window.location.search.includes("source=")
   ? window.location.search.split("source=")[1].split("&")[0]
@@ -28,17 +29,21 @@ class FeatureRenderer {
     }
     switch (feature.type) {
       case FeatureType.Light:
-        this.renderLight(feature as Light);
+        renderLight(feature as Light);
         break;
 
       case FeatureType.Chest:
         console.log("Rendering chest", feature);
-        await this.renderChest(feature as Chest);
+        await renderChest(feature as Chest);
         break;
 
       case FeatureType.Portal:
-        this.renderPortal(feature as Portal);
+        renderPortal(feature as Portal);
         break;
+
+      case FeatureType.Paper:
+        await renderScroll(feature as Scroll);
+        break;        
 
       default:
         return console.error("Unknown feature type", feature.type);
@@ -82,6 +87,8 @@ class FeatureRenderer {
       this.scene.userData.camera?.position.set(0, 0, 0);
     }
 
+    if (!feature.object) throw new Error("Feature object not created");
+
     feature.object.name =
       "feature " + FeatureType[feature.type] + " " + feature.featureId;
     feature.object.position.set(
@@ -99,10 +106,6 @@ class FeatureRenderer {
     this.features.push(feature);
     this.scene.add(feature.object);
   }
-
-  renderLight = renderLight;
-  renderPortal = renderPortal;
-  renderChest = renderChest;
 
   removeFeature(feature: GenericFeature) {
     const removedFeature = this.features.find(

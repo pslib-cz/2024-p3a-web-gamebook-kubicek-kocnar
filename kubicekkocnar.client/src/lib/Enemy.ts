@@ -42,7 +42,6 @@ export class EnemyRenderer {
 
     this.enemies.push(enemy);
 
-    //const loadedTexture = textureLoader.load("/obunga.webp");
     const loadedTexture = textureLoader.load(GetTextureURL(type.textureId));
     const geometry = new THREE.PlaneGeometry(3, 3);
     const material = new THREE.MeshStandardMaterial({ map: loadedTexture, side: THREE.DoubleSide, transparent: true });

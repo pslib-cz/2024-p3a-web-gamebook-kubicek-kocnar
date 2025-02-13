@@ -18,15 +18,6 @@ class MapRenderer {
     this.blocksReference = blocksReference;
   }
 
-/*
-  static loadTexture(textureId: number): string {
-
-    console.log("Loading texture")
-
-    return import.meta.env.VITE_API_URL + '/Textures/' + textureId + "/Image";
-  }
-*/
-
   public addBlock(placedBlock: PlacedBlock) {
     // if the blockId exists in this.blocks, we dont add it
     if (this.blocks.find(b => b.placedBlockId === placedBlock.placedBlockId)) return;

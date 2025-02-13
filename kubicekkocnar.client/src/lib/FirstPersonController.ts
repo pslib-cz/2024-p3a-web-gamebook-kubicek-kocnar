@@ -7,11 +7,7 @@ export class FirstPersonController {
   private rotation: THREE.Quaternion = new THREE.Quaternion(); // Base quaternion
   private pitch: THREE.Quaternion = new THREE.Quaternion(); // For up/down rotation
   private yaw: THREE.Quaternion = new THREE.Quaternion(); // For left/right rotation
-  private move: { /*forward: boolean; backward: boolean; left: boolean; right: boolean,*/ up: boolean } = {
-    //forward: false,
-    //backward: false,
-    //left: false,
-    //right: false,
+  private move: { up: boolean } = {
     up: false
   };
   private touchStart: { x: number; y: number } = { x: 0, y: 0 };

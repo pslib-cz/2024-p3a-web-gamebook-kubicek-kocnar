@@ -40,8 +40,10 @@ export class ItemsController {
   }
 
   private getEnemies(positionToCheck: THREE.Vector3): THREE.Object3D[] {
+    return this.getOtherFeaturesAndStuffBTWfr(positionToCheck, "enemy");
+  }
 
-    console.log("sdsdfrd")
+  private getOtherFeaturesAndStuffBTWfr(positionToCheck: THREE.Vector3, tag : string): THREE.Object3D[] {
 
     const checkBox = new THREE.Box3().setFromCenterAndSize(
       positionToCheck,
@@ -49,7 +51,7 @@ export class ItemsController {
     );
 
     const enemies = this.scene.children
-      .filter((child) => child.name.includes('enemy')); // replace this with enemy tag
+      .filter((child) => child.name.includes(tag)); // replace this with enemy tag
 
     const hitEnemies = [];
 
@@ -58,9 +60,6 @@ export class ItemsController {
       const enemyBox = new THREE.Box3().setFromObject(enemy);
       if (checkBox.intersectsBox(enemyBox)) hitEnemies.push(enemy);
     }
-
-    console.log("hitnemenei", hitEnemies)
-
 
     return hitEnemies;
   }

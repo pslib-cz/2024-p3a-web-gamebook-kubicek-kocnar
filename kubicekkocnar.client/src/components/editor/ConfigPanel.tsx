@@ -37,6 +37,8 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ level }) => {
         return { source: level.levelId, destination: '2', color: '#ffffff', facing: 'X', width: '2', height: '3' };
       case FeatureType.Chest:
         return { inventory: "" };
+      case FeatureType.Paper:
+          return { text: "lorem ipsum" };
     }
   }
 
@@ -97,8 +99,6 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ level }) => {
                     />
                   </div>
               ))}
-
-
 
               <button className="configpanel__addmodal__addbtn" onClick={() => {
                 level.addFeature(modalFeature);
