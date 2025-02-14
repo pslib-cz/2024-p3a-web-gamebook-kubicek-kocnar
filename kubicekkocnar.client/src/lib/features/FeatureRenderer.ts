@@ -43,7 +43,7 @@ class FeatureRenderer {
 
       case FeatureType.Paper:
         await renderScroll(feature as Scroll);
-        break;        
+        break;
 
       default:
         return console.error("Unknown feature type", feature.type);

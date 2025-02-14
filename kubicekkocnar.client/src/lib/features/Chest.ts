@@ -8,7 +8,7 @@ interface Chest extends GenericFeature {
   };
 }
 
-const path = "../../../../models/chest.glb"
+const path = "/models/chest.glb"
 
 const loader = new GLTFLoader();
 

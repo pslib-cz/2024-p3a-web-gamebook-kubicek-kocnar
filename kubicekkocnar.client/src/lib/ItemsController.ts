@@ -37,10 +37,23 @@ export class ItemsController {
       }
     });
 
+    const hitScrolls = this.getScrolls(positionsd);
+
+    if (hitScrolls.length > 0)
+    {      
+      console.error("Hit scroll:", hitScrolls[0]);
+      
+      console.log(hitScrolls[0].userData.scroll.params.text)
+    }
+
   }
 
   private getEnemies(positionToCheck: THREE.Vector3): THREE.Object3D[] {
     return this.getOtherFeaturesAndStuffBTWfr(positionToCheck, "enemy");
+  }
+
+  private getScrolls(positionToCheck: THREE.Vector3): THREE.Object3D[] {
+    return this.getOtherFeaturesAndStuffBTWfr(positionToCheck, "Paper");
   }
 
   private getOtherFeaturesAndStuffBTWfr(positionToCheck: THREE.Vector3, tag : string): THREE.Object3D[] {
@@ -63,5 +76,4 @@ export class ItemsController {
 
     return hitEnemies;
   }
-
 }
