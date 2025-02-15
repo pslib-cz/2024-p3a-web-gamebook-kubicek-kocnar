@@ -2,7 +2,7 @@ type objTypes = "Items" | "Blocks" | "Enemies" | "Coinages" | "Games" | "Levels"
 
 const URL: (obj: string) => string = (obj) => `${import.meta.env.VITE_API_URL}/${obj}`;
 
-export async function GET(obj: objTypes): Promise<any> {
+export async function GET(obj: objTypes): Promise<unknown> {
   try {
     const blocksResponse = await fetch(URL(obj));
     if (!blocksResponse.ok) {
@@ -32,7 +32,7 @@ export async function DELETE(obj: objTypes, itemId: number): Promise<void> {
   }
 }
 
-export async function POST(obj: objTypes, item: any): Promise<void> {
+export async function POST(obj: objTypes, item: unknown): Promise<void> {
   try {
     const blocksResponse = await fetch(URL(obj), {
       method: 'POST',
@@ -51,7 +51,7 @@ export async function POST(obj: objTypes, item: any): Promise<void> {
 }
 
 //patch JSONPatch replace
-export async function PATCH(obj: objTypes, itemId: number, key: string, value: any): Promise<void> {
+export async function PATCH(obj: objTypes, itemId: number, key: string, value: unknown): Promise<void> {
 
   try {
     const blocksResponse = await fetch(`${URL(obj)}/${itemId}`, {

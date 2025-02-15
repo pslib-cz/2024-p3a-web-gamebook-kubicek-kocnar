@@ -3,6 +3,7 @@ import '../ItemController.css'
 import { AppContext } from '../AppContextProvider';
 import { useContext, useEffect, useState } from 'react';
 import { useThree } from '@react-three/fiber';
+
 export function ChestOverlay(chest) {
   
   const { playerInventory } = useContext(AppContext);

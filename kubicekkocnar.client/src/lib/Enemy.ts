@@ -10,12 +10,20 @@ textureLoader.setCrossOrigin('anonymous');
 
 export class Enemy {
   public type: EnemyType;
+  public hp: number = 0;
 
   public isOnCooldown: boolean = false;
   public mesh: THREE.Mesh | null = null;
 
   constructor(type: EnemyType) {
     this.type = type;
+  }
+
+  public takeDamage(damage: number, die: () => void) {
+    this.hp -= damage;
+    if (this.hp <= 0) {
+      die();
+    }
   }
 }
 
@@ -44,7 +52,12 @@ export class EnemyRenderer {
 
     const loadedTexture = textureLoader.load(GetTextureURL(type.textureId));
     const geometry = new THREE.PlaneGeometry(3, 3);
-    const material = new THREE.MeshStandardMaterial({ map: loadedTexture, side: THREE.DoubleSide, transparent: true });
+    const material = new THREE.MeshStandardMaterial({
+      map: loadedTexture,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: type.isGhost ? .5 : 1
+    });
     const plane = new THREE.Mesh(geometry, material);
     plane.name = "enemy";
     enemy.mesh = plane;

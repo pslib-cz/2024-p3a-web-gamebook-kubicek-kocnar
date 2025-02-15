@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { FirstPersonController } from "../lib/FirstPersonController";
-import { ItemsController } from "../lib/ItemsController";
+import { InteractionsController } from "../lib/InteractionsController";
 import { Inventory } from "../lib/Inventory";
 import { AppContext } from "./AppContextProvider";
 import { useContext } from "react";
@@ -19,7 +19,7 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
   const { setPlayerInventory, playerInventory, joytickData } = useContext(AppContext);
 
   const controllerRef = useRef<FirstPersonController | null>(null);
-  const itemsControllerRef = useRef<ItemsController | null>(null);
+  const itemsControllerRef = useRef<InteractionsController | null>(null);
 
   const { gl } = useThree();
   const clock = new THREE.Clock();
@@ -35,7 +35,7 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
     controller.loadPlayerPosition();
     controllerRef.current = controller;
 
-    itemsControllerRef.current = new ItemsController(camera, scene);
+    itemsControllerRef.current = new InteractionsController(camera, scene);
     const newInv = new Inventory()
     setPlayerInventory(newInv);
 

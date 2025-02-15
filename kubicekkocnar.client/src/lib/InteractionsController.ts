@@ -1,0 +1,82 @@
+import * as THREE from "three";
+import { Inventory } from "./Inventory";
+import { Enemy } from "./Enemy";
+import { Scroll } from "./features/Scroll";
+import { Chest } from "./features/Chest";
+
+export class InteractionsController {
+  private camera: THREE.Camera;
+  private scene: THREE.Scene;
+  public playerInventory: Inventory | null = null;
+
+  constructor(camera: THREE.Camera, scene: THREE.Scene) {
+    this.camera = camera;
+    this.scene = scene;
+  }
+
+  public onCLick() {
+    const positionsd: THREE.Vector3 = new THREE.Vector3();
+
+    positionsd.copy(this.camera.position);
+    positionsd.add(this.camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(1));
+
+    const interactables = this.getOtherFeaturesAndStuffBTWfr(positionsd, ["enemy", "Paper", "Chest"]);
+
+    const hitEnemies = interactables.filter((obj) => obj.name.includes("enemy"));
+    const hitPapers = interactables.filter((obj) => obj.name.includes("Paper"));
+    const hitChests = interactables.filter((obj) => obj.name.includes("Chest"));
+
+    console.warn("ONCLICK => This shit is not implemented yet, you have an array of block that were hit tho", hitEnemies);
+
+    hitEnemies.forEach((enemyMesh) => {
+      const enemy = enemyMesh.userData.enemy as Enemy;
+      console.log("Hit enemy:", enemy);
+
+      enemy.takeDamage(10, () => {
+        this.scene.userData.level.enemyRenderer.enemies = this.scene.userData.level.enemyRenderer.enemies.filter(e => e.mesh.uuid != enemyMesh.uuid)
+        this.scene.remove(enemyMesh);
+        this.playerInventory?.addToCoinage("gold", 100)
+      })
+
+    });
+
+    if (hitPapers.length > 0) {
+      const scroll = hitPapers[0].userData.scroll as Scroll;
+
+      console.error("Hit scroll:", scroll);
+
+      console.log(scroll.params.text)
+    }
+
+    if (hitChests.length > 0)
+    {
+      const chest = hitChests[0].userData.chest as Chest;
+
+      console.error("Hit chest:", chest);
+
+      console.log(chest.params)
+    }
+
+  }
+
+  private getOtherFeaturesAndStuffBTWfr(positionToCheck: THREE.Vector3, tags: string[]): THREE.Object3D[] {
+    const checkBox = new THREE.Box3().setFromCenterAndSize(
+      positionToCheck,
+      new THREE.Vector3(1, 1, 1) // Collider size
+    );
+
+    const interactables = this.scene.children.filter((child) =>
+      tags.some(tag => child.name.includes(tag))
+    );
+
+    const hitObjects = [];
+
+    // Check for intersections with objects
+    for (const obj of interactables) {
+      const objBox = new THREE.Box3().setFromObject(obj);
+      if (checkBox.intersectsBox(objBox)) hitObjects.push(obj);
+    }
+
+    return hitObjects;
+  }
+}
