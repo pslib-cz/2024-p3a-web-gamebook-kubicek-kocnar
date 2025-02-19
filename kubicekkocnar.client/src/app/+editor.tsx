@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { Coinage } from '../types/Coinage';
 import { ItemUpgrade } from '../types/ItemUpgrade';
 import { DeleteCoinage, GetCoinages, PostCoinage } from '../api/Coinages';
@@ -12,8 +12,13 @@ import { PATCH } from '../api/API';
 import styles from './editor.module.css';
 import Texture from '../types/Texture';
 import { DeleteTexture, FetchTextures, GetTextureURL } from '../api/Textures';
+import SaveHandler, { Save } from '../lib/SaveHandler';
 
-const Editor: React.FC = () => {
+
+ const Editor = () => {
+
+  const auth: MutableRefObject<Save['auth']|null> = useRef(null);
+
   const [textures, setTextures] = useState<Texture[]>();
   const [coinages, setCoinages] = useState<Coinage[]>();
   const [upgrades, setUpgrades] = useState<ItemUpgrade[]>();
@@ -26,6 +31,9 @@ const Editor: React.FC = () => {
     setUpgrades(await GetUpgrades());
     setItems(await GetItems());
     setEnemies(await FetchEnemies());
+    auth.current = await SaveHandler.getAuth();
+    
+  console.log(auth.current);
   }
 
   useEffect(() => { Reload(); }, []);
