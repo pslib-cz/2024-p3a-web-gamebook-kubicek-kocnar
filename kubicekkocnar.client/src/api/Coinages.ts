@@ -4,7 +4,7 @@ import { DELETE, GET } from "./API";
 const URL: string = `${import.meta.env.VITE_API_URL}/Coinages`;
 
 export async function GetCoinages(): Promise<Coinage[]> {
-  return await GET("Coinages");
+  return await GET("Coinages") as Coinage[];
 }
 
 export async function DeleteCoinage(coinageId: number): Promise<void> {

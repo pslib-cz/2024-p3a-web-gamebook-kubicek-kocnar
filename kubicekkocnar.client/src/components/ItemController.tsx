@@ -16,22 +16,22 @@ let handlePlayerMouseClick: HandlePlayerMouseClickProps | null = null;
 
 export function ItemUI() {
   const [useItem, setUseItem] = useState(false);
-  const { playerInventory, setPlayerInventory } = useContext(AppContext);
+  const { player, setPlayer } = useContext(AppContext);
   const [img, setImg] = useState("");
 
   handlePlayerMouseClick = () => {
-    console.log(`Using item ${playerInventory?.selectedItem?.img}`);
+    console.log(`Using item ${player?.inventory.selectedItem?.img}`);
     setUseItem(true);
   };
 
   useEffect(() => {
     const handleScroll = (event: WheelEvent) => {
-      playerInventory?.Scroll(event.deltaY > 0);
+      player?.inventory.Scroll(event.deltaY > 0);
 
-        const s = playerInventory?.selectedItem;
+        const s = player?.inventory.selectedItem;
         if (!s) return;
 
-        setPlayerInventory(playerInventory.Clone());
+        setPlayer(player.Clone());
     };
 
     window.addEventListener('wheel', handleScroll);
@@ -39,11 +39,11 @@ export function ItemUI() {
     return () => {
       window.removeEventListener('wheel', handleScroll);
     };
-  }, [playerInventory]);
+  }, [player]);
 
   React.useEffect(() => {
     if (useItem) {      
-      const s = playerInventory?.selectedItem      
+      const s = player?.inventory?.selectedItem      
       if (!s) return;
 
       setImg(s.imgUsed);
@@ -55,13 +55,13 @@ export function ItemUI() {
       console.log("Item used");
       setUseItem(false); // Reset the state
     }
-  }, [playerInventory?.selectedItem, useItem]);
+  }, [player?.inventory.selectedItem, useItem]);
 
   useEffect(() =>{
-    if (playerInventory && playerInventory.selectedItem)
-      setImg(playerInventory.selectedItem.img)
+    if (player && player.inventory.selectedItem)
+      setImg(player.inventory.selectedItem.img)
 
-  }, [playerInventory]);
+  }, [player]);
 
   return (
     <ItemContext.Provider value={{ setUseItem }}>

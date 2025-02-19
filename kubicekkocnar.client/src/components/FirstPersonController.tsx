@@ -7,6 +7,7 @@ import { Inventory } from "../lib/Inventory";
 import { AppContext } from "./AppContextProvider";
 import { useContext } from "react";
 import { getHandlePlayerMouseClick } from "./ItemController";
+import { Player } from "../lib/Player";
 
 type FirstPersonControllerComponentProps = {
   camera: THREE.Camera;
@@ -16,37 +17,42 @@ type FirstPersonControllerComponentProps = {
 
 const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonControllerComponentProps) => {
    
-  const { setPlayerInventory, playerInventory, joytickData } = useContext(AppContext);
+  const { setPlayer, player, joytickData } = useContext(AppContext);
 
-  const controllerRef = useRef<FirstPersonController | null>(null);
-  const itemsControllerRef = useRef<InteractionsController | null>(null);
+  const playerRef = useRef<Player | null>(null);
+
+  //const controllerRef = useRef<FirstPersonController | null>(null);
+  //const itemsControllerRef = useRef<InteractionsController | null>(null);
 
   const { gl } = useThree();
   const clock = new THREE.Clock();
 
   useEffect(() => {
-    if (controllerRef.current) {
-      controllerRef.current?.SetJoystickData(joytickData);
+    if (playerRef.current) {
+      playerRef.current?.controller.SetJoystickData(joytickData);
     }
   }, [joytickData]);
 
   useEffect(() => {
-    const controller = new FirstPersonController(camera, scene, navigate);
-    controller.loadPlayerPosition();
-    controllerRef.current = controller;
 
-    itemsControllerRef.current = new InteractionsController(camera, scene);
-    const newInv = new Inventory()
-    setPlayerInventory(newInv);
+    const _player = new Player(
+      new Inventory(),
+      new FirstPersonController(camera, scene, navigate),
+      new InteractionsController(camera, scene)
+    )
 
-    itemsControllerRef.current.playerInventory = newInv;
-    console.log("Setting player inventory", newInv, itemsControllerRef.current);   
+    _player.controller.loadPlayerPosition();
 
-    const handleMouseMove = (event: MouseEvent) => controller.handleMouseMove(event);
-    const handleKeyDown = (event: KeyboardEvent) => controller.handleKeyDown(event);
-    const handleKeyUp = (event: KeyboardEvent) => controller.handleKeyUp(event);
-    const handleTouchStart = (event: TouchEvent) => controller.handleTouchStart(event);
-    const handleTouchMove = (event: TouchEvent) => controller.handleTouchMove(event);
+    setPlayer(_player);
+
+    //itemsControllerRef.current.playerInventory = newInv;
+    //console.log("Setting player inventory", newInv, itemsControllerRef.current);   
+
+    const handleMouseMove = (event: MouseEvent) => _player.controller.handleMouseMove(event);
+    const handleKeyDown = (event: KeyboardEvent) => _player.controller.handleKeyDown(event);
+    const handleKeyUp = (event: KeyboardEvent) => _player.controller.handleKeyUp(event);
+    const handleTouchStart = (event: TouchEvent) => _player.controller.handleTouchStart(event);
+    const handleTouchMove = (event: TouchEvent) => _player.controller.handleTouchMove(event);
 
     //gl.domElement.addEventListener("pointerlockchange", handlePointerLockChange);
     document.getElementById("gameroot")?.addEventListener("mousemove", handleMouseMove);
@@ -66,10 +72,12 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
       document.getElementById("gameroot")!.removeEventListener("pointerdown", handleClick)
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [camera, gl, scene, setPlayerInventory]);
+  }, [camera, gl, scene, setPlayer]);
 
   useFrame(() => {
-    controllerRef.current?.update(clock.getDelta());
+    playerRef.current?.controller.update(clock.getDelta());
+    
+    if (!playerRef.current) throw new Error("Player not set");
   });
 
   const handleClick = async () => {
@@ -79,13 +87,13 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
       await document.getElementById("gameroot")?.requestPointerLock();
     }
 
-    const item = playerInventory ? playerInventory.selectedItem : null;
+    const item = player ? player.inventory.selectedItem : null;
 
     if (getHandlePlayerMouseClick) getHandlePlayerMouseClick()(item);
 
     console.log("Calling OnPointerDown");
 
-    itemsControllerRef.current?.onCLick();
+    player?.interactions.onCLick();
   };
 
   return null;

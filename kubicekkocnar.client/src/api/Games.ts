@@ -4,7 +4,7 @@ import { GET } from "./API";
 const URL = `${import.meta.env.VITE_API_URL}/Games/`;
 
 export async function FetchGames(): Promise<Game[]> {
-  return await GET("Games");
+  return await GET("Games") as Game[];
 }
 
 export async function PostGame(game: Game): Promise<Game | null> {

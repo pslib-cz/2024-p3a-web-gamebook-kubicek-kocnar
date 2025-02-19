@@ -4,7 +4,7 @@ import { GET, DELETE } from "./API";
 const URL: string = `${import.meta.env.VITE_API_URL}/Items`;
 
 export async function GetItems(): Promise<Item[]> {
-  return await GET("Items");
+  return await GET("Items") as Item[];
 }
 
 export async function DeleteItem(itemId: number): Promise<void> {
