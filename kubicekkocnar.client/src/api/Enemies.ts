@@ -4,7 +4,7 @@ import { GET } from "./API";
 const URL = `${import.meta.env.VITE_API_URL}/Enemies`;
 
 export async function FetchEnemies(): Promise<EnemyType[]> {
-  return await GET("Enemies");
+  return await GET("Enemies") as EnemyType[];
 }
 
 export async function FetchLevelEnemies(gameId: number, levelId: number): Promise<EnemyType[]> {

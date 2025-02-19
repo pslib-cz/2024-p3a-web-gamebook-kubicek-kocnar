@@ -1,8 +1,8 @@
 import * as THREE from "three";
 import { Inventory } from "./Inventory";
-import { Enemy } from "./Enemy";
-import { Scroll } from "./features/Scroll";
-import { Chest } from "./features/Chest";
+import { Enemy } from "../Enemy";
+import { Scroll } from "../features/Scroll";
+import { Chest } from "../features/Chest";
 
 export class InteractionsController {
   private camera: THREE.Camera;

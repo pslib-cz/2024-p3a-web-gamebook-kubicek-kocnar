@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { Coinage } from '../types/Coinage';
 import { ItemUpgrade } from '../types/ItemUpgrade';
 import { DeleteCoinage, GetCoinages, PostCoinage } from '../api/Coinages';
@@ -8,16 +8,14 @@ import { DeleteItem, GetItems, PostItem } from '../api/Items';
 import { useForm } from 'react-hook-form';
 import { EnemyType } from '../types/Enemy';
 import { AddEnemy, DeleteEnemy, FetchEnemies } from '../api/Enemies';
-import { PATCH } from '../api/API';
+import { DELETE, PATCH } from '../api/API';
 import styles from './editor.module.css';
 import Texture from '../types/Texture';
 import { DeleteTexture, FetchTextures, GetTextureURL } from '../api/Textures';
 import SaveHandler, { Save } from '../lib/SaveHandler';
 
-
- const Editor = () => {
-
-  const auth: MutableRefObject<Save['auth']|null> = useRef(null);
+const Editor = () => {
+  const auth: MutableRefObject<Save['auth'] | null> = useRef(null);
 
   const [textures, setTextures] = useState<Texture[]>();
   const [coinages, setCoinages] = useState<Coinage[]>();
@@ -32,8 +30,8 @@ import SaveHandler, { Save } from '../lib/SaveHandler';
     setItems(await GetItems());
     setEnemies(await FetchEnemies());
     auth.current = await SaveHandler.getAuth();
-    
-  console.log(auth.current);
+
+    console.log(auth.current);
   }
 
   useEffect(() => { Reload(); }, []);
@@ -106,8 +104,8 @@ import SaveHandler, { Save } from '../lib/SaveHandler';
   );
 };
 
-function ItemDrawers({ items, deleteFunction, patchFunction }:
-  { items?: any[], deleteFunction: (arg0: number) => void, patchFunction: (id: number, key: string, value: string) => void }) {
+function ItemDrawers({ items, deleteFunction, patchFunction, }:
+  { items?: unknown[], deleteFunction: (arg0: number) => void, patchFunction: (id: number, key: string, value: string) => void }) {
   if (!items) return <div></div>;
 
   const drawers: JSX.Element[] = [];
@@ -149,7 +147,7 @@ function ItemDrawer(
           <>
             <p className={styles.field} key={key}>{key}: {item[key]}</p>
             {
-              key == "textureId" && <img style={{width: 100}} src={GetTextureURL(item[key])} alt="texture" />
+              key == "textureId" && <img style={{ width: 100 }} src={GetTextureURL(item[key])} alt="texture" />
             }
           </>
         )

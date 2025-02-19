@@ -1,9 +1,9 @@
-import { Item } from "../types/Item";
-import { Coinage } from "../types/Coinage";
-import { ItemUpgrade } from "../types/ItemUpgrade";
-import { Cost } from "../types/Cost";
-import { GetCoinages } from "../api/Coinages";
-import { GetUpgrades } from "../api/Upgrades";
+import { Item } from "../../types/Item";
+import { Coinage } from "../../types/Coinage";
+import { ItemUpgrade } from "../../types/ItemUpgrade";
+import { Cost } from "../../types/Cost";
+import { GetCoinages } from "../../api/Coinages";
+import { GetUpgrades } from "../../api/Upgrades";
 
 const demoItem : Item = {
   name: "item1",

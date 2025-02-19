@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { JoystickOutputData } from "../components/game/Joystick";
+import { JoystickOutputData } from "../../components/game/Joystick";
 
 export class FirstPersonController {
   private camera: THREE.Camera;
@@ -296,6 +296,7 @@ export class FirstPersonController {
     let playerPosition = localStorage.getItem("playerPosition"+levelId);
     if (playerPosition) {
       playerPosition = JSON.parse(playerPosition);
+      // @ts-expect-error error fr 
       this.playerPosition = new THREE.Vector3(parseFloat(playerPosition?.x), parseFloat(playerPosition?.y), parseFloat(playerPosition?.z)).add(this.scene.position);
     }
   }

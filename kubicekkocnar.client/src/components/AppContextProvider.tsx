@@ -4,7 +4,7 @@ import PlacedBlock from "../types/PlacedBlock";
 import GenericFeature from "../types/Feature";
 import { JoystickOutputData } from "./game/Joystick";
 import { EnemyRenderer } from "../lib/Enemy";
-import { Player } from "../lib/Player";
+import { Player } from "../lib/Player/Player";
 
 interface AddBlockParams {
   blockId?: number;

@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { FirstPersonController } from "../lib/FirstPersonController";
-import { InteractionsController } from "../lib/InteractionsController";
-import { Inventory } from "../lib/Inventory";
+import { FirstPersonController } from "../lib/Player/FirstPersonController";
+import { InteractionsController } from "../lib/Player/InteractionsController";
+import { Inventory } from "../lib/Player/Inventory";
 import { AppContext } from "./AppContextProvider";
 import { useContext } from "react";
 import { getHandlePlayerMouseClick } from "./ItemController";
-import { Player } from "../lib/Player";
+import { Player } from "../lib/Player/Player";
 
 type FirstPersonControllerComponentProps = {
   camera: THREE.Camera;
@@ -15,21 +15,16 @@ type FirstPersonControllerComponentProps = {
   navigate: (levelId: string) => void;
 };
 
-const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonControllerComponentProps) => {
-   
+const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonControllerComponentProps) => {   
   const { setPlayer, player, joytickData } = useContext(AppContext);
-
-  const playerRef = useRef<Player | null>(null);
-
-  //const controllerRef = useRef<FirstPersonController | null>(null);
-  //const itemsControllerRef = useRef<InteractionsController | null>(null);
+  // const playerRef = useRef<Player | null>(null);
 
   const { gl } = useThree();
   const clock = new THREE.Clock();
 
   useEffect(() => {
-    if (playerRef.current) {
-      playerRef.current?.controller.SetJoystickData(joytickData);
+    if (player) {
+      player?.controller.SetJoystickData(joytickData);
     }
   }, [joytickData]);
 
@@ -44,9 +39,6 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
     _player.controller.loadPlayerPosition();
 
     setPlayer(_player);
-
-    //itemsControllerRef.current.playerInventory = newInv;
-    //console.log("Setting player inventory", newInv, itemsControllerRef.current);   
 
     const handleMouseMove = (event: MouseEvent) => _player.controller.handleMouseMove(event);
     const handleKeyDown = (event: KeyboardEvent) => _player.controller.handleKeyDown(event);
@@ -75,9 +67,9 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
   }, [camera, gl, scene, setPlayer]);
 
   useFrame(() => {
-    playerRef.current?.controller.update(clock.getDelta());
+    player?.controller.update(clock.getDelta());
     
-    if (!playerRef.current) throw new Error("Player not set");
+    if (!player) throw new Error("Player not set");
   });
 
   const handleClick = async () => {
