@@ -1,0 +1,18 @@
+.authbutton {
+    border-radius: 0;
+    border: 1px solid transparent;
+    padding: .6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    transition: all ease .25s;
+    border: 3px solid red;
+    box-sizing: border-box;
+}
+
+.authbutton:hover {
+    background-color: transparent;
+}
