@@ -9,7 +9,7 @@ import { Joystick } from './Joystick';
 const GameHUD = () => {
   // Example weapons data
   const { playerHealth } = useContext(GameContext);
-  const { playerInventory } = useContext(AppContext);
+  const { player } = useContext(AppContext);
 
   useEffect(() => {
     console.log("Player health changed to", playerHealth);
@@ -27,7 +27,7 @@ const GameHUD = () => {
       <Joystick />
       <div>
         {
-          playerInventory?.coinage.map((a: Coinage, x: number) => <CoinageDrawer key={x} coinage={a} count={playerInventory?.coinageAmount[x]} />)
+          player?.inventory.coinage.map((a: Coinage, x: number) => <CoinageDrawer key={x} coinage={a} count={player?.inventory.coinageAmount[x]} />)
         }
       </div>
       <div className="damage_overlay" style={{ opacity: playerHealth > 0 ? (0.5 - (Math.max(playerHealth, 0) / 200)) : 1 }}></div>
@@ -56,8 +56,8 @@ const GameHUD = () => {
 
       {/* Weapons List */}
       <div className="player-hud__weapons-section">
-        {playerInventory?.hotbar?.map((weapon, index) => (
-          <div key={index} className={`player-hud__weapon-item ${playerInventory.selectedItemId == index ? "" : "player-hud__weapon-item--selected"}`}>
+        {player?.inventory.hotbar?.map((weapon, index) => (
+          <div key={index} className={`player-hud__weapon-item ${player.inventory.selectedItemId == index ? "" : "player-hud__weapon-item--selected"}`}>
             <span className="player-hud__weapon-name">{weapon.img}</span>
             <span className="player-hud__weapon-ammo">{weapon.description}</span>
           </div>

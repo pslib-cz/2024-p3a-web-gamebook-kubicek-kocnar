@@ -4,7 +4,7 @@ import { GET, DELETE } from "./API";
 const URL: string = `${import.meta.env.VITE_API_URL}/ItemUpgrades`;
 
 export async function GetUpgrades(): Promise<ItemUpgrade[]> {
-  return GET("ItemUpgrades");
+  return await GET("ItemUpgrades") as ItemUpgrade[];
 }
 
 export async function DeleteUpgrade(upgradeId: number): Promise<void> {

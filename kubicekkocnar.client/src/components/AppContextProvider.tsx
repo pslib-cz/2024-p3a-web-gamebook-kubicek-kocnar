@@ -2,9 +2,9 @@ import React, { useState, useMemo } from "react";
 import { Tool } from "./editor/ToolBar";
 import PlacedBlock from "../types/PlacedBlock";
 import GenericFeature from "../types/Feature";
-import { Inventory } from "../lib/Inventory";
 import { JoystickOutputData } from "./game/Joystick";
 import { EnemyRenderer } from "../lib/Enemy";
+import { Player } from "../lib/Player";
 
 interface AddBlockParams {
   blockId?: number;
@@ -19,8 +19,8 @@ interface AppContextType {
   setFeature: (block: GenericFeature) => void;
   featureState: GenericFeature|null;
 
-  playerInventory: Inventory | null;
-  setPlayerInventory: (inventory: Inventory) => void
+  player: Player | null;
+  setPlayer: (player: Player) => void
 
   setAddBlockParams: (block: AddBlockParams) => void;
   addBlockParamsState: AddBlockParams|null;
@@ -40,8 +40,8 @@ const defaultContext: AppContextType = {
   setFeature: () => {},
   featureState: null,
 
-  playerInventory: null,
-  setPlayerInventory: () => {},
+  player: null,
+  setPlayer: () => {},
 
   setAddBlockParams: () => {},
   addBlockParamsState: null,
@@ -60,13 +60,13 @@ function AppContextProvider({children}: {children: React.ReactNode}) {
     const [blockState, setBlock] = useState<PlacedBlock|null>(null);
     const [featureState, setFeature] = useState<GenericFeature|null>(null);
     const [addBlockParamsState, setAddBlockParams] = useState<AddBlockParams|null>(null);
-    const [playerInventory, setPlayerInventory] = useState<Inventory | null>(null);
+    const [player, setPlayer] = useState<Player | null>(null);
     const [joytickData, setJoystickData] = useState<JoystickOutputData | null>(null);
     const [enemyHandler, setEnemyHandler] = useState<EnemyRenderer | null>(null);
 
     const contextValue = useMemo(() => ({
-      setToolState, toolState, blockState, setBlock, featureState, setFeature, playerInventory, setPlayerInventory, setAddBlockParams, addBlockParamsState, joytickData, setJoystickData, enemyHandler, setEnemyHandler
-    }), [toolState, blockState, featureState, playerInventory, addBlockParamsState, joytickData, enemyHandler]);
+      setToolState, toolState, blockState, setBlock, featureState, setFeature, player, setPlayer, setAddBlockParams, addBlockParamsState, joytickData, setJoystickData, enemyHandler, setEnemyHandler
+    }), [toolState, blockState, featureState, player, addBlockParamsState, joytickData, enemyHandler]);
 
     return (
       <AppContext.Provider value={contextValue}>

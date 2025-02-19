@@ -1,6 +1,5 @@
 import GenericFeature from "../../types/Feature";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import * as THREE from 'three';
 
 interface Scroll extends GenericFeature {
   params: {

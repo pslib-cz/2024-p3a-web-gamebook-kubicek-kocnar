@@ -7,7 +7,7 @@ import { ItemUpgrade } from '../../types/ItemUpgrade';
 import { CoinageDrawer } from '../CoinageDrawer';
 
 export function UIOverlay() {
-  const { playerInventory } = useContext(AppContext);
+  const { player } = useContext(AppContext);
   const [opened, setOpened] = useState<boolean>(false);
 
   useEffect(() => {
@@ -33,8 +33,8 @@ export function UIOverlay() {
   };
 
   useEffect(
-    () => console.log("INVENTORY " + playerInventory)
-    , [playerInventory]);
+    () => console.log("INVENTORY " + player?.inventory)
+    , [player]);
 
   return (
     <>
@@ -43,13 +43,13 @@ export function UIOverlay() {
           <div className='ui-item'>
             <div>
               <div>
-                <h1>This inventory shall be ({playerInventory ? "1" : "fr"})</h1>
+                <h1>This inventory shall be ({player ? "1" : "fr"})</h1>
                 {
-                  playerInventory?.coinage.map((a: Coinage, x: number) => <CoinageDrawer key={x} coinage={a} count={-1} />)
+                  player?.inventory?.coinage.map((a: Coinage, x: number) => <CoinageDrawer key={x} coinage={a} count={-1} />)
                 }
                 <p>UPGRADES</p>
                 {
-                  playerInventory?.upgrades.map((a, x) => <ItemUpgradeDrawer key={x} upgrade={a} />)
+                  player?.inventory?.upgrades.map((a, x) => <ItemUpgradeDrawer key={x} upgrade={a} />)
                 }
               </div>
             </div>
@@ -62,19 +62,19 @@ export function UIOverlay() {
 }
 
 function ItemUpgradeDrawer({ upgrade }: { upgrade: ItemUpgrade }) {
-  const { playerInventory, setPlayerInventory } = useContext(AppContext);
+  const { player, setPlayer } = useContext(AppContext);
 
   return (
     <div
       onClick={
         () => {
 
-          if (!playerInventory?.ItemIsInHotbar(upgrade.inputItem) ||
-            !playerInventory?.IsCostSufficient(upgrade.cost)) return;
+          if (player?.inventory.ItemIsInHotbar(upgrade.inputItem) ||
+            !player?.inventory.IsCostSufficient(upgrade.cost)) return;
 
-          playerInventory?.RemoveItemFromHotbar(upgrade.inputItem);
-          playerInventory?.AddItemIntoHotbar(upgrade.outputItem);
-          setPlayerInventory(playerInventory!.Clone());
+            player?.inventory.RemoveItemFromHotbar(upgrade.inputItem);
+            player?.inventory.AddItemIntoHotbar(upgrade.outputItem);
+          setPlayer(player!.Clone());
         }
       }
       style={{ border: "1px solid black", width: "fit-content", margin: "auto" }}
@@ -82,8 +82,8 @@ function ItemUpgradeDrawer({ upgrade }: { upgrade: ItemUpgrade }) {
       <p>{upgrade.description}</p>
       <p>{upgrade.inputItem.name} to {upgrade.outputItem.name}</p>
       {upgrade.cost && upgrade.cost.map((a, x) => <CoinageDrawer key={x} coinage={a.coinage} count={a.cost} />)}
-      {playerInventory?.IsCostSufficient(upgrade.cost) ? <p>Can afford</p> : <p>Cannot afford</p>}
-      {playerInventory?.ItemIsInHotbar(upgrade.inputItem) ? <p>Item in hotbar</p> : <p>Item not in hotbar</p>}
+      {player?.inventory.IsCostSufficient(upgrade.cost) ? <p>Can afford</p> : <p>Cannot afford</p>}
+      {player?.inventory.ItemIsInHotbar(upgrade.inputItem) ? <p>Item in hotbar</p> : <p>Item not in hotbar</p>}
     </div>
   )
 }

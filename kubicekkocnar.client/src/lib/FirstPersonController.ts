@@ -154,6 +154,7 @@ export class FirstPersonController {
   }
 
   public update(delta: number) {
+    
     this.saveCounter+=delta;
     if (this.saveCounter > 2) {
       this.savePlayerPosition();
@@ -174,6 +175,8 @@ export class FirstPersonController {
     if (this.joystickData.bkdValue) this.velocity.z -= 1; // Move backward
     if (this.joystickData.lftValue) this.velocity.x -= 1; // Strafe left
     if (this.joystickData.rgtValue) this.velocity.x += 1; // Strafe right
+
+    console.log(this.joystickData);
 
     this.velocity.normalize().multiplyScalar(speed * delta);    
 
