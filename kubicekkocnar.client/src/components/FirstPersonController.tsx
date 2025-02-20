@@ -2,8 +2,6 @@ import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { FirstPersonController } from "../lib/Player/FirstPersonController";
-import { InteractionsController } from "../lib/Player/InteractionsController";
-import { Inventory } from "../lib/Player/Inventory";
 import { AppContext } from "./AppContextProvider";
 import { useContext } from "react";
 import { getHandlePlayerMouseClick } from "./ItemController";
@@ -15,9 +13,13 @@ type FirstPersonControllerComponentProps = {
   navigate: (levelId: string) => void;
 };
 
-const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonControllerComponentProps) => {   
+const FirstPersonControllerComponent = ({ camera, scene, navigate }: FirstPersonControllerComponentProps) => {
   const { setPlayer, player, joytickData } = useContext(AppContext);
-  // const playerRef = useRef<Player | null>(null);
+
+  // setGameScene(scene);
+
+  // this is necessary for interactions
+  const playerRef = useRef<Player | null>(null);
 
   const { gl } = useThree();
   const clock = new THREE.Clock();
@@ -29,15 +31,13 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
   }, [joytickData]);
 
   useEffect(() => {
-
     const _player = new Player(
-      new Inventory(),
-      new FirstPersonController(camera, scene, navigate),
-      new InteractionsController(camera, scene)
+      camera, scene, new FirstPersonController(camera, scene, navigate),
     )
 
     _player.controller.loadPlayerPosition();
 
+    playerRef.current = _player;
     setPlayer(_player);
 
     const handleMouseMove = (event: MouseEvent) => _player.controller.handleMouseMove(event);
@@ -68,7 +68,7 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
 
   useFrame(() => {
     player?.controller.update(clock.getDelta());
-    
+
     if (!player) throw new Error("Player not set");
   });
 
@@ -85,7 +85,7 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate}: FirstPersonC
 
     console.log("Calling OnPointerDown");
 
-    player?.interactions.onCLick();
+    playerRef.current?.interactions.onCLick();
   };
 
   return null;

@@ -1,24 +1,22 @@
 import * as THREE from "three";
-import { Inventory } from "./Inventory";
 import { Enemy } from "../Enemy";
 import { Scroll } from "../features/Scroll";
 import { Chest } from "../features/Chest";
+import { Player } from "./Player";
 
 export class InteractionsController {
-  private camera: THREE.Camera;
-  private scene: THREE.Scene;
-  public playerInventory: Inventory | null = null;
+  
+  private player: Player;
 
-  constructor(camera: THREE.Camera, scene: THREE.Scene) {
-    this.camera = camera;
-    this.scene = scene;
+  constructor(player: Player) {
+    this.player = player;
   }
 
   public onCLick() {
     const positionsd: THREE.Vector3 = new THREE.Vector3();
 
-    positionsd.copy(this.camera.position);
-    positionsd.add(this.camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(1));
+    positionsd.copy(this.player.camera.position);
+    positionsd.add(this.player.camera.getWorldDirection(new THREE.Vector3()).multiplyScalar(1));
 
     const interactables = this.getOtherFeaturesAndStuffBTWfr(positionsd, ["enemy", "Paper", "Chest"]);
 
@@ -33,9 +31,9 @@ export class InteractionsController {
       console.log("Hit enemy:", enemy);
 
       enemy.takeDamage(10, () => {
-        this.scene.userData.level.enemyRenderer.enemies = this.scene.userData.level.enemyRenderer.enemies.filter(e => e.mesh.uuid != enemyMesh.uuid)
-        this.scene.remove(enemyMesh);
-        this.playerInventory?.addToCoinage("gold", 100)
+        this.player.scene.userData.level.enemyRenderer.enemies = this.player.scene.userData.level.enemyRenderer.enemies.filter(e => e.mesh.uuid != enemyMesh.uuid)
+        this.player.scene.remove(enemyMesh);
+        this.player.inventory.addToCoinage("gold", 100)
       })
 
     });
@@ -44,6 +42,8 @@ export class InteractionsController {
       const scroll = hitPapers[0].userData.scroll as Scroll;
 
       console.error("Hit scroll:", scroll);
+
+      this.player.story.AddStory(scroll)      
 
       console.log(scroll.params.text)
     }
@@ -65,7 +65,7 @@ export class InteractionsController {
       new THREE.Vector3(1, 1, 1) // Collider size
     );
 
-    const interactables = this.scene.children.filter((child) =>
+    const interactables = this.player.scene.children.filter((child) =>
       tags.some(tag => child.name.includes(tag))
     );
 

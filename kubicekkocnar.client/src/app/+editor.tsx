@@ -8,7 +8,7 @@ import { DeleteItem, GetItems, PostItem } from '../api/Items';
 import { useForm } from 'react-hook-form';
 import { EnemyType } from '../types/Enemy';
 import { AddEnemy, DeleteEnemy, FetchEnemies } from '../api/Enemies';
-import { DELETE, PATCH } from '../api/API';
+import { PATCH } from '../api/API';
 import styles from './editor.module.css';
 import Texture from '../types/Texture';
 import { DeleteTexture, FetchTextures, GetTextureURL } from '../api/Textures';

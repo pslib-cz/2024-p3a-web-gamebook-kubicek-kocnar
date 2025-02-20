@@ -18,7 +18,6 @@ const emptyItem : Item = {
 }
 
 export class Inventory {
-
   constructor()
   {
     this.initializeServerUpgrades();
@@ -39,15 +38,8 @@ export class Inventory {
 
   public AddItemIntoHotbar(item : Item)
   {
-    this.hotbar.push(item);
-    
+    this.hotbar.push(item);    
     console.log("added item into hotbar " + item.name);
-    console.log(this.hotbar);
-  }
-
-  public Clone() : Inventory
-  {
-    return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
   }
 
   public RemoveItemFromHotbar(item : Item)

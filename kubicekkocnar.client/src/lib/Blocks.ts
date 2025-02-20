@@ -15,7 +15,6 @@ class Blocks {
       console.error(err);
     }
   }
-
 }
 
 export default Blocks;

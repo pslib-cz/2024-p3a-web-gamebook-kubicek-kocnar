@@ -7,6 +7,7 @@ export class JoystickOutputData {
   bkdValue: number = 0;
   rgtValue: number = 0;
   lftValue: number = 0;
+  up: boolean = false;
 
   AnyMovement() : boolean
   {
@@ -59,53 +60,7 @@ export function Joystick() {
 
   const { setJoystickData } = useContext(AppContext);
 
-  // let tempVector = new THREE.Vector3();
-  // let upVector = new THREE.Vector3(0, 1, 0);
   let joyManager;
-
-  // var width = window.innerWidth,
-  //   height = window.innerHeight;
-
-  // var scene = new THREE.Scene();
-  // Create a camera
-  // var camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 10000);
-  // camera.position.z = 50;
-  // camera.position.y = 50;
-
-  // scene.add(camera);
-
-  // Create a light, set its position, and add it to the scene.
-  // var light = new THREE.PointLight(0xffffff);
-  // light.position.set(-100, 200, 100);
-  // scene.add(light);
-
-  // Add axes
-  // var axes = new THREE.AxesHelper(50);
-  // scene.add(axes);
-
-  // Add grid
-  // const size = 500;
-  // const divisions = 30;
-
-  // const gridHelper = new THREE.GridHelper(size, divisions);
-  // scene.add(gridHelper);
-
-  // var geometry = new THREE.BoxGeometry(5, 5, 5);
-  // var cubeMaterial = new THREE.MeshNormalMaterial();
-
-  // var mesh = new THREE.Mesh(geometry, cubeMaterial);
-  // scene.add(mesh);
-
-  //var ground = new Object3D()
-  // let size_floor = 100
-  // var geometry_floor = new THREE.BoxGeometry(size_floor, 1, size_floor)
-  // var material_floor = new THREE.MeshNormalMaterial();
-
-  // var floor = new THREE.Mesh(geometry_floor, material_floor);
-  // floor.position.y = -5;
-  //ground.add(floor)
-  // scene.add(floor)
-  //floor.rotation.x = -Math.PI / 2
 
   // added joystick + movement
   addJoystick();

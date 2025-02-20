@@ -48,8 +48,17 @@ export function UIOverlay() {
                   player?.inventory?.coinage.map((a: Coinage, x: number) => <CoinageDrawer key={x} coinage={a} count={-1} />)
                 }
                 <p>UPGRADES</p>
+                <div style={{display: 'flex'}}>
                 {
                   player?.inventory?.upgrades.map((a, x) => <ItemUpgradeDrawer key={x} upgrade={a} />)
+                }                  
+                </div>
+              </div>
+
+              <div>
+                <h1>Story</h1>
+                {
+                  player?.story.scrolls.map((a, x) => <p key={x}>{a.params.text}</p>)
                 }
               </div>
             </div>

@@ -1,7 +1,7 @@
 import GenericFeature from "../../types/Feature";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-interface Scroll extends GenericFeature {
+export interface Scroll extends GenericFeature {
   params: {
     text: string;
   };
@@ -32,5 +32,3 @@ export default function render(scroll: Scroll) { // Add scene parameter
     });
   });
 }
-
-export type { Scroll };

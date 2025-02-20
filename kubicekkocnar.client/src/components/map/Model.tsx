@@ -18,7 +18,7 @@ const Model: React.FC<ModelProps> = ({ path, position, rotation = new Euler(0, 0
 
   const clonedScene = useMemo(() => gltf.scene.clone(), [gltf.scene]);
 
-  console.log(`Loaded model from ${path}`, gltf);
+  // console.log(`Loaded model from ${path}`, gltf);
 
   return (
   <group position={position} rotation={rotation} name={name}>

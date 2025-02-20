@@ -7,9 +7,6 @@ export class FirstPersonController {
   private rotation: THREE.Quaternion = new THREE.Quaternion(); // Base quaternion
   private pitch: THREE.Quaternion = new THREE.Quaternion(); // For up/down rotation
   private yaw: THREE.Quaternion = new THREE.Quaternion(); // For left/right rotation
-  private move: { up: boolean } = {
-    up: false
-  };
   private touchStart: { x: number; y: number } = { x: 0, y: 0 };
   private viewBobPhase: number = 0; // For view bobbing effect
 
@@ -28,6 +25,9 @@ export class FirstPersonController {
   private canJump: boolean = true;
 
   constructor(camera: THREE.Camera, scene: THREE.Scene, navigate: (levelId: string) => void) {
+
+    if (!scene) throw new Error("Scene is not defined");
+
     this.camera = camera;
     this.scene = scene;
     this.navigate = navigate;
@@ -70,7 +70,6 @@ export class FirstPersonController {
 
   public handlePointerLockChange(isLocked: boolean) {
     if (!isLocked) {
-      this.move = { up: false };
       this.joystickData = new JoystickOutputData();
     }
   }
@@ -103,7 +102,7 @@ export class FirstPersonController {
   public handleJump() {
     console.log("jumping", this.isGrounded, this.lastGrounded);
     if (this.canJump && (this.isGrounded || this.lastGrounded)) {
-      this.move.up = true;
+      this.joystickData.up = true;
       this.isGrounded = false;
       this.canJump = false;
       setTimeout(() => {
@@ -113,7 +112,7 @@ export class FirstPersonController {
   }
 
   public handleKeyDown(event: KeyboardEvent) {
-    
+
     switch (event.code) {
       case "KeyW":
         this.joystickData.fwdValue = 1;
@@ -148,14 +147,14 @@ export class FirstPersonController {
         this.joystickData.rgtValue = 0;
         break;
       case "Space":
-        this.move.up = false;
+        this.joystickData.up = false;
         break;
     }
   }
 
   public update(delta: number) {
-    
-    this.saveCounter+=delta;
+
+    this.saveCounter += delta;
     if (this.saveCounter > 2) {
       this.savePlayerPosition();
       this.saveCounter = 0;
@@ -176,13 +175,13 @@ export class FirstPersonController {
     if (this.joystickData.lftValue) this.velocity.x -= 1; // Strafe left
     if (this.joystickData.rgtValue) this.velocity.x += 1; // Strafe right
 
-    console.log(this.joystickData);
+    // console.log(this.joystickData);
 
-    this.velocity.normalize().multiplyScalar(speed * delta);    
+    this.velocity.normalize().multiplyScalar(speed * delta);
 
-    if (this.move.up) {
+    if (this.joystickData.up) {
       this.acceleration -= .5; // Jump
-      this.move.up = false;
+      this.joystickData.up = false;
     }
 
     // Calculate the forward and right directions based on the camera's rotation
@@ -197,17 +196,16 @@ export class FirstPersonController {
 
     // Move the camera
     const movement = new THREE.Vector3()
-        .add(forward.multiplyScalar(this.velocity.z)) // Forward/backward
-        .add(right.multiplyScalar(this.velocity.x)) // Left/right
-        .add(up.multiplyScalar(this.velocity.y));
-        
-   
+      .add(forward.multiplyScalar(this.velocity.z)) // Forward/backward
+      .add(right.multiplyScalar(this.velocity.x)) // Left/right
+      .add(up.multiplyScalar(this.velocity.y));
+
     // Vertical movement (gravity)
     if (!this.isGrounded) {
-      this.acceleration += Math.min(.3,delta);
+      this.acceleration += Math.min(.3, delta);
       this.velocity.y += -9.8 * this.acceleration; // Apply gravity
     }
-    const verticalMovement = new THREE.Vector3(0, this.velocity.y * Math.min(.3,delta), 0);
+    const verticalMovement = new THREE.Vector3(0, this.velocity.y * Math.min(.3, delta), 0);
 
     // Test horizontal movement for collisions
     const proposedHorizontalPosition = this.playerPosition.clone().add(movement);
@@ -218,7 +216,7 @@ export class FirstPersonController {
     this.camera.position.copy(this.playerPosition);
 
     // View bobbing effect
-    if (this.joystickData.AnyMovement() && !this.move.up) {
+    if (this.joystickData.AnyMovement() && !this.joystickData.up) {
       this.viewBobPhase += delta * 10; // Adjust bobbing speed
       this.camera.position.y += Math.sin(this.viewBobPhase) * 0.15; // Bobbing amplitude, the 2 is the player's height and its only temporary, sice you will be able to go up later
     } else {
@@ -238,7 +236,7 @@ export class FirstPersonController {
 
     // portals:
     const portals = this.scene.children
-    .filter((child) => child.name.includes('feature Portal'))
+      .filter((child) => child.name.includes('feature Portal'))
 
     // check distance and if portal is close teleport player to the target level
     const playerBox = new THREE.Box3().setFromCenterAndSize(
@@ -258,7 +256,6 @@ export class FirstPersonController {
         this.playerPosition = new THREE.Vector3(0, 3, 0);
         this.navigate(portal.userData.destination || '/');
         window.location.reload();
-
       }
     }
   }
@@ -274,7 +271,7 @@ export class FirstPersonController {
     const obstacles = this.scene.children
       .filter((child) => child.name.includes('block'))
       .map((obstacle) => new THREE.Box3().setFromObject(obstacle));
-  
+
 
     // Check for intersections with collidable objects
     for (const object of obstacles) {
@@ -287,13 +284,13 @@ export class FirstPersonController {
 
   public savePlayerPosition() {
     const levelId = this.scene.userData.level.levelId;
-    console.log("saving player position "+levelId);
-    localStorage.setItem("playerPosition"+levelId, JSON.stringify(this.playerPosition.clone().sub(this.scene.position)));
+    console.log("saving player position " + levelId);
+    localStorage.setItem("playerPosition" + levelId, JSON.stringify(this.playerPosition.clone().sub(this.scene.position)));
   }
 
   public loadPlayerPosition() {
     const levelId = this.scene.userData.level.levelId;
-    let playerPosition = localStorage.getItem("playerPosition"+levelId);
+    let playerPosition = localStorage.getItem("playerPosition" + levelId);
     if (playerPosition) {
       playerPosition = JSON.parse(playerPosition);
       // @ts-expect-error error fr 
@@ -301,7 +298,7 @@ export class FirstPersonController {
     }
   }
 
-  public joystickData : JoystickOutputData = new JoystickOutputData();
+  public joystickData: JoystickOutputData = new JoystickOutputData();
 
   public SetJoystickData(joystickData: JoystickOutputData | null) {
     this.joystickData = joystickData ?? new JoystickOutputData();

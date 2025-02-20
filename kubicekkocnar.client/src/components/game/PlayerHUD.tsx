@@ -11,9 +11,9 @@ const GameHUD = () => {
   const { playerHealth } = useContext(GameContext);
   const { player } = useContext(AppContext);
 
-  useEffect(() => {
-    console.log("Player health changed to", playerHealth);
-  }, [playerHealth]);
+  // useEffect(() => {
+  //   console.log("Player health changed to", playerHealth);
+  // }, [playerHealth]);
 
   // Calculate health bar color based on health value
   const getHealthColor = useMemo(() => {
