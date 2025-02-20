@@ -1,5 +1,6 @@
 ﻿using KubicekKocnar.Server.Data;
 using KubicekKocnar.Server.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -44,28 +45,8 @@ namespace KubicekKocnar.Server.Controllers
             return File(texture.Content, texture.Type, true);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTexture(uint id, Texture texture) {
-            if (id != texture.TextureId) {
-                return BadRequest();
-            }
-
-            _context.Entry(texture).State = EntityState.Modified;
-
-            try {
-                await _context.SaveChangesAsync();
-            } catch (DbUpdateConcurrencyException) {
-                if (!TextureExists(id)) {
-                    return NotFound();
-                } else {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         [HttpPatch("{id}")]
+        [Authorize]
         public async Task<IActionResult> PatchTexture(uint id, [FromBody] JsonPatchDocument<Texture> patchDoc) {
             if (patchDoc == null) {
                 return BadRequest();
@@ -83,6 +64,7 @@ namespace KubicekKocnar.Server.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Texture>> PostTexture(string name, uint state, IFormFile file) {
             // check if file is an image and set it into texture.content
             if (file == null) {
@@ -130,6 +112,7 @@ namespace KubicekKocnar.Server.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteTexture(uint id)
         {
             var texture = await _context.Textures.FindAsync(id);

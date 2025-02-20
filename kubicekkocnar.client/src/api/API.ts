@@ -1,3 +1,5 @@
+import SaveHandler from "../lib/SaveHandler";
+
 type objTypes = "Items" | "Blocks" | "Enemies" | "Coinages" | "Games" | "Levels" | "Textures" | "ItemUpgrades"
 
 const URL: (obj: string) => string = (obj) => `${import.meta.env.VITE_API_URL}/${obj}`;
@@ -21,7 +23,10 @@ export async function GET(obj: objTypes): Promise<unknown> {
 export async function DELETE(obj: objTypes, itemId: number): Promise<void> {
   try {
     const blocksResponse = await fetch(`${URL(obj)}/${itemId}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${(await SaveHandler.getAuth())?.accessToken}`
+      }
     });
     if (!blocksResponse.ok) {
       throw new Error(`Response status: ${blocksResponse.status}`);
@@ -37,7 +42,8 @@ export async function POST(obj: objTypes, item: unknown): Promise<void> {
     const blocksResponse = await fetch(URL(obj), {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+         'Authorization': `Bearer ${(await SaveHandler.getAuth())?.accessToken}`
       },
       body: JSON.stringify(item)
     });
@@ -57,7 +63,8 @@ export async function PATCH(obj: objTypes, itemId: number, key: string, value: u
     const blocksResponse = await fetch(`${URL(obj)}/${itemId}`, {
       method: 'PATCH',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${(await SaveHandler.getAuth())?.accessToken}`
       },
       body: JSON.stringify([{
         "op": "replace",

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using KubicekKocnar.Server.Data;
 using KubicekKocnar.Server.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KubicekKocnar.Server.Controllers
 {
@@ -45,6 +46,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // PATCH: api/Blocks/5 using JsonPatchDocument
         [HttpPatch("{id}")]
+        [Authorize]
         public async Task<IActionResult> PatchBlock(uint id, [FromBody] JsonPatchDocument<Item> patch) {
             var block = await _context.Items.FindAsync(id);
             if (block == null) {
@@ -61,6 +63,7 @@ namespace KubicekKocnar.Server.Controllers
         // POST: api/Items
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Item>> PostItem(Item item)
         {
             _context.Items.Add(item);
@@ -71,6 +74,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // DELETE: api/Items/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteItem(uint id)
         {
             var item = await _context.Items.FindAsync(id);

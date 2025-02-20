@@ -1,6 +1,6 @@
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 import { Canvas } from "@react-three/fiber";
-import React, { useState } from "react";
+import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AppContextProvider } from "../../../../../../components/AppContextProvider";
 import ConfigPanel from "../../../../../../components/editor/ConfigPanel";
@@ -12,13 +12,23 @@ import Level from "../../../../../../lib/Level";
 import MapRenderer from "../../../../../../lib/MapRenderer";
 import Map from '../../../../../../components/map/Map';
 import * as THREE from 'three';
+import AuthWidget from "../../../../../../components/auth/AuthWidget";
+import SaveHandler, { Save } from "../../../../../../lib/SaveHandler";
 
 
 function LevelEditor()
 {
+  const auth: MutableRefObject<Save['auth'] | null> = useRef(null);
   const { gameid, levelid } = useParams();
   const [scene, setScene] = useState<THREE.Scene | null>(null);
   const [level, setLevel] = useState<Level | null>(null);
+
+  async function Reload() {
+    auth.current = await SaveHandler.getAuth();
+    console.log(auth.current);
+  }
+
+  useEffect(() => { Reload(); }, []);
 
   React.useEffect(() => {
     if (!scene) {
@@ -40,6 +50,7 @@ function LevelEditor()
 
   return (
     <TooltipProvider>
+      {auth.current && <AuthWidget auth={auth.current} className="authwidget--nob"/>}
       <AppContextProvider>
         {!level && <div className="loader"></div>}
         <ToolBar />

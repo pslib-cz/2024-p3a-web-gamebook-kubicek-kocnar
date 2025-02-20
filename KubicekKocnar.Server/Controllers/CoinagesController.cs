@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using KubicekKocnar.Server.Data;
 using KubicekKocnar.Server.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KubicekKocnar.Server.Controllers
 {
@@ -45,6 +46,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // PATCH: api/Blocks/5 using JsonPatchDocument
         [HttpPatch("{id}")]
+        [Authorize]
         public async Task<IActionResult> PatchBlock(uint id, [FromBody] JsonPatchDocument<Block> patch) {
             var block = await _context.Blocks.FindAsync(id);
             if (block == null) {
@@ -61,6 +63,7 @@ namespace KubicekKocnar.Server.Controllers
         // POST: api/Coinages
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Coinage>> PostCoinage(Coinage coinage)
         {
             _context.Coinages.Add(coinage);
@@ -71,6 +74,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // DELETE: api/Coinages/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteCoinage(uint id)
         {
             var coinage = await _context.Coinages.FindAsync(id);

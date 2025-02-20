@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using KubicekKocnar.Server.Data;
 using KubicekKocnar.Server.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KubicekKocnar.Server.Controllers
 {
@@ -40,6 +41,7 @@ namespace KubicekKocnar.Server.Controllers
         // PATCH: api/Games/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPatch("{id}")]
+        [Authorize]
         public async Task<IActionResult> PatchGame(uint id, [FromBody] JsonPatchDocument<Game> patchDoc) {
             if (patchDoc == null) return BadRequest();
 
@@ -59,6 +61,7 @@ namespace KubicekKocnar.Server.Controllers
         // POST: api/Games
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Game>> PostGame(Game game)
         {
             _context.Games.Add(game);
@@ -69,6 +72,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // DELETE: api/Games/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteGame(uint id)
         {
             var game = await _context.Games.FindAsync(id);
@@ -109,6 +113,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // POST: api/Games/5/Levels
         [HttpPost("{id}/Levels")]
+        [Authorize]
         public async Task<ActionResult<Level>> PostLevel(uint id, Level level) {
             var game = await _context.Games.FindAsync(id);
 
@@ -134,6 +139,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // DELETE: api/Games/5/Levels/5
         [HttpDelete("{id}/Levels/{levelId}")]
+        [Authorize]
         public async Task<IActionResult> DeleteLevel(uint id, uint levelId)
         {
             var level = await _context.Levels.Where(l => l.GameId == id && l.LevelId == levelId).FirstOrDefaultAsync();
@@ -148,6 +154,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // Patch a level
         [HttpPatch("{id}/Levels/{levelId}")]
+        [Authorize]
         public async Task<IActionResult> PatchLevel(uint id, uint levelId, [FromBody] JsonPatchDocument<Level> patchDoc)
         {
             if (patchDoc == null) return BadRequest();
@@ -188,6 +195,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // POST: api/Games/5/Levels/5/Blocks
         [HttpPost("{id}/Levels/{levelId}/Blocks")]
+        [Authorize]
         public async Task<ActionResult<PlacedBlock>> PostBlock(uint id, uint levelId, PlacedBlock block)
         {
             var level = await _context.Levels.Where(l => l.GameId == id && l.LevelId == levelId).FirstOrDefaultAsync();
@@ -202,6 +210,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // DELETE: api/Games/5/Levels/5/Blocks/5
         [HttpDelete("{id}/Levels/{levelId}/Blocks/{blockId}")]
+        [Authorize]
         public async Task<IActionResult> DeleteBlock(uint id, uint levelId, uint blockId)
         {
             var block = await _context.PlacedBlocks.Where(b => b.LevelId == levelId && b.PlacedBlockId == blockId).FirstOrDefaultAsync();
@@ -216,6 +225,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // Patch a block
         [HttpPatch("{id}/Levels/{levelId}/Blocks/{blockId}")]
+        [Authorize]
         public async Task<IActionResult> PatchBlock(uint id, uint levelId, uint blockId, [FromBody] JsonPatchDocument<PlacedBlock> patchDoc)
         {
             if (patchDoc == null) return BadRequest();
@@ -257,6 +267,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // POST: api/Games/5/Levels/5/Features
         [HttpPost("{id}/Levels/{levelId}/Features")]
+        [Authorize]
         public async Task<ActionResult<Feature>> PostFeature(uint id, uint levelId, Feature feature)
         {
             var level = await _context.Levels.Where(l => l.GameId == id && l.LevelId == levelId).FirstOrDefaultAsync();
@@ -271,6 +282,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // DELETE: api/Games/5/Levels/5/Features/5
         [HttpDelete("{id}/Levels/{levelId}/Features/{featureId}")]
+        [Authorize]
         public async Task<IActionResult> DeleteFeature(uint id, uint levelId, uint featureId)
         {
             var level = await _context.Levels.Where(l => l.GameId == id && l.LevelId == levelId).Include(l => l.Features).FirstOrDefaultAsync();
@@ -289,6 +301,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // Patch a feature
         [HttpPatch("{id}/Levels/{levelId}/Features/{featureId}")]
+        [Authorize]
         public async Task<IActionResult> PatchFeature(uint id, uint levelId, uint featureId, [FromBody] JsonPatchDocument<Feature> patchDoc)
         {
             if (patchDoc == null) return BadRequest();

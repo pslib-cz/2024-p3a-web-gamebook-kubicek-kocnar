@@ -48,31 +48,9 @@ namespace KubicekKocnar.Server.Controllers
             return block;
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBlock(uint id, Block block)
-        {
-            if (id != block.BlockId)
-                return BadRequest();
-
-            _context.Entry(block).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BlockExists(id))
-                    return NotFound();
-                else
-                    throw;
-            }
-
-            return NoContent();
-        }
-
         // PATCH: api/Blocks/5 using JsonPatchDocument
         [HttpPatch("{id}")]
+        [Authorize]
         public async Task<IActionResult> PatchBlock(uint id, [FromBody] JsonPatchDocument<Block> patch) {
             var block = await _context.Blocks.FindAsync(id);
             if (block == null) {
@@ -88,6 +66,7 @@ namespace KubicekKocnar.Server.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Block>> PostBlock(Block block)
         {
             _context.Blocks.Add(block);
