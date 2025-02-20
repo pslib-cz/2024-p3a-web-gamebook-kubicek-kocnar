@@ -62,61 +62,7 @@ export function Joystick() {
 
   let joyManager;
 
-  // added joystick + movement
   addJoystick();
-
-  // function updatePlayer() {
-  //   // move the player
-  //   const angle = controls.getAzimuthalAngle()
-
-  //   if (fwdValue > 0) {
-  //     tempVector
-  //       .set(0, 0, -fwdValue)
-  //       .applyAxisAngle(upVector, angle)
-  //     mesh.position.addScaledVector(
-  //       tempVector,
-  //       1
-  //     )
-  //   }
-
-  //   if (bkdValue > 0) {
-  //     tempVector
-  //       .set(0, 0, bkdValue)
-  //       .applyAxisAngle(upVector, angle)
-  //     mesh.position.addScaledVector(
-  //       tempVector,
-  //       1
-  //     )
-  //   }
-
-  //   if (lftValue > 0) {
-  //     tempVector
-  //       .set(-lftValue, 0, 0)
-  //       .applyAxisAngle(upVector, angle)
-  //     mesh.position.addScaledVector(
-  //       tempVector,
-  //       1
-  //     )
-  //   }
-
-  //   if (rgtValue > 0) {
-  //     tempVector
-  //       .set(rgtValue, 0, 0)
-  //       .applyAxisAngle(upVector, angle)
-  //     mesh.position.addScaledVector(
-  //       tempVector,
-  //       1
-  //     )
-  //   }
-
-  //   mesh.updateMatrixWorld()
-
-  //   //controls.target.set( mesh.position.x, mesh.position.y, mesh.position.z );
-  //   // reposition camera
-  //   camera.position.sub(controls.target)
-  //   controls.target.copy(mesh.position)
-  //   camera.position.add(mesh.position)
-  // };
 
   function addJoystick() {
 

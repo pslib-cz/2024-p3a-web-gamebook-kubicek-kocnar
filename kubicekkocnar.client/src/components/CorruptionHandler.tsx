@@ -24,7 +24,6 @@ export function CorruptionHandler({ allBlocks, corruptedBlocks }: { allBlocks: P
 
           if (Math.random() > 0.2) return;
 
-          // if (!block.state) block.state = [];
           block.state += "corrupt";
 
           if (block.mesh) {

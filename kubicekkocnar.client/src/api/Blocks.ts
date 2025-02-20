@@ -25,21 +25,5 @@ export async function FetchBlocks(): Promise<Block[]> {
 }
 
 export async function addBlock(block: Block) {
-
   return await POST("Blocks", block);
-
-  // try {
-  //   const response = await fetch(URL, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(block)
-  //   });
-  //   if (!response.ok) {
-  //     throw new Error(`Response status: ${response.status}`);
-  //   }
-  // } catch (err: unknown) {
-  //   console.error(err);
-  // }
 }

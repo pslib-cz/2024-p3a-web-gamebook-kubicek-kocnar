@@ -20,23 +20,7 @@ export async function FetchTextures(): Promise<Texture[]> {
 }
 
 export async function addTexture(texture: Texture) {
-
   return await POST("Textures", texture);
-
-  // try {
-  //   const response = await fetch(URL, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify(texture)
-  //   });
-  //   if (!response.ok) {
-  //     throw new Error(`Response status: ${response.status}`);
-  //   }
-  // } catch (err: unknown) {
-  //   console.error(err);
-  // }
 }
 
 export async function DeleteTexture(textureId: number): Promise<void> {

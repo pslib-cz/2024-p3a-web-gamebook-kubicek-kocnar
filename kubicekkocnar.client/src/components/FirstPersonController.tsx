@@ -16,9 +16,7 @@ type FirstPersonControllerComponentProps = {
 const FirstPersonControllerComponent = ({ camera, scene, navigate }: FirstPersonControllerComponentProps) => {
   const { setPlayer, player, joytickData } = useContext(AppContext);
 
-  // setGameScene(scene);
-
-  // this is necessary for interactions
+  /// this is necessary for interactions
   const playerRef = useRef<Player | null>(null);
 
   const { gl } = useThree();

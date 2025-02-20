@@ -20,7 +20,6 @@ export function ItemUI() {
   const [img, setImg] = useState("");
 
   handlePlayerMouseClick = () => {
-    // console.log(`Using item ${player?.inventory.selectedItem?.img}`);
     setUseItem(true);
   };
 
@@ -52,7 +51,6 @@ export function ItemUI() {
         setImg(s.img);
       }, 500);
 
-      // console.log("Item used");
       setUseItem(false); // Reset the state
     }
   }, [player?.inventory.selectedItem, useItem]);

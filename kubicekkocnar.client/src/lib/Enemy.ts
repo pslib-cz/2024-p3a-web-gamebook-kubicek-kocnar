@@ -29,7 +29,6 @@ export class Enemy {
 
 export class EnemyRenderer {
   public enemies: Enemy[] = [];
-  //public level: Level;
   public scene: THREE.Scene;
 
   public pathFinder: PathFinder;
@@ -64,7 +63,14 @@ export class EnemyRenderer {
     enemy.mesh.userData.enemy = enemy;
     this.scene.add(plane);
 
-    plane.position.set(Math.random() * 10, 2, 0);
+    // find a random block with 'corrupted name'
+    const blocks = this.level.blocks.filter(block => block.state.includes("corrupt"));
+
+    const randomBlock = blocks[Math.floor(Math.random() * blocks.length)];
+
+    const position = randomBlock.mesh?.position.clone().add(new THREE.Vector3(0, 2, 0));
+
+    plane.position.set(position!.x, position!.y, position!.z);
   }
 
   constructor(scene: THREE.Scene, level: Level) {
