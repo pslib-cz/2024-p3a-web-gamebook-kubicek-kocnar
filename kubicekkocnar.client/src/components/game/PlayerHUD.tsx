@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import '../../styles/game/PlayerHUD.css';
 import { AppContext } from '../AppContextProvider';
 import { Coinage } from '../../types/Coinage';
@@ -10,11 +10,7 @@ const GameHUD = () => {
   // Example weapons data
   const { playerHealth } = useContext(GameContext);
   const { player } = useContext(AppContext);
-
-  // useEffect(() => {
-  //   console.log("Player health changed to", playerHealth);
-  // }, [playerHealth]);
-
+  
   // Calculate health bar color based on health value
   const getHealthColor = useMemo(() => {
     if (playerHealth > 70) return '#44ff44';

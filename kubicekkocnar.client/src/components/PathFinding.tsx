@@ -17,7 +17,7 @@ export function VisualizePathfinableBlocks({blocks} : {blocks : PlacedBlock[]})
 
   for (const block of pathFinder.blockDictionary.values())
   {
-    block.mesh.material = new THREE.MeshStandardMaterial({color: 0x00ff00});
+    block.mesh!.material = new THREE.MeshStandardMaterial({color: 0x00ff00});
   }
 
   return null;
@@ -29,7 +29,7 @@ export function VisualizeBlocksNeighbours({blocks, block} : {blocks : PlacedBloc
 
   for (const neighbour of pathFinder.GetNeighbors(block))
   {
-    neighbour.mesh.material = new THREE.MeshStandardMaterial({color: 0x00ff00});
+    neighbour.mesh!.material = new THREE.MeshStandardMaterial({color: 0x00ff00});
   }
 
   return null;

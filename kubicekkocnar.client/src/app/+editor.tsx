@@ -174,7 +174,7 @@ function ItemDrawer(
   }
 
   return (
-    <div className={styles.drawer}>
+    <div className={`${styles.drawer} ${topLevel ? styles.topLevel : ""}`}>
       {fields}
       {deleteFunction && <button onClick={() =>
         deleteFunction(item.itemId || item.itemUpgradeId || item.coinageId || item.enemyId || item.textureId)

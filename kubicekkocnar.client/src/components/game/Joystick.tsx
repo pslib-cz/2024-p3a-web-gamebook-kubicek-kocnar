@@ -143,11 +143,9 @@ export function Joystick() {
       setJoystickData(output.Clone());
     })
 
-    joyManager.on('end', function (evt) {
+    joyManager.on('end', function () {
       output.Reset();
-
-      // fix this later
-      //setJoystickData(output.Clone());
+      setJoystickData(output.Clone());
     })
 
   }
