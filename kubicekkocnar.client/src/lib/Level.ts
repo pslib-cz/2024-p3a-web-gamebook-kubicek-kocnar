@@ -7,6 +7,7 @@ import FeatureRenderer from "./features/FeatureRenderer";
 import { FetchLevel } from "../api/Levels";
 import { EnemyRenderer } from "./Enemy";
 import { EnemyType } from "../types/Enemy";
+import SaveHandler from "./SaveHandler";
 
 interface LevelOptions {
   name: string
@@ -80,7 +81,8 @@ class Level implements LevelType {
       const featureResponse = await fetch(APIROUTE(this.gameId, this.levelId) + `/Features/${featureId}`, {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json-patch+json'
+          'Content-Type': 'application/json-patch+json',
+          'Authorization': `Bearer ${(await SaveHandler.getAuth())?.accessToken}`
         },
         body: JSON.stringify([{
           op: op,
@@ -105,7 +107,8 @@ class Level implements LevelType {
       const levelResponse = await fetch(APIROUTE(this.gameId, this.levelId), {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json-patch+json'
+          'Content-Type': 'application/json-patch+json',
+          'Authorization': `Bearer ${(await SaveHandler.getAuth())?.accessToken}`
         },
         body: JSON.stringify({
           op: 'replace',
@@ -132,7 +135,8 @@ class Level implements LevelType {
       const blockResponse = await fetch(APIROUTE(this.gameId, this.levelId) + '/Blocks', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${(await SaveHandler.getAuth())?.accessToken}`
         },
         body: JSON.stringify({
           blockId: block.blockId,
@@ -158,7 +162,10 @@ class Level implements LevelType {
   async removeBlock(block: PlacedBlock) {
     try {
       const blockResponse = await fetch(APIROUTE(this.gameId, this.levelId) + `/Blocks/${block.placedBlockId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${(await SaveHandler.getAuth())?.accessToken}`
+        }
       })
       if (!blockResponse.ok) {
         throw new Error(`Response status: ${blockResponse.status}`);
@@ -179,7 +186,8 @@ class Level implements LevelType {
       const featureResponse = await fetch(APIROUTE(this.gameId, this.levelId) + '/Features', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${(await SaveHandler.getAuth())?.accessToken}`
         },
         body: JSON.stringify({
           featureId: feature.featureId,
@@ -208,7 +216,10 @@ class Level implements LevelType {
   async removeFeature(feature: GenericFeature) {
     try {
       const featureResponse = await fetch(APIROUTE(this.gameId, this.levelId) + `/Features/${feature.featureId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${(await SaveHandler.getAuth())?.accessToken}`
+        }
       })
       if (!featureResponse.ok) {
         throw new Error(`Response status: ${featureResponse.status}`);
@@ -229,7 +240,8 @@ class Level implements LevelType {
       const levelResponse = await fetch(APIROUTE(gameId), {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${(await SaveHandler.getAuth())?.accessToken}`
         },
         body: JSON.stringify({
           name: options.name

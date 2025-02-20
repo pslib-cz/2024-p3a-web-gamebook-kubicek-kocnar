@@ -4,6 +4,7 @@ export interface Save {
         accessToken: string;
         refreshToken: string;
         expiresIn: number;
+        expiresAt: number;
     };
 }
 
@@ -18,7 +19,7 @@ export default class SaveHandler {
 
     static async refreshAuth(auth: Save['auth']): Promise<void> {
         if (auth) {
-            if (auth.expiresIn <= Date.now()) {
+            if (auth.expiresAt <= Date.now()) {
                 try {
                     const response = await fetch(`${import.meta.env.VITE_API_URL}/account/refresh`, {
                         method: 'POST',
@@ -30,7 +31,7 @@ export default class SaveHandler {
         
                     if (response.ok) {
                         const data = await response.json();
-                        localStorage.setItem('auth', JSON.stringify({...data, email: auth.email}));
+                        localStorage.setItem('auth', JSON.stringify({...data, email: auth.email, expiresAt: Date.now() + data.expiresIn * 1000}));
                         console.log('Refresh successful');
                     } else {
                         console.error('Refresh failed');

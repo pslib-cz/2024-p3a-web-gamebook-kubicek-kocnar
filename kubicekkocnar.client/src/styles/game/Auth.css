@@ -5,14 +5,31 @@
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;
-    background-color: red;
+    background-color: rgb(209, 17, 17);
     color: white;
     cursor: pointer;
     transition: all ease .25s;
-    border: 3px solid red;
+    border: 3px solid rgb(209, 17, 17);
     box-sizing: border-box;
 }
 
 .authbutton:hover {
     background-color: transparent;
+}
+
+.authwidget {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    position: fixed;
+    z-index: 5000;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, .5);
+    padding: .5em 2em;
+    border-top-left-radius: 2em;
+}
+
+.authwidget--nob {
+    border-top-left-radius: 0 !important;
 }

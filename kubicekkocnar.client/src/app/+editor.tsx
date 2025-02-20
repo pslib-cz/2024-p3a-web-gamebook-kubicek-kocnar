@@ -13,6 +13,7 @@ import styles from './editor.module.css';
 import Texture from '../types/Texture';
 import { DeleteTexture, FetchTextures, GetTextureURL } from '../api/Textures';
 import SaveHandler, { Save } from '../lib/SaveHandler';
+import AuthWidget from '../components/auth/AuthWidget';
 
 const Editor = () => {
   const auth: MutableRefObject<Save['auth'] | null> = useRef(null);
@@ -43,6 +44,7 @@ const Editor = () => {
 
   return (
     <div>
+      {auth.current && <AuthWidget auth={auth.current}/>}
       <h1>EdItOr</h1>
       <div>
         <h2>Textures</h2>

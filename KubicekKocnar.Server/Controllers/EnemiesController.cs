@@ -1,5 +1,6 @@
 ﻿using KubicekKocnar.Server.Data;
 using KubicekKocnar.Server.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // PATCH: api/Blocks/5 using JsonPatchDocument
         [HttpPatch("{id}")]
+        [Authorize]
         public async Task<IActionResult> PatchEnemy(uint id, [FromBody] JsonPatchDocument<Enemy> patch)
         {
             var block = await _context.Enemies.FindAsync(id);
@@ -82,6 +84,7 @@ namespace KubicekKocnar.Server.Controllers
         // POST: api/Enemies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Enemy>> PostEnemy(EnemyDto enemyDto)
         {
             if (enemyDto.Health <= 0) return BadRequest("Health must be greater than 0");
@@ -117,6 +120,7 @@ namespace KubicekKocnar.Server.Controllers
 
         // DELETE: api/Enemies/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteEnemy(uint id)
         {
             var enemy = await _context.Enemies.FindAsync(id);

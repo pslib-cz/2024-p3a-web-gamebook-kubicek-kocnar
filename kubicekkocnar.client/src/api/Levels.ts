@@ -36,7 +36,7 @@ export async function PostLevel(level: Level, gameid: number): Promise<Level | n
     const response = await fetch(URL(gameid), {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(level)
     });
