@@ -1,14 +1,14 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { Coinage } from '../types/Coinage';
 import { ItemUpgrade } from '../types/ItemUpgrade';
-import { DeleteCoinage, GetCoinages, PostCoinage } from '../api/Coinages';
-import { DeleteUpgrade, GetUpgrades, PostUpgrade } from '../api/Upgrades';
+import { GetCoinages } from '../api/Coinages';
+import { GetUpgrades } from '../api/Upgrades';
 import { Item } from '../types/Item';
-import { DeleteItem, GetItems, PostItem } from '../api/Items';
+import { GetItems } from '../api/Items';
 import { useForm } from 'react-hook-form';
 import { EnemyType } from '../types/Enemy';
-import { AddEnemy, DeleteEnemy, FetchEnemies } from '../api/Enemies';
-import { PATCH } from '../api/API';
+import { FetchEnemies } from '../api/Enemies';
+import { DELETE, objTypes, PATCH, POST } from '../api/API';
 import styles from './editor.module.css';
 import Texture from '../types/Texture';
 import { DeleteTexture, FetchTextures, GetTextureURL } from '../api/Textures';
@@ -44,7 +44,7 @@ const Editor = () => {
 
   return (
     <div>
-      {auth.current && <AuthWidget auth={auth.current}/>}
+      {auth.current && <AuthWidget auth={auth.current} />}
       <h1>EdItOr</h1>
       <div>
         <h2>Textures</h2>
@@ -56,55 +56,41 @@ const Editor = () => {
       </div>
       <div>
         <h2>Items</h2>
-        <AddItemDrawer
-          item={defaultItem}
-          postFunction={async (item) => { await PostItem(item); Reload(); }}
-        />
-        <ItemDrawers
-          items={items}
-          deleteFunction={async (id) => { await DeleteItem(id); Reload() }}
-          patchFunction={async (id, key, value) => { await PATCH("Items", id, key, value); Reload(); }}
-        />
+        <CompleteDrawer defaultItem={defaultItem} items={items || []} Reload={Reload} objType="Items" />
       </div>
       <div>
         <h2>Upgrades</h2>
-        <AddItemDrawer
-          item={defaultUpgrade}
-          postFunction={async (item) => { await PostUpgrade(item); Reload(); }}
-        />
-        <ItemDrawers
-          items={upgrades}
-          deleteFunction={async (id) => { await DeleteUpgrade(id); Reload() }}
-          patchFunction={async (id, key, value) => { await PATCH("ItemUpgrades", id, key, value); Reload(); }}
-        />
+        <CompleteDrawer defaultItem={defaultUpgrade} items={upgrades || []} Reload={Reload} objType="ItemUpgrades" />
       </div>
       <div>
         <h2>Coinages</h2>
-        <AddItemDrawer
-          item={defaultCoinage}
-          postFunction={async (item) => { await PostCoinage(item); Reload(); }}
-        />
-        <ItemDrawers
-          items={coinages}
-          deleteFunction={async (id) => { await DeleteCoinage(id); Reload() }}
-          patchFunction={async (id, key, value) => { await PATCH("Coinages", id, key, value); Reload(); }}
-        />
+        <CompleteDrawer defaultItem={defaultCoinage} items={coinages || []} Reload={Reload} objType="Coinages" />
       </div>
       <div>
         <h2>Enemies</h2>
-        <AddItemDrawer
-          item={defaultEnemy}
-          postFunction={async (item) => { await AddEnemy(item); Reload(); }}
-        />
-        <ItemDrawers
-          items={enemies}
-          deleteFunction={async (id) => { await DeleteEnemy(id); Reload() }}
-          patchFunction={async (id, key, value) => { await PATCH("Enemies", id, key, value); Reload(); }}
-        />
+        <CompleteDrawer defaultItem={defaultEnemy} items={enemies || []} Reload={Reload} objType="Enemies" />
       </div>
     </div>
   );
 };
+
+function CompleteDrawer(
+  {defaultItem, items, Reload, objType} : 
+  {defaultItem: unknown, items: unknown[], Reload: () => void, objType: objTypes}) {
+  return (
+    <>
+      <AddItemDrawer
+        item={defaultItem}
+        postFunction={async (item) => { await POST(item, objType); Reload(); }}
+      />
+      <ItemDrawers
+        items={items}
+        deleteFunction={async (id) => { await DELETE(objType, id); Reload() }}
+        patchFunction={async (id, key, value) => { await PATCH(objType, id, key, value); Reload(); }}
+      />
+    </>
+  )
+}
 
 function ItemDrawers({ items, deleteFunction, patchFunction, }:
   { items?: unknown[], deleteFunction: (arg0: number) => void, patchFunction: (id: number, key: string, value: string) => void }) {

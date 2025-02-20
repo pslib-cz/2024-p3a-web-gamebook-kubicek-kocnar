@@ -15,7 +15,7 @@ export function VisualizePathfinableBlocks({blocks} : {blocks : PlacedBlock[]})
 {
   const pathFinder = new PathFinder(blocks);
 
-  for (const block of pathFinder.blockDictionary.values())
+  for (const block of pathFinder.wakableBlocksDictionary.values())
   {
     block.mesh!.material = new THREE.MeshStandardMaterial({color: 0x00ff00});
   }

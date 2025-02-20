@@ -93,7 +93,6 @@ export function Joystick() {
       output.Reset();
       setJoystickData(output.Clone());
     })
-
   }
 
   return (

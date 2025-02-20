@@ -47,12 +47,12 @@ export class PathFinder
   ]
 
   // string conversion is necessary
-  public blockDictionary: Map<string, PlacedBlock>; // walkable blocks
+  public wakableBlocksDictionary: Map<string, PlacedBlock>;
   public allBlockDictionary: Map<string, PlacedBlock>; // all blocks
 
   constructor (blocks : PlacedBlock[])
   {
-    this.blockDictionary = new Map<string, PlacedBlock>();
+    this.wakableBlocksDictionary = new Map<string, PlacedBlock>();
     this.allBlockDictionary = new Map<string, PlacedBlock>();
 
     for (const block of blocks)
@@ -63,7 +63,7 @@ export class PathFinder
     for (const block of blocks)
     {
       if (!this.IsBlockWalkable(block)) continue;
-      this.blockDictionary.set(block.position.toArray().toString(), block);
+      this.wakableBlocksDictionary.set(block.position.toArray().toString(), block);
     }
   }
 
@@ -78,7 +78,7 @@ export class PathFinder
     const visited = new Set<PlacedBlock>();
     const parentMap = new Map<PlacedBlock, PlacedBlock>(); // Maps each block to its parent block in the path
 
-    console.log("Start pathfinding", this.blockDictionary);
+    console.log("Start pathfinding", this.wakableBlocksDictionary);
 
     visited.add(startBlock);
 
@@ -94,7 +94,7 @@ export class PathFinder
 
         if (currentBlock === endBlock) {
           // Path found, reconstruct the path
-          let path = [];
+          const path = [];
           let step : PlacedBlock = endBlock;
           while (step !== startBlock) {
             path.push(step);
@@ -151,8 +151,7 @@ export class PathFinder
       const currentBlock = queue.shift()!;
 
       if (currentBlock === endBlock) {
-
-        let path = [];
+        const path = [];
         let step = endBlock;
 
         while (step !== startBlock) {
@@ -186,7 +185,7 @@ export class PathFinder
     for (const direction of this.searchDirections) {
       const neighborPosition = block.position.clone().add(direction);
       
-      const neighbor = this.blockDictionary.get(neighborPosition.toArray().toString());
+      const neighbor = this.wakableBlocksDictionary.get(neighborPosition.toArray().toString());
 
       if (neighbor) neighbors.push(neighbor);
     }
@@ -209,7 +208,7 @@ export class PathFinder
     let closestBlock: PlacedBlock | null = null;
     let minDistance = Infinity;
 
-    for (const block of this.blockDictionary.values()) {
+    for (const block of this.wakableBlocksDictionary.values()) {
       const distance = block.position.distanceTo(position);
       if (distance < minDistance) {
         minDistance = distance;

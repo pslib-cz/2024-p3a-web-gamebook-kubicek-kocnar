@@ -1,6 +1,6 @@
 import SaveHandler from "../lib/SaveHandler";
 
-type objTypes = "Items" | "Blocks" | "Enemies" | "Coinages" | "Games" | "Levels" | "Textures" | "ItemUpgrades"
+export type objTypes = "Items" | "Blocks" | "Enemies" | "Coinages" | "Games" | "Levels" | "Textures" | "ItemUpgrades"
 
 const URL: (obj: string) => string = (obj) => `${import.meta.env.VITE_API_URL}/${obj}`;
 

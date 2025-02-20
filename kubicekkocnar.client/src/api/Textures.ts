@@ -27,7 +27,7 @@ export async function DeleteTexture(textureId: number): Promise<void> {
   await DELETE("Textures", textureId);
 }
 
-export async function PatchTexture(textureId: number, key: string, value: any): Promise<void> {
+export async function PatchTexture(textureId: number, key: string, value: unknown): Promise<void> {
   await PATCH("Textures", textureId, key, value);
 }
 

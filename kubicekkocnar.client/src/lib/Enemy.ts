@@ -63,13 +63,9 @@ export class EnemyRenderer {
     enemy.mesh.userData.enemy = enemy;
     this.scene.add(plane);
 
-    // find a random block with 'corrupted name'
-    const blocks = this.level.blocks.filter(block => block.state.includes("corrupt"));
-
-    const randomBlock = blocks[Math.floor(Math.random() * blocks.length)];
-
+    const blocks = Array.from(this.pathFinder.wakableBlocksDictionary).filter(block => block[1].state.includes("corrupt"));
+    const randomBlock = blocks[Math.floor(Math.random() * blocks.length)][1];
     const position = randomBlock.mesh?.position.clone().add(new THREE.Vector3(0, 2, 0));
-
     plane.position.set(position!.x, position!.y, position!.z);
   }
 
