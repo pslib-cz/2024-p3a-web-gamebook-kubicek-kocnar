@@ -1,5 +1,5 @@
 import Texture from "../types/Texture";
-import { DELETE, PATCH } from "./API";
+import { DELETE, PATCH, POST } from "./API";
 
 const URL = `${import.meta.env.VITE_API_URL}/Textures`;
 
@@ -20,20 +20,23 @@ export async function FetchTextures(): Promise<Texture[]> {
 }
 
 export async function addTexture(texture: Texture) {
-  try {
-    const response = await fetch(URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(texture)
-    });
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
-  } catch (err: unknown) {
-    console.error(err);
-  }
+
+  return await POST("Textures", texture);
+
+  // try {
+  //   const response = await fetch(URL, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(texture)
+  //   });
+  //   if (!response.ok) {
+  //     throw new Error(`Response status: ${response.status}`);
+  //   }
+  // } catch (err: unknown) {
+  //   console.error(err);
+  // }
 }
 
 export async function DeleteTexture(textureId: number): Promise<void> {

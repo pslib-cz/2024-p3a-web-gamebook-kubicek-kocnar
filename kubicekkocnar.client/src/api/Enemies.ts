@@ -1,7 +1,7 @@
 import { EnemyType } from "../types/Enemy";
-import { GET } from "./API";
+import { DELETE, GET, POST } from "./API";
 
-const URL = `${import.meta.env.VITE_API_URL}/Enemies`;
+// const URL = `${import.meta.env.VITE_API_URL}/Enemies`;
 
 export async function FetchEnemies(): Promise<EnemyType[]> {
   return await GET("Enemies") as EnemyType[];
@@ -26,33 +26,38 @@ export async function FetchLevelEnemies(gameId: number, levelId: number): Promis
 }
 
 export async function AddEnemy(enemy: EnemyType) {
-  try {
-    const response = await fetch(URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(enemy)
-    });
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
-  } catch (err: unknown) {
-    console.error(err);
-  }
+
+  return await POST("Enemies", enemy);
+
+  // try {
+  //   const response = await fetch(URL, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(enemy)
+  //   });
+  //   if (!response.ok) {
+  //     throw new Error(`Response status: ${response.status}`);
+  //   }
+  // } catch (err: unknown) {
+  //   console.error(err);
+  // }
 }
 
 export async function DeleteEnemy(enemyId: number): Promise<void> {
 
-  try {
-    const blocksResponse = await fetch(`${URL}/${enemyId}`, {
-      method: 'DELETE'
-    });
-    if (!blocksResponse.ok) {
-      throw new Error(`Response status: ${blocksResponse.status}`);
-    }
+  return await DELETE("Enemies", enemyId);
 
-  } catch (err: unknown) {
-    console.error(err);
-  }
+  // try {
+  //   const blocksResponse = await fetch(`${URL}/${enemyId}`, {
+  //     method: 'DELETE'
+  //   });
+  //   if (!blocksResponse.ok) {
+  //     throw new Error(`Response status: ${blocksResponse.status}`);
+  //   }
+
+  // } catch (err: unknown) {
+  //   console.error(err);
+  // }
 }

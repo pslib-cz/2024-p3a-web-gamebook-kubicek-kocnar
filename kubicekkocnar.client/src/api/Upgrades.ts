@@ -1,7 +1,7 @@
 import { ItemUpgrade } from "../types/ItemUpgrade";
-import { GET, DELETE } from "./API";
+import { GET, DELETE, POST } from "./API";
 
-const URL: string = `${import.meta.env.VITE_API_URL}/ItemUpgrades`;
+// const URL: string = `${import.meta.env.VITE_API_URL}/ItemUpgrades`;
 
 export async function GetUpgrades(): Promise<ItemUpgrade[]> {
   return await GET("ItemUpgrades") as ItemUpgrade[];
@@ -13,19 +13,21 @@ export async function DeleteUpgrade(upgradeId: number): Promise<void> {
 
 export async function PostUpgrade(upgrade: ItemUpgrade): Promise<void> {
 
-  try {
-    const blocksResponse = await fetch(URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(upgrade)
-    });
-    if (!blocksResponse.ok) {
-      throw new Error(`Response status: ${blocksResponse.status}`);
-    }
+  return await POST("ItemUpgrades", upgrade);
 
-  } catch (err: unknown) {
-    console.error(err);
-  }
+  // try {
+  //   const blocksResponse = await fetch(URL, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(upgrade)
+  //   });
+  //   if (!blocksResponse.ok) {
+  //     throw new Error(`Response status: ${blocksResponse.status}`);
+  //   }
+
+  // } catch (err: unknown) {
+  //   console.error(err);
+  // }
 }
