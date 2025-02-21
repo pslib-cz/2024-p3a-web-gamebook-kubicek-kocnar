@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { Enemy } from "../Enemy";
 import { Scroll } from "../features/Scroll";
 import { Chest } from "../features/Chest";
+import { Coinage } from "../../types/Coinage";
 import { Player } from "./Player";
 
 export class InteractionsController {
@@ -33,7 +34,7 @@ export class InteractionsController {
       enemy.takeDamage(10, () => {
         this.player.scene.userData.level.enemyRenderer.enemies = this.player.scene.userData.level.enemyRenderer.enemies.filter(e => e.mesh.uuid != enemyMesh.uuid)
         this.player.scene.remove(enemyMesh);
-        this.player.inventory.addToCoinage("gold", 100)
+        this.player.inventory.addToCoinage("golden coin", 100)
       })
 
     });
@@ -51,6 +52,16 @@ export class InteractionsController {
     if (hitChests.length > 0)
     {
       const chest = hitChests[0].userData.chest as Chest;
+
+      if (typeof chest.params.inventory != "string") {
+        for (const coinage of chest.params.inventory) {
+          const coinageObj = this.player.scene.userData.level.coinages.find((c:Coinage) => c.coinageId == coinage.id)
+          this.player.inventory?.addToCoinage(coinageObj?.name || "golden coin", coinage.count);
+          console.error("Adding coinage:", coinageObj, coinage.count);
+          alert(`You found ${coinage.count} ${coinageObj.name}${coinage.count > 1 ? 's' : ''}!`)
+          console.error("player", this.player);
+        }
+      }
 
       console.error("Hit chest:", chest);
 

@@ -39,7 +39,15 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate }: FirstPerson
     setPlayer(_player);
 
     const handleMouseMove = (event: MouseEvent) => _player.controller.handleMouseMove(event);
-    const handleKeyDown = (event: KeyboardEvent) => _player.controller.handleKeyDown(event);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        document.exitPointerLock();
+      }
+      if (event.key === "x") {
+        window.location.replace(window.location + "/editor");
+      }
+      _player.controller.handleKeyDown(event);
+    }
     const handleKeyUp = (event: KeyboardEvent) => _player.controller.handleKeyUp(event);
     const handleTouchStart = (event: TouchEvent) => _player.controller.handleTouchStart(event);
     const handleTouchMove = (event: TouchEvent) => _player.controller.handleTouchMove(event);

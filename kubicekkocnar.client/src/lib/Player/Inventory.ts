@@ -101,13 +101,5 @@ export class Inventory {
     return true;
   }
 
-  public ItemIsInHotbar(item : Item) : boolean
-  {
-    for (let i = 0; i < this.hotbar.length; i++)
-    {
-      if (this.hotbar[i].name == item.name) return true;
-    }
-
-    return false;
-  }
+  public ItemIsInHotbar = (item : Item) => this.hotbar.findIndex((a) => a.name == item.name) != -1;
 }
