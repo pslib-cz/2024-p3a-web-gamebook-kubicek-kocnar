@@ -25,7 +25,6 @@ function LevelEditor()
 
   async function Reload() {
     auth.current = await SaveHandler.getAuth();
-    // console.log(auth.current);
   }
 
   useEffect(() => { Reload(); }, []);

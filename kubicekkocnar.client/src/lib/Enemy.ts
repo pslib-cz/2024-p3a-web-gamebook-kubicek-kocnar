@@ -51,9 +51,7 @@ export class EnemyRenderer {
       console.warn("Max enemies reached");
       return;
     }
-
-    // console.log("Spawning enemy", type);
-
+    
     const enemy: Enemy = new Enemy(type);
 
     this.enemies.push(enemy);

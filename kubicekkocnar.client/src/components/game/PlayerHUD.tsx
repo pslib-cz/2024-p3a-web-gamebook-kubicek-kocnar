@@ -38,10 +38,20 @@ const GameHUD = () => {
 
   const DamageOverlay = () => <div className="damage_overlay" style={{ opacity: playerHealth > 0 ? (0.5 - (Math.max(playerHealth, 0) / 200)) : 1 }}></div>
 
+  const Crosshair = () => (
+    <div className="crosshair">
+      <div className="crosshair__dot"></div>
+      <div className="crosshair__line crosshair__line--vertical crosshair__line--vertical-top"></div>
+      <div className="crosshair__line crosshair__line--vertical crosshair__line--vertical-bottom"></div>
+      <div className="crosshair__line crosshair__line--horizontal crosshair__line--horizontal-left"></div>
+      <div className="crosshair__line crosshair__line--horizontal crosshair__line--horizontal-right"></div>
+    </div>
+  )
+
   if (playerHealth <= 0) {
     return (
       <>
-        <DamageOverlay/>
+        <DamageOverlay />
         <div className="player-hud">Ya ded</div>
       </>
     )
@@ -55,15 +65,8 @@ const GameHUD = () => {
           player?.inventory.coinage.map((a: Coinage, x: number) => <CoinageDrawer key={x} coinage={a} count={player?.inventory.coinageAmount[x]} />)
         }
       </div>
-      <DamageOverlay/>
-      <div className="crosshair">
-        <div className="crosshair__dot"></div>
-        <div className="crosshair__line crosshair__line--vertical crosshair__line--vertical-top"></div>
-        <div className="crosshair__line crosshair__line--vertical crosshair__line--vertical-bottom"></div>
-        <div className="crosshair__line crosshair__line--horizontal crosshair__line--horizontal-left"></div>
-        <div className="crosshair__line crosshair__line--horizontal crosshair__line--horizontal-right"></div>
-      </div>
-      {/* Health Display */}
+      <DamageOverlay />
+      <Crosshair />
       <HealthBar />
 
       {/* Weapons List */}

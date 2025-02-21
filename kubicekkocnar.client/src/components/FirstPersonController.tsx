@@ -6,6 +6,7 @@ import { AppContext } from "./AppContextProvider";
 import { useContext } from "react";
 import { getHandlePlayerMouseClick } from "./ItemController";
 import { Player } from "../lib/Player/Player";
+import { GameContext } from "../contexts/GameContext";
 
 type FirstPersonControllerComponentProps = {
   camera: THREE.Camera;
@@ -15,6 +16,7 @@ type FirstPersonControllerComponentProps = {
 
 const FirstPersonControllerComponent = ({ camera, scene, navigate }: FirstPersonControllerComponentProps) => {
   const { setPlayer, player, joytickData } = useContext(AppContext);
+  const { playerHealth } = useContext(GameContext);
 
   /// this is necessary for interactions
   const playerRef = useRef<Player | null>(null);
@@ -40,19 +42,17 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate }: FirstPerson
 
     const handleMouseMove = (event: MouseEvent) => _player.controller.handleMouseMove(event);
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === "Escape") 
         document.exitPointerLock();
-      }
-      if (event.key === "x") {
+      if (event.key === "x") 
         window.location.replace(window.location + "/editor");
-      }
+      
       _player.controller.handleKeyDown(event);
     }
     const handleKeyUp = (event: KeyboardEvent) => _player.controller.handleKeyUp(event);
     const handleTouchStart = (event: TouchEvent) => _player.controller.handleTouchStart(event);
     const handleTouchMove = (event: TouchEvent) => _player.controller.handleTouchMove(event);
 
-    //gl.domElement.addEventListener("pointerlockchange", handlePointerLockChange);
     document.getElementById("gameroot")?.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("keyup", handleKeyUp);
@@ -61,7 +61,6 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate }: FirstPerson
     document.getElementById("gameroot")!.addEventListener("pointerdown", handleClick)
 
     return () => {
-      //gl.domElement.removeEventListener("pointerlockchange", handlePointerLockChange);
       document.getElementById("gameroot")?.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("keyup", handleKeyUp);
@@ -75,21 +74,22 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate }: FirstPerson
   useFrame(() => {
     player?.controller.update(clock.getDelta());
 
+    console.log("Player health: ", playerHealth);
+
+    if (playerHealth <= 0) console.error("Player died");
+
     if (!player) throw new Error("Player not set");
   });
 
   const handleClick = async () => {
     if (!document.getElementById("inventoryui")) {
       try { await document.getElementById("gameroot")?.requestFullscreen() } catch (e) { console.error(e); }
-      // console.log("Requesting Pointerlock");
       await document.getElementById("gameroot")?.requestPointerLock();
     }
 
     const item = player ? player.inventory.selectedItem : null;
 
     if (getHandlePlayerMouseClick) getHandlePlayerMouseClick()(item);
-
-    // console.log("Calling OnPointerDown");
 
     playerRef.current?.interactions.onCLick();
   };

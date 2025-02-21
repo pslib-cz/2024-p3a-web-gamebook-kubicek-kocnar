@@ -23,8 +23,6 @@ export default function render(scroll: Scroll) { // Add scene parameter
       // This name does not work btw, so fix it maybe, idk
       scroll.object.name = "scroll";
 
-      // console.log(`Loaded model from ${path}`, gltf);
-
       resolve();
 
     }, undefined, function (error) {
