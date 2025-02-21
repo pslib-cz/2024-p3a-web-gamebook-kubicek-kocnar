@@ -33,8 +33,8 @@ export function UIOverlay() {
   };
 
   useEffect(
-    () => console.log("INVENTORY " + player?.inventory)
-    , [player]);
+    () => console.log("INVENTORY ", player?.inventory)
+  , [player]);
 
   return (
     <>
@@ -45,13 +45,13 @@ export function UIOverlay() {
               <div>
                 <h1>This inventory shall be ({player ? "1" : "fr"})</h1>
                 {
-                  player?.inventory?.coinage.map((a: Coinage, x: number) => <CoinageDrawer key={x} coinage={a} count={-1} />)
+                  player?.inventory?.coinage.map((a: Coinage, x: number) => <CoinageDrawer key={x} coinage={a} count={player!.inventory.coinageAmount[x]} />)
                 }
                 <p>UPGRADES</p>
-                <div style={{display: 'flex'}}>
-                {
-                  player?.inventory?.upgrades.map((a, x) => <ItemUpgradeDrawer key={x} upgrade={a} />)
-                }                  
+                <div style={{ display: 'flex' }}>
+                  {
+                    player?.inventory?.upgrades.map((a, x) => <ItemUpgradeDrawer key={x} upgrade={a} />)
+                  }
                 </div>
               </div>
 
@@ -65,7 +65,6 @@ export function UIOverlay() {
           </div>
         </div>
       }
-
     </>
   )
 }
@@ -81,8 +80,8 @@ function ItemUpgradeDrawer({ upgrade }: { upgrade: ItemUpgrade }) {
           if (player?.inventory.ItemIsInHotbar(upgrade.inputItem) ||
             !player?.inventory.IsCostSufficient(upgrade.cost)) return;
 
-            player?.inventory.RemoveItemFromHotbar(upgrade.inputItem);
-            player?.inventory.AddItemIntoHotbar(upgrade.outputItem);
+          player?.inventory.RemoveItemFromHotbar(upgrade.inputItem);
+          player?.inventory.AddItemIntoHotbar(upgrade.outputItem);
           setPlayer(player!.Clone());
         }
       }
