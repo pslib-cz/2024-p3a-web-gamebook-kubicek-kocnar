@@ -81,7 +81,7 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate }: FirstPerson
   const handleClick = async () => {
     if (!document.getElementById("inventoryui")) {
       try { await document.getElementById("gameroot")?.requestFullscreen() } catch (e) { console.error(e); }
-      console.log("Requesting Pointerlock");
+      // console.log("Requesting Pointerlock");
       await document.getElementById("gameroot")?.requestPointerLock();
     }
 
@@ -89,7 +89,7 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate }: FirstPerson
 
     if (getHandlePlayerMouseClick) getHandlePlayerMouseClick()(item);
 
-    console.log("Calling OnPointerDown");
+    // console.log("Calling OnPointerDown");
 
     playerRef.current?.interactions.onCLick();
   };

@@ -15,6 +15,8 @@ namespace KubicekKocnar.Server.Models
 
         public bool IsGhost { get; set; }
 
+        public Cost[] Reward { get; set; } = [];
+
         [JsonIgnore]
         public Texture? Texture { get; set; }
         public uint TextureId {  get; set; }

@@ -52,7 +52,7 @@ export class Inventory {
   public selectedItemId : number = 0;
 
   public coinage : Coinage[] = [];
-  public coinageAmount : number[] = [0, 0];
+  public coinageAmount : number[] = [];
 
   public addToCoinage(coinage: string, amount : number) {
     for (let i = 0; i < this.coinage.length; i++) {

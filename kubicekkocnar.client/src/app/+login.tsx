@@ -1,68 +1,79 @@
 import { useLocation } from 'react-router-dom';
-
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
+import SaveHandler from '../lib/SaveHandler';
 
 function useQuery() {
-    const { search } = useLocation();
-  
-    return React.useMemo(() => new URLSearchParams(search), [search]);
-  }
+  const { search } = useLocation();
 
-export default function AuthForm () {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const redirurl = useQuery().get("url");
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
 
-    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        // Perform login logic here (get the token and save it to the local storage)
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/account/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            });
+export default function AuthForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const redirurl = useQuery().get("url");
 
-            if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem('auth', JSON.stringify({...data, email, expiresAt: Date.now() + data.expiresIn * 1000}));
-                console.log('Login successful');
-                // Redirect or handle login success
-                if (redirurl) {
-                    window.location.href = redirurl;
-                } else {
-                    // Default redirect or action
-                    window.location.href = '/';
-                }
-            } else {
-                console.error('Login failed');
-                // Handle login failure
-            }
-        } catch (error) {
-            console.error('An error occurred:', error);
-            // Handle error
+  useEffect(() => {
+    (async () => {
+      const auth = await SaveHandler.getAuth();
+
+      if (auth && auth.accessToken) {
+        console.log("Already logged in, redirecting to editor")
+        window.location.replace("/editor");
+      }
+    })();
+  }, []);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    // Perform login logic here (get the token and save it to the local storage)
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/account/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('auth', JSON.stringify({ ...data, email, expiresAt: Date.now() + data.expiresIn * 1000 }));
+        console.log('Login successful');
+        // Redirect or handle login success
+        if (redirurl) {
+          window.location.href = redirurl;
+        } else {
+          // Default redirect or action
+          window.location.href = '/';
         }
-    };
+      } else {
+        console.error('Login failed');
+        // Handle login failure
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+      // Handle error
+    }
+  };
 
-    return (
+  return (
     <div>
-        <form onSubmit={handleSubmit}>
-            <input 
-                type="text" 
-                placeholder="Email" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-            />
-            <input 
-                type="password" 
-                placeholder="Password" 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)} 
-            />
-            <button type="submit" className="authbutton">Přihlásit se</button>
-        </form>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit" className="authbutton">Přihlásit se</button>
+      </form>
     </div>
-    )
+  )
 }

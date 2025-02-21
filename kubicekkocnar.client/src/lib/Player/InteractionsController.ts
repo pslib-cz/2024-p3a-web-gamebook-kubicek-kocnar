@@ -25,28 +25,21 @@ export class InteractionsController {
     const hitPapers = interactables.filter((obj) => obj.name.includes("Paper"));
     const hitChests = interactables.filter((obj) => obj.name.includes("Chest"));
 
-    console.warn("ONCLICK => This shit is not implemented yet, you have an array of block that were hit tho", hitEnemies);
-
     hitEnemies.forEach((enemyMesh) => {
       const enemy = enemyMesh.userData.enemy as Enemy;
       console.log("Hit enemy:", enemy);
 
       enemy.takeDamage(10, () => {
-        this.player.scene.userData.level.enemyRenderer.enemies = this.player.scene.userData.level.enemyRenderer.enemies.filter(e => e.mesh.uuid != enemyMesh.uuid)
-        this.player.scene.remove(enemyMesh);
-        this.player.inventory.addToCoinage("golden coin", 100)
+        this.player.scene.userData.level.enemyRenderer.RemoveEnemy(enemy);
+        enemy.type.reward.forEach((reward) => {
+          this.player.inventory.addToCoinage(reward.coinage.name, reward.cost);
+        }, []);
       })
-
     });
 
     if (hitPapers.length > 0) {
       const scroll = hitPapers[0].userData.scroll as Scroll;
-
-      console.error("Hit scroll:", scroll);
-
-      this.player.story.AddStory(scroll)      
-
-      console.log(scroll.params.text)
+      this.player.story.AddStory(scroll);
     }
 
     if (hitChests.length > 0)

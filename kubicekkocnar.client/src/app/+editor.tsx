@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Coinage } from '../types/Coinage';
 import { ItemUpgrade } from '../types/ItemUpgrade';
 import { GetCoinages } from '../api/Coinages';
@@ -16,7 +16,7 @@ import SaveHandler, { Save } from '../lib/SaveHandler';
 import AuthWidget from '../components/auth/AuthWidget';
 
 const Editor = () => {
-  const auth: MutableRefObject<Save['auth'] | null> = useRef(null);
+  const [auth, setAuth] = useState<Save['auth'] | null>(null);
 
   const [textures, setTextures] = useState<Texture[]>();
   const [coinages, setCoinages] = useState<Coinage[]>();
@@ -30,9 +30,14 @@ const Editor = () => {
     setUpgrades(await GetUpgrades());
     setItems(await GetItems());
     setEnemies(await FetchEnemies());
-    auth.current = await SaveHandler.getAuth();
 
-    console.log(auth.current);
+    const auth = await SaveHandler.getAuth();
+
+    setAuth(auth);
+
+    if (!auth || !auth.accessToken) {
+      window.location.replace("/login?url"+window.location.pathname)
+    }
   }
 
   useEffect(() => { Reload(); }, []);
@@ -42,9 +47,11 @@ const Editor = () => {
   const defaultCoinage = { name: '' };
   const defaultEnemy = { name: '', health: 0, damage: 0, attackSpeed: 0, speed: 0, isGhost: false, textureId: 1 };
 
+  if (!auth || !auth.accessToken) return <div>Making sure you are logged in lil bro</div>
+
   return (
     <div>
-      {auth.current && <AuthWidget auth={auth.current} />}
+      {auth && <AuthWidget auth={auth} />}
       <h1>EdItOr</h1>
       <div>
         <h2>Textures</h2>
@@ -54,22 +61,10 @@ const Editor = () => {
           patchFunction={async (id, key, value) => { await PATCH("Textures", id, key, value); Reload(); }}
         />
       </div>
-      <div>
-        <h2>Items</h2>
-        <CompleteDrawer defaultItem={defaultItem} items={items || []} Reload={Reload} objType="Items" />
-      </div>
-      <div>
-        <h2>Upgrades</h2>
-        <CompleteDrawer defaultItem={defaultUpgrade} items={upgrades || []} Reload={Reload} objType="ItemUpgrades" />
-      </div>
-      <div>
-        <h2>Coinages</h2>
-        <CompleteDrawer defaultItem={defaultCoinage} items={coinages || []} Reload={Reload} objType="Coinages" />
-      </div>
-      <div>
-        <h2>Enemies</h2>
-        <CompleteDrawer defaultItem={defaultEnemy} items={enemies || []} Reload={Reload} objType="Enemies" />
-      </div>
+      <CompleteDrawer defaultItem={defaultItem} items={items || []} Reload={Reload} objType="Items" />
+      <CompleteDrawer defaultItem={defaultUpgrade} items={upgrades || []} Reload={Reload} objType="ItemUpgrades" />
+      <CompleteDrawer defaultItem={defaultCoinage} items={coinages || []} Reload={Reload} objType="Coinages" />
+      <CompleteDrawer defaultItem={defaultEnemy} items={enemies || []} Reload={Reload} objType="Enemies" />
     </div>
   );
 };
@@ -78,7 +73,8 @@ function CompleteDrawer(
   {defaultItem, items, Reload, objType} : 
   {defaultItem: unknown, items: unknown[], Reload: () => void, objType: objTypes}) {
   return (
-    <>
+    <div>
+      <h2>{objType}</h2>
       <AddItemDrawer
         item={defaultItem}
         postFunction={async (item) => { await POST(item, objType); Reload(); }}
@@ -88,7 +84,7 @@ function CompleteDrawer(
         deleteFunction={async (id) => { await DELETE(objType, id); Reload() }}
         patchFunction={async (id, key, value) => { await PATCH(objType, id, key, value); Reload(); }}
       />
-    </>
+    </div>
   )
 }
 

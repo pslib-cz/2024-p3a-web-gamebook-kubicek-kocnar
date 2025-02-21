@@ -11,7 +11,7 @@ export function Enemies({ level }: { level: Level }) {
   const { addPlayerHealth } = useContext(GameContext);
   useEffect(() => {
     
-    console.log("Creating enemy renderer");
+    // console.log("Creating enemy renderer");
     level.enemyRenderer = new EnemyRenderer(level.mapRenderer.scene, level);
 
     setEnemyHandler(level.enemyRenderer);
