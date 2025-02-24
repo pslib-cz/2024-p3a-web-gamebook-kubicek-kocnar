@@ -120,6 +120,9 @@ namespace KubicekKocnar.Server.Migrations
                     b.Property<uint>("Count")
                         .HasColumnType("INTEGER");
 
+                    b.Property<uint?>("EnemyId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<uint?>("ItemUpgradeId")
                         .HasColumnType("INTEGER");
 
@@ -129,6 +132,8 @@ namespace KubicekKocnar.Server.Migrations
                     b.HasKey("CostId");
 
                     b.HasIndex("CoinageId");
+
+                    b.HasIndex("EnemyId");
 
                     b.HasIndex("ItemUpgradeId");
 
@@ -601,6 +606,10 @@ namespace KubicekKocnar.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("KubicekKocnar.Server.Models.Enemy", null)
+                        .WithMany("Reward")
+                        .HasForeignKey("EnemyId");
+
                     b.HasOne("KubicekKocnar.Server.Models.ItemUpgrade", null)
                         .WithMany("Costs")
                         .HasForeignKey("ItemUpgradeId");
@@ -736,6 +745,11 @@ namespace KubicekKocnar.Server.Migrations
             modelBuilder.Entity("KubicekKocnar.Server.Models.Coinage", b =>
                 {
                     b.Navigation("Costs");
+                });
+
+            modelBuilder.Entity("KubicekKocnar.Server.Models.Enemy", b =>
+                {
+                    b.Navigation("Reward");
                 });
 
             modelBuilder.Entity("KubicekKocnar.Server.Models.Game", b =>

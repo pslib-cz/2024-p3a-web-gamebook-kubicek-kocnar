@@ -28,6 +28,9 @@ export class Enemy {
 }
 
 export class EnemyRenderer {
+
+  public MAX_ENEMIES = 10;
+
   public enemies: Enemy[] = [];
   public scene: THREE.Scene;
 
@@ -43,8 +46,12 @@ export class EnemyRenderer {
   }
 
   public addEnemy(type: EnemyType) {
-    console.log("Spawning enemy", type);
 
+    if (this.enemies.length >= this.MAX_ENEMIES) {
+      console.warn("Max enemies reached");
+      return;
+    }
+    
     const enemy: Enemy = new Enemy(type);
 
     this.enemies.push(enemy);
@@ -67,6 +74,11 @@ export class EnemyRenderer {
     const randomBlock = blocks[Math.floor(Math.random() * blocks.length)][1];
     const position = randomBlock.mesh?.position.clone().add(new THREE.Vector3(0, 2, 0));
     plane.position.set(position!.x, position!.y, position!.z);
+  }
+
+  public RemoveEnemy(enemy: Enemy) {
+    this.enemies = this.enemies.filter(e => e != enemy);
+    this.scene.remove(enemy.mesh!);
   }
 
   constructor(scene: THREE.Scene, level: Level) {

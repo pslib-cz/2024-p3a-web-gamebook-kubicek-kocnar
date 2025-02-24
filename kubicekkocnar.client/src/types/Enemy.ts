@@ -1,3 +1,4 @@
+import { Cost } from "./Cost";
 
 export interface EnemyType {
   enemyId: number;
@@ -8,4 +9,5 @@ export interface EnemyType {
   speed: number;
   isGhost : boolean;
   textureId: number;
+  reward: Cost[];
 }

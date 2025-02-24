@@ -8,6 +8,8 @@ import { FetchLevel } from "../api/Levels";
 import { EnemyRenderer } from "./Enemy";
 import { EnemyType } from "../types/Enemy";
 import SaveHandler from "./SaveHandler";
+import { Item } from "../types/Item";
+import { Coinage } from "../types/Coinage";
 
 interface LevelOptions {
   name: string
@@ -25,6 +27,8 @@ class Level implements LevelType {
   featureRenderer: FeatureRenderer;
   enemyRenderer: EnemyRenderer | null = null;
   enemies: EnemyType[] = [];
+  items: Item[] = [];
+  coinages: Coinage[] = [];
 
   constructor(gameId: number, levelId: number, mapRenderer: MapRenderer, onReady: (level: Level) => void) {
     this.gameId = gameId;
@@ -69,6 +73,20 @@ class Level implements LevelType {
       for (let i = 0; i < this.features.length; i++) {
         await this.featureRenderer.addFeature(this.features[i]);
       }
+
+      const levelItemsResponse = await fetch(import.meta.env.VITE_API_URL + '/Items');
+      if (!levelItemsResponse.ok) {
+        throw new Error(`Response status: ${levelItemsResponse.status}`);
+      }
+
+      this.items = await levelItemsResponse.json();
+
+      const levelCoinagesResponse = await fetch(import.meta.env.VITE_API_URL + '/Coinages');
+      if (!levelCoinagesResponse.ok) {
+        throw new Error(`Response status: ${levelCoinagesResponse.status}`);
+      }
+
+      this.coinages = await levelCoinagesResponse.json();
 
       onReady(this);
     } catch (err: unknown) {

@@ -165,7 +165,6 @@ const ConfigPanelView: React.FC<ConfigPanelProps> = ({ level, setOpenAddFeatureM
               </div>
             ))}
           </div>
-          {/* <button className='configpanel__deletebtn' onClick={() => {level.removeBlock(blockState); setTool(Tool.List)}}><MaterialSymbol icon='delete'/></button> */}
         </>
       );
 

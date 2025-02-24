@@ -15,7 +15,6 @@ interface ConfigPanelProps {
 }
 
 const ConfigPanel: React.FC<ConfigPanelProps> = ({ level }) => {
-
   const [modalFeature, setModalFeature] = useState<GenericFeature | null>(null);
   const [modalBlock, setModalBlock] = useState<Partial<Block>>({ name: 'new block', attributes: [] });
   const { toolState } = useContext(AppContext);

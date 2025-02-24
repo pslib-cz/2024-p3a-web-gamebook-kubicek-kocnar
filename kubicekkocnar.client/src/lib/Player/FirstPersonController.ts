@@ -175,8 +175,6 @@ export class FirstPersonController {
     if (this.joystickData.lftValue) this.velocity.x -= 1; // Strafe left
     if (this.joystickData.rgtValue) this.velocity.x += 1; // Strafe right
 
-    // console.log(this.joystickData);
-
     this.velocity.normalize().multiplyScalar(speed * delta);
 
     if (this.joystickData.up) {
