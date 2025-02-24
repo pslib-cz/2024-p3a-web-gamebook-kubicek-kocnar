@@ -15,7 +15,7 @@ interface PlacedBlock {
   levelId: number; // in which level is the block placed
   level: Level; // levelReference -> needs to be set on client from levelId
 
-  mesh?: Mesh; // the rendered mesh of the block -> set when rendered
+  mesh: Mesh; // the rendered mesh of the block -> set when rendered
 
   position: Vector3; // where is it placed, needs conversion from [server] ...{x,y,z} to [client] Vector3
 

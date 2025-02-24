@@ -1,41 +1,18 @@
-import { useContext, useEffect } from "react";
-import * as THREE from "three";
+import { useContext, useEffect, useRef } from "react";
 import PlacedBlock from "../types/PlacedBlock";
 import { AppContext } from "./AppContextProvider";
+import CorruptionHandler from "../lib/CorruptionHandler";
 
-export function CorruptionHandler({ allBlocks, corruptedBlocks }: { allBlocks: PlacedBlock[], corruptedBlocks: PlacedBlock[] }) {
+export function CorruptionHandlerRenderer({ allBlocks, corruptedBlocks }: { allBlocks: PlacedBlock[], corruptedBlocks: PlacedBlock[] }) {
   const { enemyHandler } = useContext(AppContext);
 
-  const enemySpawnChance = 0.01;
+  const corruptionHandler = useRef<CorruptionHandler | null>(new CorruptionHandler(corruptedBlocks, allBlocks, enemyHandler!));
 
   useEffect(() => {
 
-    const interval = setInterval(() => {
-      corruptedBlocks.forEach((corruptedBlock) => {
+    corruptionHandler.current?.start();
 
-        if (Math.random() < enemySpawnChance) {
-          enemyHandler?.spawnRandomEnemy();
-        }
-
-        const adjancedBlocks = allBlocks.filter((block) => block.position.distanceTo(corruptedBlock.position) < 1.5);
-        adjancedBlocks.forEach((block) => {
-
-          if (block.state.includes("corrupt")) return;
-
-          if (Math.random() > 0.2) return;
-
-          block.state += "corrupt";
-
-          if (block.mesh) {
-            block.mesh.material = new THREE.MeshStandardMaterial({ color: 0xff00ff });
-          }
-
-          corruptedBlocks.push(block);
-        });
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
+    return () => corruptionHandler.current?.stop();
   }, []);
 
   return null;

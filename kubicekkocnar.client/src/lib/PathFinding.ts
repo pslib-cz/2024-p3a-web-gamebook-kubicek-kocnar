@@ -82,8 +82,8 @@ export class PathFinder
 
     visited.add(startBlock);
 
-    startBlock.mesh!.material = new THREE.MeshStandardMaterial({color: 0x00ff00});
-    endBlock.mesh!.material = new THREE.MeshStandardMaterial({color: 0xff0000});
+    startBlock.mesh.material = new THREE.MeshStandardMaterial({color: 0x00ff00});
+    endBlock.mesh.material = new THREE.MeshStandardMaterial({color: 0xff0000});
 
     // create coroutine to visualize the pathfinding
     const visualizePathFinding = async () => {
@@ -105,7 +105,7 @@ export class PathFinder
           console.log("Path found:", path);
 
           for (const block of path) {
-            block.mesh!.material = new THREE.MeshStandardMaterial({color: 0x00ff00});
+            block.mesh.material = new THREE.MeshStandardMaterial({color: 0x00ff00});
           }
 
           return path;
