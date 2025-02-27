@@ -5,6 +5,8 @@ import { Cost } from "../../types/Cost";
 import { GetCoinages } from "../../api/Coinages";
 import { GetUpgrades } from "../../api/Upgrades";
 
+import toast from 'react-hot-toast';
+
 const demoItem : Item = {
   name: "item1",
   description: "i1",
@@ -58,6 +60,7 @@ export class Inventory {
     for (let i = 0; i < this.coinage.length; i++) {
       if (this.coinage[i].name == coinage) {
         this.coinageAmount[i] += amount;
+        toast("Added " + amount + " " + coinage);
         return;
       }
     }
