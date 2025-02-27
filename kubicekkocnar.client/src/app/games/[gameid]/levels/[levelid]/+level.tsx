@@ -14,6 +14,7 @@ import PlayerHUD from "../../../../../components/game/PlayerHUD";
 import { GameContextProvider } from "../../../../../contexts/GameContext";
 import { Enemies } from "../../../../../components/Enemies";
 import ScreenNotification from "../../../../../components/ui/ScreenNotification";
+import { Toaster } from "react-hot-toast";
 
 function LevelPlayer()
 {
@@ -45,6 +46,7 @@ function LevelPlayer()
         <ScreenNotification/>
         {!level && <div className="loader"></div>}
         <div className='canvas' id="gameroot">
+          <Toaster/>
           <Canvas onCreated={(state) => {
               state.camera.position.set(0, 3, 0);
               state.scene.userData.camera = state.camera;

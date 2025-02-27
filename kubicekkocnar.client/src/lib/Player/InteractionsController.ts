@@ -51,12 +51,20 @@ export class InteractionsController {
       const chest = hitChests[0].userData.chest as Chest;
 
       if (typeof chest.params.inventory != "string") {
-        for (const coinage of chest.params.inventory) {
-          const coinageObj = this.player.scene.userData.level.coinages.find((c: Coinage) => c.coinageId == coinage.id)
-          this.player.inventory?.addToCoinage(coinageObj?.name || "golden coin", coinage.count);
-          console.error("Adding coinage:", coinageObj, coinage.count);
-          toast(`You found ${coinage.count} ${coinageObj.name}${coinage.count > 1 ? 's' : ''}!`)
-          console.error("player", this.player);
+        if (chest.params.inventory.length == 0) {
+          toast("This chest is empty");
+          return;
+        } else {
+          for (const coinage of chest.params.inventory) {
+            const coinageObj = this.player.scene.userData.level.coinages.find((c: Coinage) => c.coinageId == coinage.id)
+            this.player.inventory?.addToCoinage(coinageObj?.name || "golden coin", coinage.count);
+            console.error("Adding coinage:", coinageObj, coinage.count);
+            toast(`You found ${coinage.count} ${coinageObj.name}${coinage.count > 1 ? 's' : ''}!`, {
+              icon: '💰'
+            })
+            console.error("player", this.player);
+          }
+          chest.params.inventory = [];
         }
       }
 

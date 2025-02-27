@@ -15,7 +15,6 @@ import { Toaster } from 'react-hot-toast'
 
 function App() {
   return (
-    <>
     <BrowserRouter>
       <Routes>
         <Route path="/"> {/* na Layout.tsx*/}
@@ -29,8 +28,6 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
-    <Toaster/>
-    </>
   );
 }
 
