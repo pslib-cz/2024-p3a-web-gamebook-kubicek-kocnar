@@ -7,6 +7,7 @@ import { Player } from "./Player";
 import CorruptionHandler from "../CorruptionHandler";
 import { Potator } from "../features/Potator";
 import PlacedBlock from "../../types/PlacedBlock";
+import toast from "react-hot-toast";
 
 export class InteractionsController {
 
@@ -54,7 +55,7 @@ export class InteractionsController {
           const coinageObj = this.player.scene.userData.level.coinages.find((c: Coinage) => c.coinageId == coinage.id)
           this.player.inventory?.addToCoinage(coinageObj?.name || "golden coin", coinage.count);
           console.error("Adding coinage:", coinageObj, coinage.count);
-          alert(`You found ${coinage.count} ${coinageObj.name}${coinage.count > 1 ? 's' : ''}!`)
+          toast(`You found ${coinage.count} ${coinageObj.name}${coinage.count > 1 ? 's' : ''}!`)
           console.error("player", this.player);
         }
       }
