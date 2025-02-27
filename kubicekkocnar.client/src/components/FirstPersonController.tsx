@@ -74,8 +74,6 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate }: FirstPerson
   useFrame(() => {
     player?.controller.update(clock.getDelta());
 
-    console.log("Player health: ", playerHealth);
-
     if (playerHealth <= 0) console.error("Player died");
 
     if (!player) throw new Error("Player not set");

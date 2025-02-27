@@ -21,6 +21,7 @@ enum FeatureType {
   "Portal" = 3,
   "Crystal" = 4,
   "Paper" = 5,
+  "Potator" = 6,
 }
 enum FeatureTypeIcon {
   "light_mode" = 1,

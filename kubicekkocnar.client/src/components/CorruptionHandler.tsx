@@ -1,19 +1,19 @@
-import { useContext, useEffect, useRef } from "react";
-import PlacedBlock from "../types/PlacedBlock";
-import { AppContext } from "./AppContextProvider";
-import CorruptionHandler from "../lib/CorruptionHandler";
+// import { useContext, useEffect, useRef } from "react";
+// import PlacedBlock from "../types/PlacedBlock";
+// import { AppContext } from "./AppContextProvider";
+// import CorruptionHandler from "../lib/CorruptionHandler";
 
-export function CorruptionHandlerRenderer({ allBlocks, corruptedBlocks }: { allBlocks: PlacedBlock[], corruptedBlocks: PlacedBlock[] }) {
-  const { enemyHandler } = useContext(AppContext);
+// export function CorruptionHandlerRenderer({ allBlocks, corruptedBlocks }: { allBlocks: PlacedBlock[], corruptedBlocks: PlacedBlock[] }) {
+//   const { enemyHandler } = useContext(AppContext);
 
-  const corruptionHandler = useRef<CorruptionHandler | null>(new CorruptionHandler(corruptedBlocks, allBlocks, enemyHandler!));
+//   const corruptionHandler = useRef<CorruptionHandler | null>(new CorruptionHandler(corruptedBlocks, allBlocks, enemyHandler!));
 
-  useEffect(() => {
+//   useEffect(() => {
 
-    corruptionHandler.current?.start();
+//     corruptionHandler.current?.start();
 
-    return () => corruptionHandler.current?.stop();
-  }, []);
+//     return () => corruptionHandler.current?.stop();
+//   }, []);
 
-  return null;
-}
+//   return null;
+// }
