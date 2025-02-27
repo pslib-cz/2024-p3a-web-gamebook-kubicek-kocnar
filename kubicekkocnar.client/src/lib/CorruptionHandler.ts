@@ -40,6 +40,7 @@ class CorruptionHandler {
           if (block.state.includes("corrupt") || Math.random() > this.corruptionChance) return;
 
           block.state += "corrupt ";
+          block.mesh.userData.oldMaterial = block.mesh.material;
           block.mesh.material = new THREE.MeshStandardMaterial({ color: 0xff00ff });
           this.corruptedBlocks.push(block);
         });
@@ -66,7 +67,8 @@ class CorruptionHandler {
 
     from.state = from.state += "reverted ";
     from.mesh.material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-    this.corruptedBlocks = this.corruptedBlocks.filter((corruptedBlock) => corruptedBlock != from);
+    if (from.mesh.userData.oldMaterial) from.mesh.material = from.mesh.userData.oldMaterial;
+    //this.corruptedBlocks = this.corruptedBlocks.filter((corruptedBlock) => corruptedBlock != from);
     this.revertedBlocks.push(from);
 
     this.interval = setInterval(() => {
@@ -90,7 +92,8 @@ class CorruptionHandler {
             this.revertedBlocks.push(block);
 
           block.state += "reverted ";
-          block.mesh.material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+          //block.mesh.material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+          if (block.mesh.userData.oldMaterial) block.mesh.material = block.mesh.userData.oldMaterial;
           this.corruptedBlocks = this.corruptedBlocks.filter((corruptedBlock) => corruptedBlock != block);
 
           blocksReverted++;
