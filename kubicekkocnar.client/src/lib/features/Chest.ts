@@ -2,7 +2,7 @@ import GenericFeature from "../../types/Feature";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 type ChestInventory = { id: number, count: number }[]
-interface Chest extends GenericFeature {
+export interface Chest extends GenericFeature {
   params: {
     inventory: string | ChestInventory;
   };
@@ -36,4 +36,3 @@ function convert(chest: Chest) {
 }
 
 export default render;
-export type { Chest };

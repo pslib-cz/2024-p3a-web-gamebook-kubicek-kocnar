@@ -10,6 +10,7 @@ import { EnemyType } from "../types/Enemy";
 import SaveHandler from "./SaveHandler";
 import { Item } from "../types/Item";
 import { Coinage } from "../types/Coinage";
+import CorruptionHandler from "./CorruptionHandler";
 
 interface LevelOptions {
   name: string
@@ -26,6 +27,7 @@ class Level implements LevelType {
   mapRenderer: MapRenderer;
   featureRenderer: FeatureRenderer;
   enemyRenderer: EnemyRenderer | null = null;
+  corruptionHandler: CorruptionHandler | null = null;
   enemies: EnemyType[] = [];
   items: Item[] = [];
   coinages: Coinage[] = [];
@@ -35,7 +37,21 @@ class Level implements LevelType {
     this.levelId = levelId
     this.mapRenderer = mapRenderer;
     this.featureRenderer = new FeatureRenderer(mapRenderer.scene);
-    this.initializeServerLevel(onReady);
+
+    this.initializeServerLevel(
+      (level) => {
+        onReady(level);
+
+        this.enemyRenderer = new EnemyRenderer(mapRenderer.scene, this);
+
+        this.corruptionHandler = new CorruptionHandler(this.blocks.filter(
+          (block) => block.block.attributes[0] == "corrupt"
+        ), this.blocks, this.enemyRenderer!);
+
+        // init
+        this.corruptionHandler.start();
+      }
+    );
   }
   created!: Date;
   game?: Game | undefined;

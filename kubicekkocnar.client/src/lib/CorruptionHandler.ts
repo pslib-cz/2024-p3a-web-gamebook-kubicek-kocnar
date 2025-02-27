@@ -11,9 +11,25 @@ class CorruptionHandler {
 
   private revertedBlocks: PlacedBlock[] = [];
 
-  constructor(private corruptedBlocks: PlacedBlock[], private allBlocks: PlacedBlock[], private enemyHandler: EnemyRenderer) { }
+  constructor(private corruptedBlocks: PlacedBlock[], private allBlocks: PlacedBlock[], private enemyHandler: EnemyRenderer) 
+  {
+    if (this.corruptedBlocks.length == 0) {
+      console.warn("No corrupted blocks found");
+    }
+
+    if (this.allBlocks.length == 0) {
+      console.warn("No blocks found");
+    }
+
+    if (this.corruptedBlocks >= this.allBlocks) {
+      console.warn("Corrupted blocks should be less than all blocks");
+    }
+  }
 
   start() {
+
+    console.error("Starting corruption"); 
+
     this.interval = setInterval(() => {
       this.corruptedBlocks.forEach((corruptedBlock) => {
         if (Math.random() < this.enemySpawnChance)
@@ -46,7 +62,7 @@ class CorruptionHandler {
   revert(from: PlacedBlock) {
     this.stop();
 
-    console.log("Reverting corruption");
+    console.error("Reverting corruption");
 
     from.state = from.state += "reverted ";
     from.mesh.material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
@@ -55,14 +71,16 @@ class CorruptionHandler {
 
     this.interval = setInterval(() => {
 
-      console.log("array size: ", this.revertedBlocks.length);
+      //console.log("array size: ", this.revertedBlocks.length);
+
+      let blocksReverted = 0;
 
       this.revertedBlocks.forEach((corruptedBlock) => {
 
         const adjancedBlocks = this.allBlocks.filter((block) => block.position.distanceTo(corruptedBlock.position) < 1.5);
         adjancedBlocks.forEach((block) => {
 
-          console.log(block.state)
+          //console.log(block.state)
 
           if (!block.state.includes("corrupt") ||
             block.state.includes("reverted")
@@ -71,12 +89,24 @@ class CorruptionHandler {
           block.state += "reverted ";
           block.mesh.material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
           this.corruptedBlocks = this.corruptedBlocks.filter((corruptedBlock) => corruptedBlock != block);
-          this.revertedBlocks.push(block);         
+          this.revertedBlocks.push(block);
 
+          blocksReverted++;
         });
 
         this.revertedBlocks = this.revertedBlocks.filter((revertedBlock) => revertedBlock != corruptedBlock);
       });
+
+      if (blocksReverted == 0) {
+        this.stop();
+
+        if (this.corruptedBlocks.length == 0) {
+          console.error("All blocks reverted");
+        } else {
+          this.revert(this.corruptedBlocks[0]);
+        }
+      }
+      
     }, 50);
   }
 }

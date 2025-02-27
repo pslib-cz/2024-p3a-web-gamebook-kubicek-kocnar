@@ -9,13 +9,12 @@ import Level from "../../lib/Level";
 import MapEditor from "../../lib/MapEditor";
 import FirstPersonControllerComponent from "../FirstPersonController";
 import Model from "./Model";
-import { CorruptionHandlerRenderer } from "../CorruptionHandler";
+// import { CorruptionHandlerRenderer } from "../CorruptionHandler";
 import { useNavigate } from "react-router-dom";
 import {
   PathFindingVisual,
   VisualizePathfinableBlocks,
 } from "../PathFinding";
-import { Toaster } from "react-hot-toast";
 
 // React.memo(
 const Map = ({
@@ -185,12 +184,12 @@ const Map = ({
       {/* GAME ONLY */}
       {!isEditor && (
         <>
-          <CorruptionHandlerRenderer
+          {/* <CorruptionHandlerRenderer
             allBlocks={level.blocks}
             corruptedBlocks={level.blocks.filter(
               (block) => block.block.attributes[0] == "corrupt"
             )}
-          />
+          /> */}
           <FirstPersonControllerComponent
             camera={camera}
             scene={scene}
@@ -202,8 +201,6 @@ const Map = ({
           />
         </>
       )}
-
-      <Toaster/>
 
       {/* EDITOR ONLY */}
       {isEditor && (

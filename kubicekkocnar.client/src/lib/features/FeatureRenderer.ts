@@ -4,6 +4,7 @@ import renderLight, { Light } from "./Light";
 import renderPortal, { Portal } from "./Portal";
 import renderChest, { Chest } from "./Chest";
 import renderScroll, { Scroll } from "./Scroll";
+import renderPotator, { Potator } from "./Potator";
 
 const source = window.location.search.includes("source=")
   ? window.location.search.split("source=")[1].split("&")[0]
@@ -33,7 +34,6 @@ class FeatureRenderer {
         break;
 
       case FeatureType.Chest:
-        console.log("Rendering chest", feature);
         await renderChest(feature as Chest);
         break;
 
@@ -43,6 +43,10 @@ class FeatureRenderer {
 
       case FeatureType.Paper:
         await renderScroll(feature as Scroll);
+        break;
+
+      case FeatureType.Potator:
+        await renderPotator(feature as Potator);
         break;
 
       default:

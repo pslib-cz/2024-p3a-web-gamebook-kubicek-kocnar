@@ -37,7 +37,11 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ level }) => {
       case FeatureType.Chest:
         return { inventory: "" };
       case FeatureType.Paper:
-          return { text: "lorem ipsum" };
+        return { text: "lorem ipsum" };
+      case FeatureType.Potator:
+        return {};
+      default:
+        throw new Error("Unknown feature type");
     }
   }
 
