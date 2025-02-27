@@ -82,14 +82,16 @@ class CorruptionHandler {
 
           //console.log(block.state)
 
-          if (!block.state.includes("corrupt") 
-            // || block.state.includes("reverted")
-          ) return;
+          // if (!block.state.includes("corrupt") 
+          //   // || block.state.includes("reverted")
+          // ) return;
+
+          if (!block.state.includes("reverted"))
+            this.revertedBlocks.push(block);
 
           block.state += "reverted ";
           block.mesh.material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
           this.corruptedBlocks = this.corruptedBlocks.filter((corruptedBlock) => corruptedBlock != block);
-          this.revertedBlocks.push(block);
 
           blocksReverted++;
         });
