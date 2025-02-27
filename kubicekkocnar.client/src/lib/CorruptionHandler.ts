@@ -46,9 +46,9 @@ class CorruptionHandler {
       });
 
       // debug
-      if (this.corruptedBlocks.length >= 300) {
-        this.revert(this.corruptedBlocks[0]);
-      }
+      // if (this.corruptedBlocks.length >= 300) {
+      //   this.revert(this.corruptedBlocks[0]);
+      // }
     }, 250);
   }
 
@@ -82,14 +82,16 @@ class CorruptionHandler {
 
           //console.log(block.state)
 
-          if (!block.state.includes("corrupt") ||
-            block.state.includes("reverted")
-          ) return;
+          // if (!block.state.includes("corrupt") 
+          //   // || block.state.includes("reverted")
+          // ) return;
+
+          if (!block.state.includes("reverted"))
+            this.revertedBlocks.push(block);
 
           block.state += "reverted ";
           block.mesh.material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
           this.corruptedBlocks = this.corruptedBlocks.filter((corruptedBlock) => corruptedBlock != block);
-          this.revertedBlocks.push(block);
 
           blocksReverted++;
         });
@@ -97,15 +99,15 @@ class CorruptionHandler {
         this.revertedBlocks = this.revertedBlocks.filter((revertedBlock) => revertedBlock != corruptedBlock);
       });
 
-      if (blocksReverted == 0) {
-        this.stop();
+      // if (blocksReverted == 0) {
+      //   this.stop();
 
-        if (this.corruptedBlocks.length == 0) {
-          console.error("All blocks reverted");
-        } else {
-          this.revert(this.corruptedBlocks[0]);
-        }
-      }
+      //   if (this.corruptedBlocks.length == 0) {
+      //     console.error("All blocks reverted");
+      //   } else {
+      //     this.revert(this.corruptedBlocks[0]);
+      //   }
+      // }
       
     }, 50);
   }
