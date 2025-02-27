@@ -7,7 +7,7 @@ export interface Potator extends GenericFeature {
   };
 }
 
-const path = "/models/chest.glb"
+const path = "/models/statue.glb"
 
 const loader = new GLTFLoader();
 

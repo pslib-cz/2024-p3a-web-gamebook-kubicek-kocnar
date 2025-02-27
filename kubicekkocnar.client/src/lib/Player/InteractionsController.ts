@@ -45,6 +45,10 @@ export class InteractionsController {
     if (hitPapers.length > 0) {
       const scroll = hitPapers[0].userData.scroll as Scroll;
       this.player.story.AddStory(scroll);
+      toast(scroll.params.text, {
+        icon: '📜',
+        duration: scroll.params.text.length * 50
+      })
     }
 
     if (hitChests.length > 0) {

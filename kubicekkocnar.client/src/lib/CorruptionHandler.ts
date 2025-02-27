@@ -66,8 +66,11 @@ class CorruptionHandler {
     console.error("Reverting corruption");
 
     from.state = from.state += "reverted ";
+    if (!from.mesh.userData.oldMaterial) from.mesh.userData.oldMaterial = from.mesh.material;
     from.mesh.material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-    if (from.mesh.userData.oldMaterial) from.mesh.material = from.mesh.userData.oldMaterial;
+    setTimeout(() => {
+      from.mesh.material = from.mesh.userData.oldMaterial;
+    } , 300);
     //this.corruptedBlocks = this.corruptedBlocks.filter((corruptedBlock) => corruptedBlock != from);
     this.revertedBlocks.push(from);
 
@@ -92,8 +95,13 @@ class CorruptionHandler {
             this.revertedBlocks.push(block);
 
           block.state += "reverted ";
-          //block.mesh.material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-          if (block.mesh.userData.oldMaterial) block.mesh.material = block.mesh.userData.oldMaterial;
+          if (!block.mesh.userData.oldMaterial) block.mesh.userData.oldMaterial = block.mesh.material;
+          block.mesh.material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+          setTimeout(() => {
+            block.mesh.material = block.mesh.userData.oldMaterial;
+          } , 300);
+          
+            
           this.corruptedBlocks = this.corruptedBlocks.filter((corruptedBlock) => corruptedBlock != block);
 
           blocksReverted++;
@@ -112,7 +120,7 @@ class CorruptionHandler {
       //   }
       // }
       
-    }, 50);
+    }, 77);
   }
 }
 
