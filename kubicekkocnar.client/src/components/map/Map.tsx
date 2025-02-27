@@ -15,7 +15,6 @@ import {
   PathFindingVisual,
   VisualizePathfinableBlocks,
 } from "../PathFinding";
-import { Toaster } from "react-hot-toast";
 
 // React.memo(
 const Map = ({
@@ -202,8 +201,6 @@ const Map = ({
           />
         </>
       )}
-
-      <Toaster/>
 
       {/* EDITOR ONLY */}
       {isEditor && (
