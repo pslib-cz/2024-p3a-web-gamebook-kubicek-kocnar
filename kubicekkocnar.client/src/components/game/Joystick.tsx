@@ -76,7 +76,6 @@ export function Joystick() {
       mode: 'static',
       restJoystick: true,
       shape: 'circle',
-      // position: { top: 20, left: 20 },
       position: { top: '60px', left: '60px' },
       dynamicPage: true,
     }
