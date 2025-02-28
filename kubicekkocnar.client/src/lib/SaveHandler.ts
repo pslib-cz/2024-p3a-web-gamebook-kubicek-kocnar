@@ -1,3 +1,8 @@
+import { Quaternion, Vector3 } from "three";
+import { Inventory } from "./Player/Inventory";
+import { Player } from "./Player/Player";
+import { StoryController } from "./Player/StoryController";
+
 export interface Save {
     auth: {
         email: string;
@@ -5,7 +10,15 @@ export interface Save {
         refreshToken: string;
         expiresIn: number;
         expiresAt: number;
-    };
+    },
+    player: {
+        inventory: Inventory,
+        story: StoryController,
+        level: number,
+        game: number,
+        position: Vector3,
+        rotation: Quaternion,
+    }
 }
 
 export default class SaveHandler {
@@ -44,4 +57,24 @@ export default class SaveHandler {
             }
         }
     }
+
+    static savePlayer(player: Player): void {
+        const playerSaveData = {
+            inventory: player.inventory,
+            story: player.story,
+            level: player.scene.userData.level.levelId,
+            game: player.scene.userData.level.gameId,
+            position: player.controller.playerPosition,
+            rotation: player.controller.rotation,
+        };
+
+        console.log("Saving player", playerSaveData);
+        localStorage.setItem('player', JSON.stringify(playerSaveData));
+    }
+
+    static loadPlayer(): Save['player'] | null {
+        const playerRaw = localStorage.getItem('player');
+        if (!playerRaw) return null;
+        return JSON.parse(playerRaw);
+    }   
 }

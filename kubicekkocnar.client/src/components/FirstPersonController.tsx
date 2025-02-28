@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { getHandlePlayerMouseClick } from "./ItemController";
 import { Player } from "../lib/Player/Player";
 import { GameContext } from "../contexts/GameContext";
+import SaveHandler from "../lib/SaveHandler";
 
 type FirstPersonControllerComponentProps = {
   camera: THREE.Camera;
@@ -18,12 +19,13 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate }: FirstPerson
   const { setPlayer, player, joytickData } = useContext(AppContext);
   const { playerHealth } = useContext(GameContext);
 
+  
   /// this is necessary for interactions
   const playerRef = useRef<Player | null>(null);
-
+  
   const { gl } = useThree();
   const clock = new THREE.Clock();
-
+  
   useEffect(() => {
     if (player) {
       player?.controller.SetJoystickData(joytickData);

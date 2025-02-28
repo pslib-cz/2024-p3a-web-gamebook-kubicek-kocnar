@@ -2,27 +2,27 @@ import * as THREE from "three";
 import { JoystickOutputData } from "../../components/game/Joystick";
 
 export class FirstPersonController {
-  private camera: THREE.Camera;
-  private velocity: THREE.Vector3 = new THREE.Vector3();
-  private rotation: THREE.Quaternion = new THREE.Quaternion(); // Base quaternion
-  private pitch: THREE.Quaternion = new THREE.Quaternion(); // For up/down rotation
-  private yaw: THREE.Quaternion = new THREE.Quaternion(); // For left/right rotation
-  private touchStart: { x: number; y: number } = { x: 0, y: 0 };
-  private viewBobPhase: number = 0; // For view bobbing effect
+  camera: THREE.Camera;
+  velocity: THREE.Vector3 = new THREE.Vector3();
+  rotation: THREE.Quaternion = new THREE.Quaternion(); // Base quaternion
+  pitch: THREE.Quaternion = new THREE.Quaternion(); // For up/down rotation
+  yaw: THREE.Quaternion = new THREE.Quaternion(); // For left/right rotation
+  touchStart: { x: number; y: number } = { x: 0, y: 0 };
+  viewBobPhase: number = 0; // For view bobbing effect
 
-  private acceleration: number = 0; // Acceleration
-  private isGrounded: boolean = true; // Check if player is on the ground
-  private lastGrounded: boolean = true; // Check if player was on the ground last frame
-  private scene: THREE.Scene;
-  private playerPosition: THREE.Vector3 = new THREE.Vector3();
+  acceleration: number = 0; // Acceleration
+  isGrounded: boolean = true; // Check if player is on the ground
+  lastGrounded: boolean = true; // Check if player was on the ground last frame
+  scene: THREE.Scene;
+  playerPosition: THREE.Vector3 = new THREE.Vector3();
 
   private saveCounter: number = 0;
 
   private navigate;
 
-  public stopped: boolean = false;
+  stopped: boolean = false;
 
-  private canJump: boolean = true;
+  canJump: boolean = true;
 
   constructor(camera: THREE.Camera, scene: THREE.Scene, navigate: (levelId: string) => void) {
 

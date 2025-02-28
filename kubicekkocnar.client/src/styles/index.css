@@ -62,6 +62,12 @@
     opacity: .6;
 }
 
+.mainmenu__disabled {
+    opacity: .6;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
 .screen_notification {
     position: fixed;
     top: 0;

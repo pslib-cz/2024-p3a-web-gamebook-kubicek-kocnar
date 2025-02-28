@@ -1,8 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import "../styles/index.css"
+import SaveHandler from '../lib/SaveHandler';
 
 const MainMenu: React.FC = () => {
+
+    const save = SaveHandler.loadPlayer();
+
     return (
         <div className='mainmenu'>
             <div className="mainmenu__headings">
@@ -13,7 +17,7 @@ const MainMenu: React.FC = () => {
                 <Link className='button' to="/games/1/levels/1">
                     Play
                 </Link>
-                <Link className='button mainmenu__semi' to="/games/1/levels/1">
+                <Link className={"button " + save ? "" : "mainmenu__disabled"} to={`/games/${save?.game}/levels/${save?.level}`}>
                     Continue
                 </Link>
                 <Link className='button' to="/games">

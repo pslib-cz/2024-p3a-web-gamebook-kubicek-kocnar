@@ -1,3 +1,4 @@
+import SaveHandler from "../SaveHandler";
 import { FirstPersonController } from "./FirstPersonController";
 import { InteractionsController } from "./InteractionsController";
 import { Inventory } from "./Inventory";
@@ -23,6 +24,15 @@ export class Player
     this.story = new StoryController();
     this.interactions = new InteractionsController(this);
     this.controller = controller;
+
+    this.createSavingInterval()
+  }
+
+  createSavingInterval()
+  {
+    return setInterval(() => {
+      SaveHandler.savePlayer(this);
+    }, 1000);
   }
 
   public Clone() : Player
