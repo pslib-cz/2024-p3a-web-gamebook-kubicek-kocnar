@@ -45,11 +45,6 @@ class CorruptionHandler {
           this.corruptedBlocks.push(block);
         });
       });
-
-      // debug
-      // if (this.corruptedBlocks.length >= 300) {
-      //   this.revert(this.corruptedBlocks[0]);
-      // }
     }, 250);
   }
 
@@ -76,20 +71,12 @@ class CorruptionHandler {
 
     this.interval = setInterval(() => {
 
-      //console.log("array size: ", this.revertedBlocks.length);
-
       let blocksReverted = 0;
 
       this.revertedBlocks.forEach((corruptedBlock) => {
 
         const adjancedBlocks = this.allBlocks.filter((block) => block.position.distanceTo(corruptedBlock.position) < 1.5);
         adjancedBlocks.forEach((block) => {
-
-          //console.log(block.state)
-
-          // if (!block.state.includes("corrupt") 
-          //   // || block.state.includes("reverted")
-          // ) return;
 
           if (!block.state.includes("reverted"))
             this.revertedBlocks.push(block);
@@ -109,17 +96,6 @@ class CorruptionHandler {
 
         this.revertedBlocks = this.revertedBlocks.filter((revertedBlock) => revertedBlock != corruptedBlock);
       });
-
-      // if (blocksReverted == 0) {
-      //   this.stop();
-
-      //   if (this.corruptedBlocks.length == 0) {
-      //     console.error("All blocks reverted");
-      //   } else {
-      //     this.revert(this.corruptedBlocks[0]);
-      //   }
-      // }
-      
     }, 77);
   }
 }

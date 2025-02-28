@@ -9,7 +9,6 @@ import Level from "../../lib/Level";
 import MapEditor from "../../lib/MapEditor";
 import FirstPersonControllerComponent from "../FirstPersonController";
 import Model from "./Model";
-// import { CorruptionHandlerRenderer } from "../CorruptionHandler";
 import { useNavigate } from "react-router-dom";
 import {
   PathFindingVisual,
@@ -184,12 +183,6 @@ const Map = ({
       {/* GAME ONLY */}
       {!isEditor && (
         <>
-          {/* <CorruptionHandlerRenderer
-            allBlocks={level.blocks}
-            corruptedBlocks={level.blocks.filter(
-              (block) => block.block.attributes[0] == "corrupt"
-            )}
-          /> */}
           <FirstPersonControllerComponent
             camera={camera}
             scene={scene}

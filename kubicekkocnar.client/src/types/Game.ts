@@ -1,7 +1,6 @@
 import Level from './Level';
 import User from './User';
 
-
 // a Game is a collection of levels
 // the default game has ID=1, users can create their own games, which will be visible in the game list menu (if published)
 interface Game {
