@@ -21,11 +21,9 @@ export class FirstPersonController {
   private navigate;
 
   stopped: boolean = false;
-
   canJump: boolean = true;
 
   constructor(camera: THREE.Camera, scene: THREE.Scene, navigate: (levelId: string) => void) {
-
     if (!scene) throw new Error("Scene is not defined");
 
     this.camera = camera;
@@ -112,7 +110,6 @@ export class FirstPersonController {
   }
 
   public handleKeyDown(event: KeyboardEvent) {
-
     switch (event.code) {
       case "KeyW":
         this.joystickData.fwdValue = 1;
@@ -242,8 +239,6 @@ export class FirstPersonController {
       new THREE.Vector3(.75, 2, .75) // Collider size
     );
     for (const portal of portals) {
-
-
       // check distance for any size of portal
       if (playerBox.intersectsBox(new THREE.Box3().setFromObject(portal))) {
         this.stopped = true;
@@ -282,7 +277,7 @@ export class FirstPersonController {
 
   public savePlayerPosition() {
     const levelId = this.scene.userData.level.levelId;
-    console.log("saving player position " + levelId);
+    //console.log("saving player position " + levelId);
     localStorage.setItem("playerPosition" + levelId, JSON.stringify(this.playerPosition.clone().sub(this.scene.position)));
   }
 

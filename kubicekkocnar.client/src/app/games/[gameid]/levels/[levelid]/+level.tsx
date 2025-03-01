@@ -16,7 +16,7 @@ import { Enemies } from "../../../../../components/Enemies";
 import ScreenNotification from "../../../../../components/ui/ScreenNotification";
 import { Toaster } from "react-hot-toast";
 
-function LevelPlayer()
+export default function LevelPlayer()
 {
   const { gameid, levelid } = useParams();
   const [scene, setScene] = useState<THREE.Scene | null>(null);
@@ -66,5 +66,3 @@ function LevelPlayer()
     </TooltipProvider>
   )
 }
-
-export default LevelPlayer;

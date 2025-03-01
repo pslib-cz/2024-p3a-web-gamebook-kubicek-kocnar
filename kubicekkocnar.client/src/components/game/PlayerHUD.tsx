@@ -52,7 +52,7 @@ const GameHUD = () => {
     return (
       <>
         <DamageOverlay />
-        <div className="player-hud">Ya ded</div>
+        <div className="player-hud" style={{right:"50%", top:"50%"}}>Ya ded</div>
       </>
     )
   }

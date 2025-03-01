@@ -12,9 +12,9 @@ import { Item } from "../types/Item";
 import { Coinage } from "../types/Coinage";
 import CorruptionHandler from "./CorruptionHandler";
 
-interface LevelOptions {
-  name: string
-}
+// interface LevelOptions {
+//   name: string
+// }
 
 const APIROUTE = (gameId: number, levelId?: number) => `${import.meta.env.VITE_API_URL}/Games/${gameId}/Levels${levelId ? `/${levelId}` : ''}`;
 class Level implements LevelType {
@@ -269,28 +269,28 @@ class Level implements LevelType {
     }
   }
 
-  static async createLevel(gameId: number, mapRenderer: MapRenderer, options: LevelOptions, onReady: (level: Level) => void) {
-    try {
-      const levelResponse = await fetch(APIROUTE(gameId), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${(await SaveHandler.getAuth())?.accessToken}`
-        },
-        body: JSON.stringify({
-          name: options.name
-        })
-      })
-      if (!levelResponse.ok) {
-        throw new Error(`Response status: ${levelResponse.status}`);
-      }
-      const level: LevelType = await levelResponse.json();
+  // static async createLevel(gameId: number, mapRenderer: MapRenderer, options: LevelOptions, onReady: (level: Level) => void, player : Player) {
+  //   try {
+  //     const levelResponse = await fetch(APIROUTE(gameId), {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': `Bearer ${(await SaveHandler.getAuth())?.accessToken}`
+  //       },
+  //       body: JSON.stringify({
+  //         name: options.name
+  //       })
+  //     })
+  //     if (!levelResponse.ok) {
+  //       throw new Error(`Response status: ${levelResponse.status}`);
+  //     }
+  //     const level: LevelType = await levelResponse.json();
 
-      return new Level(level.gameId, level.levelId, mapRenderer, onReady);
-    } catch (err: unknown) {
-      console.error(err);
-    }
-  }
+  //     return new Level(level.gameId, level.levelId, mapRenderer, onReady, player);
+  //   } catch (err: unknown) {
+  //     console.error(err);
+  //   }
+  // }
 }
 
 export default Level

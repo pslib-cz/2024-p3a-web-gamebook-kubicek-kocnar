@@ -7,7 +7,6 @@ import { useContext } from "react";
 import { getHandlePlayerMouseClick } from "./ItemController";
 import { Player } from "../lib/Player/Player";
 import { GameContext } from "../contexts/GameContext";
-import SaveHandler from "../lib/SaveHandler";
 
 type FirstPersonControllerComponentProps = {
   camera: THREE.Camera;
@@ -18,7 +17,6 @@ type FirstPersonControllerComponentProps = {
 const FirstPersonControllerComponent = ({ camera, scene, navigate }: FirstPersonControllerComponentProps) => {
   const { setPlayer, player, joytickData } = useContext(AppContext);
   const { playerHealth } = useContext(GameContext);
-
   
   /// this is necessary for interactions
   const playerRef = useRef<Player | null>(null);
