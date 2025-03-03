@@ -46,10 +46,8 @@ export class EnemyRenderer {
   }
 
   public addEnemy(type: EnemyType) {
-    if (this.enemies.length >= this.MAX_ENEMIES) {
-      return;
-    }
-    
+    if (this.enemies.length >= this.MAX_ENEMIES) return;
+
     const enemy: Enemy = new Enemy(type);
 
     this.enemies.push(enemy);
@@ -110,14 +108,12 @@ export class EnemyRenderer {
           const blockBelowEnemy = this.pathFinder.GetClosestBlock(enemy.mesh.position.clone().sub(new THREE.Vector3(0, 2, 0)));
           const blockBelowPlayer = this.pathFinder.GetClosestBlock(player.position.clone().sub(new THREE.Vector3(0, 2, 0)).sub(this.scene.position));
 
-          if (!blockBelowEnemy)
-          {
+          if (!blockBelowEnemy) {
             console.warn("No block below enemy");
             return;
           }
 
-          if (!blockBelowPlayer)
-          {
+          if (!blockBelowPlayer) {
             console.warn("No block below enemy");
             return;
           }

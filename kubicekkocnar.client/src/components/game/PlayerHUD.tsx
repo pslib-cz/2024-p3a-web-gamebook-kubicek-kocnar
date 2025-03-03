@@ -52,7 +52,7 @@ const GameHUD = () => {
     return (
       <>
         <DamageOverlay />
-        <div className="player-hud" style={{right:"50%", top:"50%"}}>
+        <div className="death-overlay" style={{ right: "50%", top: "50%", backgroundColor: "black" }}>
           <p>Ya ded</p>
           <a href="/">Restart</a>
         </div>

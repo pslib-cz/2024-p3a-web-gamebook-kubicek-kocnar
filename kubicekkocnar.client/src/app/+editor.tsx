@@ -36,7 +36,7 @@ const Editor = () => {
     setAuth(auth);
 
     if (!auth || !auth.accessToken) {
-      window.location.replace("/login?url"+window.location.pathname)
+      window.location.replace("/login?url" + window.location.pathname)
     }
   }
 
@@ -70,8 +70,8 @@ const Editor = () => {
 };
 
 function CompleteDrawer(
-  {defaultItem, items, Reload, objType} : 
-  {defaultItem: unknown, items: unknown[], Reload: () => void, objType: objTypes}) {
+  { defaultItem, items, Reload, objType }:
+    { defaultItem: unknown, items: unknown[], Reload: () => void, objType: objTypes }) {
   return (
     <div>
       <h2>{objType}</h2>

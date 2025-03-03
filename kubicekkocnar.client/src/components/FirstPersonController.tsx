@@ -1,12 +1,10 @@
 import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-// import { FirstPersonController } from "../lib/Player/FirstPersonController";
 import { AppContext } from "./AppContextProvider";
 import { useContext } from "react";
 import { getHandlePlayerMouseClick } from "./ItemController";
 import { Player } from "../lib/Player/Player";
-//import { GameContext } from "../contexts/GameContext";
 
 type FirstPersonControllerComponentProps = {
   camera: THREE.Camera;
@@ -16,17 +14,16 @@ type FirstPersonControllerComponentProps = {
 
 const FirstPersonControllerComponent = ({ camera, scene, navigate }: FirstPersonControllerComponentProps) => {
   const { setPlayer, player, joytickData } = useContext(AppContext);
-  //const { playerHealth } = useContext(GameContext);
-  
+
   /// this is necessary for interactions
   const playerRef = useRef<Player | null>(null);
-  
+
   const { gl } = useThree();
   const clock = new THREE.Clock();
-  
+
   useEffect(() => {
-    if (player) 
-      player?.controller.SetJoystickData(joytickData);    
+    if (player)
+      player?.controller.SetJoystickData(joytickData);
   }, [joytickData]);
 
   useEffect(() => {
@@ -36,12 +33,12 @@ const FirstPersonControllerComponent = ({ camera, scene, navigate }: FirstPerson
 
     playerRef.current = _player;
     setPlayer(_player);
-    
+
     const handleMouseMove = (event: MouseEvent) => _player.controller.handleMouseMove(event);
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") document.exitPointerLock();
       if (event.key === "x") window.location.replace(window.location + "/editor");
-      
+
       _player.controller.handleKeyDown(event);
     }
     const handleKeyUp = (event: KeyboardEvent) => _player.controller.handleKeyUp(event);

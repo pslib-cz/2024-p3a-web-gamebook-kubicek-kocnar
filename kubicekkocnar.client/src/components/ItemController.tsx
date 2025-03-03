@@ -27,10 +27,10 @@ export function ItemUI() {
     const handleScroll = (event: WheelEvent) => {
       player?.inventory.Scroll(event.deltaY > 0);
 
-        const s = player?.inventory.selectedItem;
-        if (!s) return;
+      const s = player?.inventory.selectedItem;
+      if (!s) return;
 
-        setPlayer(player.Clone());
+      setPlayer(player.Clone());
     };
 
     window.addEventListener('wheel', handleScroll);
@@ -41,7 +41,7 @@ export function ItemUI() {
   }, [player]);
 
   React.useEffect(() => {
-    if (useItem) {      
+    if (useItem) {
       const s = player?.inventory?.selectedItem;
       if (!s) return;
 
@@ -53,7 +53,7 @@ export function ItemUI() {
     }
   }, [player?.inventory.selectedItem, useItem]);
 
-  useEffect(() =>{
+  useEffect(() => {
     if (player && player.inventory.selectedItem)
       setImg(player.inventory.selectedItem.img)
 
@@ -64,7 +64,7 @@ export function ItemUI() {
       <div className='overlay'>
         <div className="ui-item">
           {
-            img != "" && 
+            img != "" &&
             <img src={img}></img>
           }
         </div>
@@ -73,7 +73,7 @@ export function ItemUI() {
   )
 }
 
-export function getHandlePlayerMouseClick() : (item : Item | null) => void | null {
+export function getHandlePlayerMouseClick(): (item: Item | null) => void | null {
 
   return () => handlePlayerMouseClick && handlePlayerMouseClick();
 }

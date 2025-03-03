@@ -19,7 +19,6 @@ export function UIOverlay() {
   });
 
   const handleKeyPress = (event: KeyboardEvent) => {
-
     if (event.key === 'e') {
       setOpened((a) => !a);
 
@@ -34,7 +33,7 @@ export function UIOverlay() {
 
   useEffect(
     () => console.log("INVENTORY ", player?.inventory)
-  , [player]);
+    , [player]);
 
   return (
     <>
@@ -76,7 +75,6 @@ function ItemUpgradeDrawer({ upgrade }: { upgrade: ItemUpgrade }) {
     <div
       onClick={
         () => {
-
           if (player?.inventory.ItemIsInHotbar(upgrade.inputItem) ||
             !player?.inventory.IsCostSufficient(upgrade.cost)) return;
 

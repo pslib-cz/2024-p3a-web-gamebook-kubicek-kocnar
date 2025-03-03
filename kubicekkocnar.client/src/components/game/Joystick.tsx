@@ -9,8 +9,7 @@ export class JoystickOutputData {
   lftValue: number = 0;
   up: boolean = false;
 
-  AnyMovement() : boolean
-  {
+  AnyMovement(): boolean {
     return this.fwdValue > 0 || this.bkdValue > 0 || this.rgtValue > 0 || this.lftValue > 0;
   }
 
@@ -34,16 +33,14 @@ export class JoystickOutputData {
     }
   }
 
-  Reset()
-  {
+  Reset() {
     this.bkdValue = 0
     this.fwdValue = 0
     this.lftValue = 0
     this.rgtValue = 0
   }
 
-  Clone() : JoystickOutputData
-  {
+  Clone(): JoystickOutputData {
     const clone = new JoystickOutputData();
     clone.bkdValue = this.bkdValue;
     clone.fwdValue = this.fwdValue;
@@ -52,10 +49,10 @@ export class JoystickOutputData {
     return clone;
   }
 }
-  
+
 
 export function Joystick() {
-  
+
   const output = new JoystickOutputData();
 
   const { setJoystickData } = useContext(AppContext);

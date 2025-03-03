@@ -9,6 +9,16 @@
   gap: 16px;
 }
 
+.death-overlay {
+  transform: translate(50%, -50%);
+  position: fixed;
+  color: white;
+  background-color: black;
+  padding: 5em 10em;
+  z-index: 100;
+  border-radius: 1rem;
+}
+
 .player-hud__health-section {
   display: flex;
   align-items: center;

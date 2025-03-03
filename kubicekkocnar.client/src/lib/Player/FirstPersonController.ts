@@ -39,6 +39,8 @@ export class FirstPersonController {
   }
 
   public handleMouseMove(event: MouseEvent) {
+    if (this.player.health <= 0) return;
+
     const sensitivity = 0.002;
 
     // Horizontal yaw (rotate around world Y-axis)
@@ -72,9 +74,8 @@ export class FirstPersonController {
   }
 
   public handlePointerLockChange(isLocked: boolean) {
-    if (!isLocked) {
+    if (!isLocked) 
       this.joystickData = new JoystickOutputData();
-    }
   }
 
   public handleTouchMove(event: TouchEvent) {
@@ -252,7 +253,6 @@ export class FirstPersonController {
       if (playerBox.intersectsBox(new THREE.Box3().setFromObject(portal))) {
         this.stopped = true;
         console.log('teleporting to ', portal.userData.destination);
-        //this.playerPosition = new THREE.Vector3(-8, 0.5, 7);
 
         // use react router to change the level
         this.playerPosition = new THREE.Vector3(0, 3, 0);
@@ -274,10 +274,8 @@ export class FirstPersonController {
       .filter((child) => child.name.includes('block'))
       .map((obstacle) => new THREE.Box3().setFromObject(obstacle));
 
-
     // Check for intersections with collidable objects
     for (const object of obstacles) {
-      //const objectBox = new THREE.Box3().setFromObject(object);
       if (playerBox.intersectsBox(object))
         return true;
     }
@@ -285,9 +283,7 @@ export class FirstPersonController {
   }
 
   public savePlayerPosition() {
-    const levelId = this.scene.userData.level.levelId;
-    //console.log("saving player position " + levelId);
-    localStorage.setItem("playerPosition" + levelId, JSON.stringify(this.playerPosition.clone().sub(this.scene.position)));
+    localStorage.setItem("playerPosition" + this.scene.userData.level.levelId, JSON.stringify(this.playerPosition.clone().sub(this.scene.position)));
   }
 
   public loadPlayerPosition() {

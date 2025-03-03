@@ -40,20 +40,16 @@ export default function AuthForm() {
         const data = await response.json();
         localStorage.setItem('auth', JSON.stringify({ ...data, email, expiresAt: Date.now() + data.expiresIn * 1000 }));
         //console.log('Login successful');
-        // Redirect or handle login success
         if (redirurl) {
           window.location.href = redirurl;
         } else {
-          // Default redirect or action
           window.location.href = '/';
         }
       } else {
         console.error('Login failed');
-        // Handle login failure
       }
     } catch (error) {
       console.error('An error occurred:', error);
-      // Handle error
     }
   };
 

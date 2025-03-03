@@ -15,64 +15,64 @@ interface AppContextType {
   toolState: Tool;
   setToolState: (tool: Tool) => void;
   setBlock: (block: PlacedBlock) => void;
-  blockState: PlacedBlock|null;
+  blockState: PlacedBlock | null;
   setFeature: (block: GenericFeature) => void;
-  featureState: GenericFeature|null;
+  featureState: GenericFeature | null;
 
   player: Player | null;
   setPlayer: (player: Player) => void
 
   setAddBlockParams: (block: AddBlockParams) => void;
-  addBlockParamsState: AddBlockParams|null;
+  addBlockParamsState: AddBlockParams | null;
 
-  joytickData : JoystickOutputData | null;
-  setJoystickData : (data: JoystickOutputData) => void;
+  joytickData: JoystickOutputData | null;
+  setJoystickData: (data: JoystickOutputData) => void;
 
-  enemyHandler : EnemyRenderer | null;
-  setEnemyHandler : (handler: EnemyRenderer) => void;
+  enemyHandler: EnemyRenderer | null;
+  setEnemyHandler: (handler: EnemyRenderer) => void;
 }
 
 const defaultContext: AppContextType = {
   toolState: Tool.List,
-  setToolState: () => {},
-  setBlock: () => {},
+  setToolState: () => { },
+  setBlock: () => { },
   blockState: null,
-  setFeature: () => {},
+  setFeature: () => { },
   featureState: null,
 
   player: null,
-  setPlayer: () => {},
+  setPlayer: () => { },
 
-  setAddBlockParams: () => {},
+  setAddBlockParams: () => { },
   addBlockParamsState: null,
 
   joytickData: null,
-  setJoystickData: () => {},
+  setJoystickData: () => { },
 
   enemyHandler: null,
-  setEnemyHandler: () => {}
+  setEnemyHandler: () => { }
 };
 
 const AppContext = React.createContext<AppContextType>(defaultContext);
 
-function AppContextProvider({children}: {children: React.ReactNode}) {
-    const [toolState, setToolState] = useState(Tool.List);
-    const [blockState, setBlock] = useState<PlacedBlock|null>(null);
-    const [featureState, setFeature] = useState<GenericFeature|null>(null);
-    const [addBlockParamsState, setAddBlockParams] = useState<AddBlockParams|null>(null);
-    const [player, setPlayer] = useState<Player | null>(null);
-    const [joytickData, setJoystickData] = useState<JoystickOutputData | null>(null);
-    const [enemyHandler, setEnemyHandler] = useState<EnemyRenderer | null>(null);
+function AppContextProvider({ children }: { children: React.ReactNode }) {
+  const [toolState, setToolState] = useState(Tool.List);
+  const [blockState, setBlock] = useState<PlacedBlock | null>(null);
+  const [featureState, setFeature] = useState<GenericFeature | null>(null);
+  const [addBlockParamsState, setAddBlockParams] = useState<AddBlockParams | null>(null);
+  const [player, setPlayer] = useState<Player | null>(null);
+  const [joytickData, setJoystickData] = useState<JoystickOutputData | null>(null);
+  const [enemyHandler, setEnemyHandler] = useState<EnemyRenderer | null>(null);
 
-    const contextValue = useMemo(() => ({
-      setToolState, toolState, blockState, setBlock, featureState, setFeature, player, setPlayer, setAddBlockParams, addBlockParamsState, joytickData, setJoystickData, enemyHandler, setEnemyHandler
-    }), [toolState, blockState, featureState, player, addBlockParamsState, joytickData, enemyHandler]);
+  const contextValue = useMemo(() => ({
+    setToolState, toolState, blockState, setBlock, featureState, setFeature, player, setPlayer, setAddBlockParams, addBlockParamsState, joytickData, setJoystickData, enemyHandler, setEnemyHandler
+  }), [toolState, blockState, featureState, player, addBlockParamsState, joytickData, enemyHandler]);
 
-    return (
-      <AppContext.Provider value={contextValue}>
-        {children}
-      </AppContext.Provider>
-    );
+  return (
+    <AppContext.Provider value={contextValue}>
+      {children}
+    </AppContext.Provider>
+  );
 }
 
-export {AppContext, AppContextProvider};
+export { AppContext, AppContextProvider };

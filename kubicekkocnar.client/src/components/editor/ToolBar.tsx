@@ -54,13 +54,13 @@ const ToolBar: React.FC = () => {
   window.addEventListener('keydown', handleKeyDown);
 
   function TooltipItem(
-    { icon, text, tool }: 
-    { icon: MaterialSymbolProps['icon'], text: string, tool: Tool }
+    { icon, text, tool }:
+      { icon: MaterialSymbolProps['icon'], text: string, tool: Tool }
   ) {
     return (
       <Tooltip>
-        <TooltipTrigger 
-          className={`toolbar__button${toolState === tool ? ' toolbar__button--active' : ''}`} 
+        <TooltipTrigger
+          className={`toolbar__button${toolState === tool ? ' toolbar__button--active' : ''}`}
           onClick={() => setToolState(tool)}
         >
           <MaterialSymbol icon={icon} size={24} fill />

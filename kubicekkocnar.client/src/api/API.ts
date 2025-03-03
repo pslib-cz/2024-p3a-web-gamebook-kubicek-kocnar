@@ -43,7 +43,7 @@ export async function POST(obj: objTypes, item: unknown): Promise<void> {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-         'Authorization': `Bearer ${(await SaveHandler.getAuth())?.accessToken}`
+        'Authorization': `Bearer ${(await SaveHandler.getAuth())?.accessToken}`
       },
       body: JSON.stringify(item)
     });

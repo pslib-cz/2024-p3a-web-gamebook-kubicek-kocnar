@@ -12,20 +12,20 @@ interface ModelProps {
   name?: string;
 }
 
-const Model: React.FC<ModelProps> = ({ path, position, rotation = new Euler(0, 0, 0), name="NewModel" }) => {
+const Model: React.FC<ModelProps> = ({ path, position, rotation = new Euler(0, 0, 0), name = "NewModel" }) => {
   const gltf = useLoader<GLTF>(GLTFLoader, path);
   const modelRef = useRef<THREE.Group>(null);
 
   const clonedScene = useMemo(() => gltf.scene.clone(), [gltf.scene]);
 
   return (
-  <group position={position} rotation={rotation} name={name}>
+    <group position={position} rotation={rotation} name={name}>
       <primitive
-          ref={modelRef}
-          object={clonedScene}
-          dispose={null}
+        ref={modelRef}
+        object={clonedScene}
+        dispose={null}
       />
-  </group>
+    </group>
   );
 };
 

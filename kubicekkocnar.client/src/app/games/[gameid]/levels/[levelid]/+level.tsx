@@ -16,8 +16,7 @@ import { Enemies } from "../../../../../components/Enemies";
 import ScreenNotification from "../../../../../components/ui/ScreenNotification";
 import { Toaster } from "react-hot-toast";
 
-export default function LevelPlayer()
-{
+export default function LevelPlayer() {
   const { gameid, levelid } = useParams();
   const [scene, setScene] = useState<THREE.Scene | null>(null);
   const [level, setLevel] = useState<Level | null>(null);
@@ -30,8 +29,8 @@ export default function LevelPlayer()
     if (!gameid || !levelid) {
       console.error("Invalid URL");
       return;
-    }  
-    
+    }
+
     new Blocks((blocks) => {
       const mapRenderer = new MapRenderer(scene, blocks);
       new Level(parseInt(gameid), parseInt(levelid), mapRenderer, (level) => {
@@ -43,23 +42,23 @@ export default function LevelPlayer()
   return (
     <TooltipProvider>
       <AppContextProvider>
-        <ScreenNotification/>
+        <ScreenNotification />
         {!level && <div className="loader"></div>}
         <div className='canvas' id="gameroot">
-          <Toaster/>
+          <Toaster />
           <Canvas onCreated={(state) => {
-              state.camera.position.set(0, 3, 0);
-              state.scene.userData.camera = state.camera;
-              state.scene.background = new THREE.Color(0x0e0726);
-              setScene(state.scene);
-            }}>
-            {level && <Map level={level}/>}
+            state.camera.position.set(0, 3, 0);
+            state.scene.userData.camera = state.camera;
+            state.scene.background = new THREE.Color(0x0e0726);
+            setScene(state.scene);
+          }}>
+            {level && <Map level={level} />}
           </Canvas>
-          <ItemUI/>
-          <UIOverlay/>
+          <ItemUI />
+          <UIOverlay />
           <GameContextProvider>
-            <PlayerHUD/>
-            {level && <Enemies level={level}/>}
+            <PlayerHUD />
+            {level && <Enemies level={level} />}
           </GameContextProvider>
         </div>
       </AppContextProvider>
