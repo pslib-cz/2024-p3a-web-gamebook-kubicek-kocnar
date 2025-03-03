@@ -90,8 +90,6 @@ export class PathFinder
       while (queue.length > 0) {
         const currentBlock = queue.shift();
 
-        console.log("Step");
-
         if (currentBlock === endBlock) {
           // Path found, reconstruct the path
           const path = [];
@@ -127,7 +125,7 @@ export class PathFinder
         await new Promise((resolve) => setTimeout(resolve, 10));
       }
 
-      console.log("No path found");
+      console.warn("No path found");
       return [];
     }
 

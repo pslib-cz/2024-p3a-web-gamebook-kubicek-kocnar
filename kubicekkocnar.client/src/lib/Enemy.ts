@@ -47,7 +47,6 @@ export class EnemyRenderer {
 
   public addEnemy(type: EnemyType) {
     if (this.enemies.length >= this.MAX_ENEMIES) {
-      //console.warn("Max enemies reached");
       return;
     }
     

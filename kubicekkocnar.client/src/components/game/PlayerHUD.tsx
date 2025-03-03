@@ -12,10 +12,10 @@ const GameHUD = () => {
 
   // Calculate health bar color based on health value
   const getHealthColor = useMemo(() => {
-    if (playerHealth > 70) return '#44ff44';
-    if (playerHealth > 30) return '#ffae00';
+    if ((player?.health ?? 0) > 70) return '#44ff44';
+    if ((player?.health ?? 0) > 30) return '#ffae00';
     return '#ff4444';
-  }, [playerHealth]);
+  }, [player]);
 
   const HealthBar = () => {
     return (
@@ -52,7 +52,10 @@ const GameHUD = () => {
     return (
       <>
         <DamageOverlay />
-        <div className="player-hud" style={{right:"50%", top:"50%"}}>Ya ded</div>
+        <div className="player-hud" style={{right:"50%", top:"50%"}}>
+          <p>Ya ded</p>
+          <a href="/">Restart</a>
+        </div>
       </>
     )
   }

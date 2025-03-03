@@ -10,7 +10,6 @@ import PlacedBlock from "../../types/PlacedBlock";
 import toast from "react-hot-toast";
 
 export class InteractionsController {
-
   private player: Player;
 
   constructor(player: Player) {
@@ -18,6 +17,8 @@ export class InteractionsController {
   }
 
   public onCLick() {
+    if (this.player.health <= 0) return;
+
     const positionsd: THREE.Vector3 = new THREE.Vector3();
 
     positionsd.copy(this.player.camera.position);
@@ -32,7 +33,7 @@ export class InteractionsController {
 
     hitEnemies.forEach((enemyMesh) => {
       const enemy = enemyMesh.userData.enemy as Enemy;
-      console.log("Hit enemy:", enemy);
+      //console.log("Hit enemy:", enemy);
 
       enemy.takeDamage(10, () => {
         this.player.scene.userData.level.enemyRenderer.RemoveEnemy(enemy);
@@ -74,7 +75,7 @@ export class InteractionsController {
 
       console.error("Hit chest:", chest);
 
-      console.log(chest.params)
+      //console.log(chest.params)
     }
 
     if (hitPotators.length > 0) {

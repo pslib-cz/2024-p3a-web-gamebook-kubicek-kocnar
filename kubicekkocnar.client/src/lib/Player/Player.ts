@@ -7,6 +7,8 @@ import * as THREE from 'three';
 
 export class Player
 {
+  public health: number = 100;
+
   public camera: THREE.Camera;
   public scene: THREE.Scene;
 
@@ -15,7 +17,7 @@ export class Player
   public interactions : InteractionsController;
   public story : StoryController;
 
-  public constructor(camera : THREE.Camera, scene : THREE.Scene, controller : FirstPersonController)
+  public constructor(camera : THREE.Camera, scene : THREE.Scene, navigate: (levelId: string) => void)
   {
     this.camera = camera;
     this.scene = scene;
@@ -23,7 +25,7 @@ export class Player
     this.inventory = new Inventory();
     this.story = new StoryController();
     this.interactions = new InteractionsController(this);
-    this.controller = controller;
+    this.controller = new FirstPersonController(camera, scene, navigate, this);
 
     this.createSavingInterval()
   }

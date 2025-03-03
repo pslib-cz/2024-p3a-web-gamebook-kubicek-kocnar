@@ -21,8 +21,7 @@ async function render(chest: Chest) {
       chest.object.position.set(chest.position?.x || 0, chest.position?.y || 0, chest.position?.z || 0);
 
       chest.object.userData.chest = chest;
-
-      console.log(`Loaded model from ${path}`, gltf);
+      
       resolve();
 
     }, undefined, function (error) {

@@ -28,13 +28,12 @@ const Map = ({
   const scene = level.mapRenderer.scene;
 
   scene.userData.level = level;
-  console.log("Rendering Map", scene);
 
   const { toolState, setToolState, setBlock, setFeature, addBlockParamsState } = useContext(AppContext);
   const threeRef = React.useRef(useThree());
   const { gl, camera } = threeRef.current;
 
-  console.log("Rerendering MapRenderer");
+  console.log("Rendering MapRenderer", scene);
 
   useFrame(() => {
     level?.enemyRenderer?.update();

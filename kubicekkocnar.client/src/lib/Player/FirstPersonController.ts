@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { JoystickOutputData } from "../../components/game/Joystick";
+import { Player } from "./Player";
 
 export class FirstPersonController {
   camera: THREE.Camera;
@@ -23,7 +24,9 @@ export class FirstPersonController {
   stopped: boolean = false;
   canJump: boolean = true;
 
-  constructor(camera: THREE.Camera, scene: THREE.Scene, navigate: (levelId: string) => void) {
+  player : Player;
+
+  constructor(camera: THREE.Camera, scene: THREE.Scene, navigate: (levelId: string) => void, player: Player) {
     if (!scene) throw new Error("Scene is not defined");
 
     this.camera = camera;
@@ -31,6 +34,8 @@ export class FirstPersonController {
     this.navigate = navigate;
 
     this.playerPosition = this.camera.position.clone();
+
+    this.player = player;
   }
 
   public handleMouseMove(event: MouseEvent) {
@@ -150,15 +155,19 @@ export class FirstPersonController {
   }
 
   public update(delta: number) {
-
     this.saveCounter += delta;
     if (this.saveCounter > 2) {
       this.savePlayerPosition();
       this.saveCounter = 0;
     }
 
-    if (this.playerPosition.y < -100) {
+    if (this.playerPosition.y < -100)
       this.playerPosition.setY(20)
+
+    if (this.player.health <= 0)
+    {
+      document.exitPointerLock();
+      return;
     }
 
     if (this.stopped) return;

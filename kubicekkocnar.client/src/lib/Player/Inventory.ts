@@ -39,7 +39,7 @@ export class Inventory {
   public AddItemIntoHotbar(item : Item)
   {
     this.hotbar.push(item);    
-    console.log("added item into hotbar " + item.name);
+    //console.log("added item into hotbar " + item.name);
   }
 
   public RemoveItemFromHotbar(item : Item)

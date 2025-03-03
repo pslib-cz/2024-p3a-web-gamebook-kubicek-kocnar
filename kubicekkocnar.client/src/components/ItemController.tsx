@@ -42,14 +42,12 @@ export function ItemUI() {
 
   React.useEffect(() => {
     if (useItem) {      
-      const s = player?.inventory?.selectedItem      
+      const s = player?.inventory?.selectedItem;
       if (!s) return;
 
       setImg(s.imgUsed);
 
-      setTimeout(() => {
-        setImg(s.img);
-      }, 500);
+      setTimeout(() => { setImg(s.img); }, 500);
 
       setUseItem(false); // Reset the state
     }
