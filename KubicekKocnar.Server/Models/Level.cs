@@ -14,6 +14,8 @@ namespace KubicekKocnar.Server.Models
 
         [JsonIgnore]
         public Game? Game { get; set; } = null;
+
+        public uint CorruptionSpeed { get; set; } = 1;
         
         public uint GameId { get; set; }
 

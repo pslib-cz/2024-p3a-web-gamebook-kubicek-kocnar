@@ -68,7 +68,6 @@ export default class SaveHandler {
       rotation: player.controller.rotation,
     };
 
-    //console.log("Saving player", playerSaveData);
     localStorage.setItem('player', JSON.stringify(playerSaveData));
   }
 

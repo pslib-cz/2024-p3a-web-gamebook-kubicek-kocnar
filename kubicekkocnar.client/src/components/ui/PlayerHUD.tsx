@@ -2,7 +2,7 @@ import { useContext, useMemo } from 'react';
 import '../../styles/game/PlayerHUD.css';
 import { AppContext } from '../AppContextProvider';
 import { GameContext } from '../../contexts/GameContext';
-import { Joystick } from './Joystick';
+import { Joystick } from '../game/Joystick';
 
 const GameHUD = () => {
   const { playerHealth } = useContext(GameContext);

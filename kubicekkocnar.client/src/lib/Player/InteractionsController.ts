@@ -33,7 +33,6 @@ export class InteractionsController {
 
     hitEnemies.forEach((enemyMesh) => {
       const enemy = enemyMesh.userData.enemy as Enemy;
-      //console.log("Hit enemy:", enemy);
 
       enemy.takeDamage(10, () => {
         this.player.scene.userData.level.enemyRenderer.RemoveEnemy(enemy);
@@ -74,13 +73,9 @@ export class InteractionsController {
       }
 
       console.error("Hit chest:", chest);
-
-      //console.log(chest.params)
     }
 
     if (hitPotators.length > 0) {
-      console.error("Hit potator:", hitPotators[0].userData.potator);
-
       const potator = hitPotators[0].userData.potator as Potator;
 
       const corruption = this.player.scene.userData.level.corruptionHandler as CorruptionHandler;
@@ -91,9 +86,6 @@ export class InteractionsController {
         const block1 = block as PlacedBlock;
         return block1.position.x == potator.position!.x && block1.position.z == potator.position!.z;
       });
-
-      console.error("Block below potator:", blocks);
-
       corruption.revert(blockBelowPotator as PlacedBlock);
     }
 

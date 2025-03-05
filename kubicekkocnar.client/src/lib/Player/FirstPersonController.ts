@@ -104,7 +104,6 @@ export class FirstPersonController {
   }
 
   public handleJump() {
-    console.log("jumping", this.isGrounded, this.lastGrounded);
     if (this.canJump && (this.isGrounded || this.lastGrounded)) {
       this.joystickData.up = true;
       this.isGrounded = false;

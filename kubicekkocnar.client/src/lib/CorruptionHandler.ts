@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 import PlacedBlock from '../types/PlacedBlock';
 import { EnemyRenderer } from './Enemy';
+import Level from './Level';
 
 class CorruptionHandler {
   private enemySpawnChance: number = 0.01;
@@ -11,24 +12,19 @@ class CorruptionHandler {
 
   private revertedBlocks: PlacedBlock[] = [];
 
-  constructor(private corruptedBlocks: PlacedBlock[], private allBlocks: PlacedBlock[], private enemyHandler: EnemyRenderer) 
-  {
-    if (this.corruptedBlocks.length == 0) {
+  constructor(private corruptedBlocks: PlacedBlock[], private allBlocks: PlacedBlock[], private enemyHandler: EnemyRenderer, private level: Level) {
+    if (this.corruptedBlocks.length == 0)
       console.warn("No corrupted blocks found");
-    }
 
-    if (this.allBlocks.length == 0) {
+    if (this.allBlocks.length == 0)
       console.warn("No blocks found");
-    }
 
-    if (this.corruptedBlocks >= this.allBlocks) {
+    if (this.corruptedBlocks >= this.allBlocks)
       console.warn("Corrupted blocks should be less than all blocks");
-    }
   }
 
   start() {
-
-    console.error("Starting corruption"); 
+    console.error("Starting corruption");
 
     this.interval = setInterval(() => {
       this.corruptedBlocks.forEach((corruptedBlock) => {
@@ -45,7 +41,7 @@ class CorruptionHandler {
           this.corruptedBlocks.push(block);
         });
       });
-    }, 250);
+    }, 1 / (this.level.type.corruptionSpeed ?? 1) * 1000);
   }
 
   stop() {
@@ -65,14 +61,10 @@ class CorruptionHandler {
     from.mesh.material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
     setTimeout(() => {
       from.mesh.material = from.mesh.userData.oldMaterial;
-    } , 300);
-    //this.corruptedBlocks = this.corruptedBlocks.filter((corruptedBlock) => corruptedBlock != from);
+    }, 300);
     this.revertedBlocks.push(from);
 
     this.interval = setInterval(() => {
-
-      let blocksReverted = 0;
-
       this.revertedBlocks.forEach((corruptedBlock) => {
 
         const adjancedBlocks = this.allBlocks.filter((block) => block.position.distanceTo(corruptedBlock.position) < 1.5);
@@ -86,12 +78,9 @@ class CorruptionHandler {
           block.mesh.material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
           setTimeout(() => {
             block.mesh.material = block.mesh.userData.oldMaterial;
-          } , 300);
-          
-            
-          this.corruptedBlocks = this.corruptedBlocks.filter((corruptedBlock) => corruptedBlock != block);
+          }, 300);
 
-          blocksReverted++;
+          this.corruptedBlocks = this.corruptedBlocks.filter((corruptedBlock) => corruptedBlock != block);
         });
 
         this.revertedBlocks = this.revertedBlocks.filter((revertedBlock) => revertedBlock != corruptedBlock);
