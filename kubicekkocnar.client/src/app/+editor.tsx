@@ -14,6 +14,8 @@ import Texture from '../types/Texture';
 import { DeleteTexture, FetchTextures, GetTextureURL } from '../api/Textures';
 import SaveHandler, { Save } from '../lib/SaveHandler';
 import AuthWidget from '../components/auth/AuthWidget';
+import Level from '../types/Level';
+import { FetchLevels } from '../api/Levels';
 
 const Editor = () => {
   const [auth, setAuth] = useState<Save['auth'] | null>(null);
@@ -23,6 +25,7 @@ const Editor = () => {
   const [upgrades, setUpgrades] = useState<ItemUpgrade[]>();
   const [items, setItems] = useState<Item[]>();
   const [enemies, setEnemies] = useState<EnemyType[]>();
+  const [levels, setLevels] = useState<Level[]>();
 
   async function Reload() {
     setTextures(await FetchTextures());
@@ -30,6 +33,7 @@ const Editor = () => {
     setUpgrades(await GetUpgrades());
     setItems(await GetItems());
     setEnemies(await FetchEnemies());
+    setLevels(await FetchLevels(1));
 
     const auth = await SaveHandler.getAuth();
 
@@ -46,6 +50,7 @@ const Editor = () => {
   const defaultUpgrade = { description: '', inputItemId: 0, outputItemId: 0 };
   const defaultCoinage = { name: '' };
   const defaultEnemy = { name: '', health: 0, damage: 0, attackSpeed: 0, speed: 0, isGhost: false, textureId: 1 };
+  const defaultLevel = { name: '', description: '', corruptionSpeed: 1 };
 
   if (!auth || !auth.accessToken) return <div>Making sure you are logged in lil bro</div>
 
@@ -65,6 +70,8 @@ const Editor = () => {
       <CompleteDrawer defaultItem={defaultUpgrade} items={upgrades || []} Reload={Reload} objType="ItemUpgrades" />
       <CompleteDrawer defaultItem={defaultCoinage} items={coinages || []} Reload={Reload} objType="Coinages" />
       <CompleteDrawer defaultItem={defaultEnemy} items={enemies || []} Reload={Reload} objType="Enemies" />
+
+      <CompleteDrawer defaultItem={defaultLevel} items={levels || []} Reload={Reload} objType="Games/1/Levels" />
     </div>
   );
 };
@@ -143,7 +150,7 @@ function ItemDrawer(
           <div key={key} className={[styles.flexfield, styles.field].join(' ')}>
             <p key={keyId++}>{key}</p>
             <input defaultValue={item[key]} onChange={(e) => {
-              patchFunction && patchFunction(item.itemId || item.itemUpgradeId || item.coinageId || item.enemyId || item.textureId, key, e.currentTarget.value)
+              patchFunction && patchFunction(item.itemId || item.itemUpgradeId || item.coinageId || item.enemyId || item.textureId || item.levelId, key, e.currentTarget.value)
             }} />
           </div>
         );
