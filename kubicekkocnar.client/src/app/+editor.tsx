@@ -16,6 +16,7 @@ import SaveHandler, { Save } from '../lib/SaveHandler';
 import AuthWidget from '../components/auth/AuthWidget';
 import Level from '../types/Level';
 import { FetchLevels } from '../api/Levels';
+import { bool } from 'three/webgpu';
 
 const Editor = () => {
   const [auth, setAuth] = useState<Save['auth'] | null>(null);
@@ -123,6 +124,8 @@ function ItemDrawer(
 
   let keyId = 0;
 
+  let firstId = true;
+
   for (const key in item) {
     if (typeof item[key] === 'object') {
       fields.push(
@@ -133,15 +136,28 @@ function ItemDrawer(
       );
     } else {
 
-      if (key == "itemId" || key == "itemUpgradeId" || key == "coinageId" || key == "enemyId" || key == "textureId") {
+      if (key.includes("Id")) {
         fields.push(
           <>
-            <p className={styles.field} key={key}>{key}: {item[key]}</p>
+            {
+              (firstId || !topLevel) && <p className={styles.field} key={key}>{key}: {item[key]}</p>
+            }
+            {
+              (!firstId && topLevel) &&
+                <div key={key} className={[styles.flexfield, styles.field].join(' ')}>
+                  <p key={keyId++}>{key}</p>
+                  <input defaultValue={item[key]} onChange={(e) => {
+                    patchFunction && patchFunction(item.itemId || item.itemUpgradeId || item.coinageId || item.enemyId || item.textureId || item.levelId, key, e.currentTarget.value)
+                  }} />
+                </div>
+            }
             {
               key == "textureId" && <img style={{ width: 100 }} src={GetTextureURL(item[key])} alt="texture" />
             }
           </>
         )
+
+        firstId = false;
         continue;
       }
 

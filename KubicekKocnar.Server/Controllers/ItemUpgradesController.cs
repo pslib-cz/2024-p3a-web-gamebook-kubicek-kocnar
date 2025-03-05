@@ -47,8 +47,8 @@ namespace KubicekKocnar.Server.Controllers
         // PATCH: api/Blocks/5 using JsonPatchDocument
         [HttpPatch("{id}")]
         [Authorize]
-        public async Task<IActionResult> PatchBlock(uint id, [FromBody] JsonPatchDocument<Block> patch) {
-            var block = await _context.Blocks.FindAsync(id);
+        public async Task<IActionResult> PatchBlock(uint id, [FromBody] JsonPatchDocument<ItemUpgrade> patch) {
+            var block = await _context.ItemUpgrades.FindAsync(id);
             if (block == null)
                 return NotFound();
 
