@@ -61,7 +61,9 @@ class Level {
         ), this.blocks, this.enemyRenderer!, this);
 
         // init
-        this.corruptionHandler.start();
+        if (!window.location.pathname.includes("editor")) {
+            this.corruptionHandler.start();
+        }
       }
     );
   }
