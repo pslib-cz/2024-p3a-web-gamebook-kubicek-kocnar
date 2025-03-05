@@ -28,7 +28,6 @@ export class Enemy {
 }
 
 export class EnemyRenderer {
-
   public MAX_ENEMIES = 10;
 
   public enemies: Enemy[] = [];
@@ -67,8 +66,7 @@ export class EnemyRenderer {
     this.scene.add(plane);
 
     const blocks = Array.from(this.pathFinder.wakableBlocksDictionary).filter(block => block[1].state.includes("corrupt"));
-    if (blocks.length != 0)
-    {
+    if (blocks.length != 0) {
       const randomBlock = blocks[Math.floor(Math.random() * blocks.length)][1];
       const position = randomBlock.mesh?.position.clone().add(new THREE.Vector3(0, 2, 0));
       plane.position.set(position!.x, position!.y, position!.z);

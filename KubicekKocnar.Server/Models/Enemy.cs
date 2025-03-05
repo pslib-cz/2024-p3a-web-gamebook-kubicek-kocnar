@@ -19,8 +19,9 @@ namespace KubicekKocnar.Server.Models
 
         [JsonIgnore]
         public Texture? Texture { get; set; }
-        public uint TextureId {  get; set; }
+        public uint TextureId { get; set; }
 
-        public List<Level> Levels { get; set; } = [];   
+        [JsonIgnore]
+        public List<Level> Levels { get; set; } = [];
     }
 }

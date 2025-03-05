@@ -32,9 +32,7 @@ namespace KubicekKocnar.Server.Controllers
             var enemy = await _context.Enemies.FindAsync(id);
 
             if (enemy == null)
-            {
                 return NotFound();
-            }
 
             return enemy;
         }
@@ -55,6 +53,36 @@ namespace KubicekKocnar.Server.Controllers
                 return BadRequest(ModelState);
             }
             await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpPost("UpdateEnemyLevelsStuff/{id}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateEnemyLevelsStuff(uint id, List<uint> ids)
+        {
+            var enemy = await _context.Enemies.FindAsync(id);
+
+            if (enemy == null)
+                return NotFound();
+
+            enemy.Levels.Clear();
+
+            foreach (var levelId in ids)
+            {
+                var level = await _context.Levels.FindAsync(levelId);
+
+                if (level == null)
+                    return BadRequest($"Level with id {levelId} does not exists");
+
+                if (enemy.Levels.Contains(level))
+                    return BadRequest($"Level already contains this level or enemy");
+
+                enemy.Levels.Add(level);
+                _context.Update(level);
+            }
+
+            await _context.SaveChangesAsync();
+
             return NoContent();
         }
 
