@@ -11,8 +11,6 @@ import './styles/UI.css';
 import Editor from './app/+editor';
 import Login from './app/+login';
 
-import { Toaster } from 'react-hot-toast'
-
 function App() {
   return (
     <BrowserRouter>
