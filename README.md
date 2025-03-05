@@ -83,6 +83,7 @@ https://www.figma.com/design/XSkCP23QGliY0u9oEQlrGf/KubicekKocnar?node-id=0-1&t=
 
 
 
+![image](https://github.com/user-attachments/assets/be455c74-b846-42f6-a01c-869ae1bf8094)
 
 
 
