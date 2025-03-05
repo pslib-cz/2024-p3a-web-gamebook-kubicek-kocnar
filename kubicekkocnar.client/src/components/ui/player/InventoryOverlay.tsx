@@ -2,10 +2,9 @@
 import '../../ItemController.css'
 import { AppContext } from '../../AppContextProvider';
 import { useContext, useEffect, useState } from 'react';
-import { Coinage } from '../../../types/Coinage';
-import { ItemUpgradeDrawer } from './ItemUpgradeDrawer';
-import { CoinageDrawer } from './CoinageDrawer';
-import { StoryDrawer } from './StoryDrawer';
+import { ItemUpgradesDrawer } from './ItemUpgradeDrawer';
+import { CoinagesDrawer } from './CoinageDrawer';
+import { StorysdDrawer } from './StoryDrawer';
 
 export function UIOverlay() {
   const { player } = useContext(AppContext);
@@ -44,22 +43,16 @@ export function UIOverlay() {
             <div>
               <div>
                 <h1>This inventory shall be ({player ? "1" : "fr"})</h1>
-                {
-                  player?.inventory?.coinage.map((a: Coinage, x: number) => <CoinageDrawer key={x} coinage={a} count={player!.inventory.coinageAmount[x]} />)
-                }
+                <CoinagesDrawer coinages={player!.inventory.coinage} count={player!.inventory.coinageAmount} />
                 <p>UPGRADES</p>
                 <div style={{ display: 'flex' }}>
-                  {
-                    player?.inventory?.upgrades.map((a, x) => <ItemUpgradeDrawer key={x} upgrade={a} />)
-                  }
+                  <ItemUpgradesDrawer upgrades={player!.inventory.upgrades} />
                 </div>
               </div>
 
               <div>
                 <h1>Story</h1>
-                {
-                  player?.story.scrolls.map((a, x) => <StoryDrawer key={x} scroll={a} />)
-                }
+                <StorysdDrawer scrolls={player!.story.scrolls} />
               </div>
             </div>
           </div>

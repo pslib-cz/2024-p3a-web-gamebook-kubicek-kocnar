@@ -1,15 +1,32 @@
+.upgradesDrawer,
+.coinagesDrawer {
+  display: flex;
+  gap: 1em;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
-.coinageDrawer
-{
+.upgradeDrawer,
+.coinageDrawer {
   background-color: aqua;
+  flex-basis: 100px;
+  flex-shrink: 0;
+
+  padding: .5em;
 }
 
-.upgradeDrawer
-{  
+.upgradesDrawer {}
+
+.upgradeDrawer {
   background-color: lightgreen;
+  flex-basis: 200px;
 }
 
-.storyDrawer
-{
+/* ----- ----- */
+.storysDrawer {}
+
+.storyDrawer {
   background-color: lightcoral;
 }
+
+/* ----- ----- */

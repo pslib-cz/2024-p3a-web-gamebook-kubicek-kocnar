@@ -1,14 +1,11 @@
-
-.overlay
-{
-  height:0px;
-  overflow:visible;
-  pointer-events:none;
-  background:none !important;
+.overlay {
+  height: 0px;
+  overflow: visible;
+  pointer-events: none;
+  background: none !important;
 }
 
-.ui-item
-{
+.ui-item {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -16,8 +13,7 @@
   right: 0;
 }
 
-.ui-item > img
-{
+.ui-item>img {
   position: absolute;
   bottom: 0;
 }
