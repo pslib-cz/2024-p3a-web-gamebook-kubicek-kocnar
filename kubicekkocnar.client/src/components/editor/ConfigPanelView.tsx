@@ -45,7 +45,7 @@ const ConfigPanelView: React.FC<ConfigPanelProps> = ({ level, setOpenAddFeatureM
       return (
         <>
           <h2>
-            Level {level.name} ({level.gameId}/{level.levelId})
+            Level {level!.type.name} ({level.gameId}/{level.levelId})
           </h2>
           <h4>Features:</h4>
           <button className='configpanel__addbtn' onClick={() => setOpenAddFeatureModal(true)}><MaterialSymbol icon='add' /></button>

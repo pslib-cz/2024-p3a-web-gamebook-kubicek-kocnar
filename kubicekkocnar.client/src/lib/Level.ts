@@ -6,7 +6,7 @@ import GenericFeature from "../types/Feature";
 import FeatureRenderer from "./features/FeatureRenderer";
 import { FetchLevel } from "../api/Levels";
 import { EnemyRenderer } from "./Enemy";
-import { EnemyType } from "../types/Enemy";
+//import { EnemyType } from "../types/Enemy";
 import SaveHandler from "./SaveHandler";
 import { Item } from "../types/Item";
 import { Coinage } from "../types/Coinage";
@@ -17,18 +17,30 @@ import CorruptionHandler from "./CorruptionHandler";
 // }
 
 const APIROUTE = (gameId: number, levelId?: number) => `${import.meta.env.VITE_API_URL}/Games/${gameId}/Levels${levelId ? `/${levelId}` : ''}`;
-class Level implements LevelType {
+class Level {
+
+  type: LevelType = {
+    levelId: -1,
+    name: '',
+    gameId: 0,
+    corruptionSpeed: 1,
+    blocks: [],
+    features: [],
+    created: new Date(),
+    enemies: []
+  }
+
   available: boolean = false;
   gameId: number;
   levelId: number;
-  name!: string;
-  description?: string;
-  nextLevel?: number;
+  //name!: string;
+  //description?: string;
+  //nextLevel?: number;
   mapRenderer: MapRenderer;
   featureRenderer: FeatureRenderer;
   enemyRenderer: EnemyRenderer | null = null;
   corruptionHandler: CorruptionHandler | null = null;
-  enemies: EnemyType[] = [];
+  //enemies: EnemyType[] = [];
   items: Item[] = [];
   coinages: Coinage[] = [];
 
@@ -46,14 +58,14 @@ class Level implements LevelType {
 
         this.corruptionHandler = new CorruptionHandler(this.blocks.filter(
           (block) => block.block.attributes[0] == "corrupt"
-        ), this.blocks, this.enemyRenderer!);
+        ), this.blocks, this.enemyRenderer!, this);
 
         // init
         this.corruptionHandler.start();
       }
     );
   }
-  created!: Date;
+  //created!: Date;
   game?: Game | undefined;
   blocks: PlacedBlock[] = [];
   features: GenericFeature[] = [];
@@ -62,11 +74,13 @@ class Level implements LevelType {
     try {
       const level: LevelType = await FetchLevel(this.gameId, this.levelId) as LevelType;
 
-      this.name = level.name;
-      this.description = level.description;
-      this.nextLevel = level.nextLevel;
+      this.type = level;
+
+      // this.name = level.name;
+      // this.description = level.description;
+      // this.nextLevel = level.nextLevel;
       this.available = true;
-      this.created = level.created;
+      // this.created = level.created;
 
       const levelBlocksResponse = await fetch(APIROUTE(this.gameId, this.levelId) + '/Blocks');
       if (!levelBlocksResponse.ok) {

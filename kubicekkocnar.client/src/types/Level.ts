@@ -20,6 +20,8 @@ interface Level
   created: Date;
 
   enemies: EnemyType[];
+
+  corruptionSpeed: number;
 }
 
 export default Level

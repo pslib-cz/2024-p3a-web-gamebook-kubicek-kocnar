@@ -1,10 +1,8 @@
 import { useContext, useMemo } from 'react';
-import '../../styles/game/PlayerHUD.css';
-import { AppContext } from '../AppContextProvider';
-import { Coinage } from '../../types/Coinage';
-import { CoinageDrawer } from '../CoinageDrawer';
-import { GameContext } from '../../contexts/GameContext';
-import { Joystick } from './Joystick';
+import '../../../styles/game/PlayerHUD.css';
+import { AppContext } from '../../AppContextProvider';
+import { GameContext } from '../../../contexts/GameContext';
+import { Joystick } from '../../game/Joystick';
 
 const GameHUD = () => {
   const { playerHealth } = useContext(GameContext);
@@ -63,11 +61,6 @@ const GameHUD = () => {
   return (
     <div className="player-hud">
       <Joystick />
-      <div>
-        {
-          player?.inventory.coinage.map((a: Coinage, x: number) => <CoinageDrawer key={x} coinage={a} count={player?.inventory.coinageAmount[x]} />)
-        }
-      </div>
       <DamageOverlay />
       <Crosshair />
       <HealthBar />

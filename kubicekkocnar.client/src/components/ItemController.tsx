@@ -20,6 +20,7 @@ export function ItemUI() {
   const [img, setImg] = useState("");
 
   handlePlayerMouseClick = () => {
+    if ((player?.health ?? 1) <= 0) return;
     setUseItem(true);
   };
 
@@ -46,9 +47,7 @@ export function ItemUI() {
       if (!s) return;
 
       setImg(s.imgUsed);
-
       setTimeout(() => { setImg(s.img); }, 500);
-
       setUseItem(false); // Reset the state
     }
   }, [player?.inventory.selectedItem, useItem]);
