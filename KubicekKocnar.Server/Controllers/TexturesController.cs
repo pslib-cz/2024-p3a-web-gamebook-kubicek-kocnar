@@ -48,17 +48,17 @@ namespace KubicekKocnar.Server.Controllers
         [HttpPatch("{id}")]
         [Authorize]
         public async Task<IActionResult> PatchTexture(uint id, [FromBody] JsonPatchDocument<Texture> patchDoc) {
-            if (patchDoc == null) {
+            if (patchDoc == null)
                 return BadRequest();
-            }
+
             var texture = await _context.Textures.FindAsync(id);
-            if (texture == null) {
+            if (texture == null)
                 return NotFound();
-            }
+
             patchDoc.ApplyTo(texture, ModelState);
-            if (!TryValidateModel(texture)) {
+            if (!TryValidateModel(texture))
                 return ValidationProblem(ModelState);
-            }
+
             await _context.SaveChangesAsync();
             return NoContent();
         }

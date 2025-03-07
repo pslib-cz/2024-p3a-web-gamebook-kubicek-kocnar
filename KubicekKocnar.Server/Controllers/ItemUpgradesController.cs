@@ -47,15 +47,15 @@ namespace KubicekKocnar.Server.Controllers
         // PATCH: api/Blocks/5 using JsonPatchDocument
         [HttpPatch("{id}")]
         [Authorize]
-        public async Task<IActionResult> PatchBlock(uint id, [FromBody] JsonPatchDocument<Block> patch) {
-            var block = await _context.Blocks.FindAsync(id);
-            if (block == null) {
+        public async Task<IActionResult> PatchBlock(uint id, [FromBody] JsonPatchDocument<ItemUpgrade> patch) {
+            var block = await _context.ItemUpgrades.FindAsync(id);
+            if (block == null)
                 return NotFound();
-            }
+
             patch.ApplyTo(block, ModelState);
-            if (!ModelState.IsValid) {
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            }
+
             await _context.SaveChangesAsync();
             return NoContent();
         }
@@ -89,9 +89,7 @@ namespace KubicekKocnar.Server.Controllers
         {
             var itemUpgrade = await _context.ItemUpgrades.FindAsync(id);
             if (itemUpgrade == null)
-            {
                 return NotFound();
-            }
 
             _context.ItemUpgrades.Remove(itemUpgrade);
             await _context.SaveChangesAsync();
@@ -99,9 +97,9 @@ namespace KubicekKocnar.Server.Controllers
             return NoContent();
         }
 
-        private bool ItemUpgradeExists(uint id)
-        {
-            return _context.ItemUpgrades.Any(e => e.ItemUpgradeId == id);
-        }
+        //private bool ItemUpgradeExists(uint id)
+        //{
+        //    return _context.ItemUpgrades.Any(e => e.ItemUpgradeId == id);
+        //}
     }
 }

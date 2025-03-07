@@ -87,14 +87,14 @@ namespace KubicekKocnar.Server.Controllers
             return NoContent();
         }
 
-        private bool GameExists(uint id)
-        {
-            return _context.Games.Any(e => e.GameId == id);
-        }
+        //private bool GameExists(uint id)
+        //{
+        //    return _context.Games.Any(e => e.GameId == id);
+        //}
 
         // GET: api/Games/5/Levels
         [HttpGet("{id}/Levels")]
-        public async Task<ActionResult<IEnumerable<Level>>> GetLevels(uint id) => await _context.Levels.Where(l => l.GameId == id).ToListAsync();
+        public async Task<ActionResult<IEnumerable<Level>>> GetLevels(uint id) => await _context.Levels.Include((x) => x.Enemies).Where(l => l.GameId == id).ToListAsync();
 
         [HttpGet("{id}/Levels/{levelId}/Enemies")]
         public async Task<ActionResult<IEnumerable<Enemy>>> GetEnemies(uint id, uint levelId) 
@@ -103,7 +103,7 @@ namespace KubicekKocnar.Server.Controllers
         // GET: api/Games/5/Levels/5
         [HttpGet("{id}/Levels/{levelId}")]
         public async Task<ActionResult<Level>> GetLevel(uint id, uint levelId) {
-            var level = await _context.Levels.Where(l => l.GameId == id && l.LevelId == levelId).FirstOrDefaultAsync();
+            var level = await _context.Levels.Include((x) => x.Enemies).Where(l => l.GameId == id && l.LevelId == levelId).FirstOrDefaultAsync();
 
             if (level == null) return NotFound();
 
@@ -165,7 +165,8 @@ namespace KubicekKocnar.Server.Controllers
 
             patchDoc.ApplyTo(level, ModelState);
 
-            if (!TryValidateModel(level)) return ValidationProblem(ModelState);
+            if (!TryValidateModel(level)) 
+                return ValidationProblem(ModelState);
 
             await _context.SaveChangesAsync();
 
