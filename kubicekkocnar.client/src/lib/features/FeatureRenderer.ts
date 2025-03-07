@@ -5,6 +5,7 @@ import renderPortal, { Portal } from "./Portal";
 import renderChest, { Chest } from "./Chest";
 import renderScroll, { Scroll } from "./Scroll";
 import renderPotator, { Potator } from "./Potator";
+import renderCrystal from "./Crystal";
 
 const source = window.location.search.includes("source=")
   ? window.location.search.split("source=")[1].split("&")[0]
@@ -39,6 +40,10 @@ class FeatureRenderer {
 
       case FeatureType.Portal:
         renderPortal(feature as Portal);
+        break;
+
+      case FeatureType.Crystal:
+        await renderCrystal(feature);
         break;
 
       case FeatureType.Paper:

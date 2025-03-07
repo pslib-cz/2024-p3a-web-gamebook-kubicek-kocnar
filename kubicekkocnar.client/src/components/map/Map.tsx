@@ -235,15 +235,6 @@ const Map = ({
       )}
 
       <Stats className="stats" />
-      <Model
-        path="/models/crystal.glb"
-        position={new THREE.Vector3(-2, 0.5, -1)}
-      />
-      <Model
-        path="/models/crystal.glb"
-        position={new THREE.Vector3(-2.6, 3, 0)}
-        rotation={new THREE.Euler(0, 0, -Math.PI / 2)}
-      />
 
       {toolState === Tool.PathFinding && (
         <PathFindingVisual
