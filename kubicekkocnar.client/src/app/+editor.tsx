@@ -16,7 +16,6 @@ import SaveHandler, { Save } from '../lib/SaveHandler';
 import AuthWidget from '../components/auth/AuthWidget';
 import Level from '../types/Level';
 import { FetchLevels } from '../api/Levels';
-import { bool } from 'three/webgpu';
 
 const Editor = () => {
   const [auth, setAuth] = useState<Save['auth'] | null>(null);

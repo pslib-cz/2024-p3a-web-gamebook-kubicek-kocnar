@@ -30,7 +30,7 @@ function ItemUpgradeDrawer({ upgrade }: { upgrade: ItemUpgrade }) {
     >
       <p>{upgrade.description}</p>
       <p>{upgrade.inputItem.name} to {upgrade.outputItem.name}</p>
-      {upgrade.cost && upgrade.cost.map((a, x) => <p key={x}>{`coinage={a.coinage} count={a.cost}`}</p>)}
+      {upgrade.cost && upgrade.cost.map((a, x) => <p key={x}>{`coinage=${a.coinage} count=${a.cost}`}</p>)}
       {player?.inventory.IsCostSufficient(upgrade.cost) ? <p>Can afford</p> : <p>Cannot afford</p>}
       {player?.inventory.ItemIsInHotbar(upgrade.inputItem) ? <p>Item in hotbar</p> : <p>Item not in hotbar</p>}
     </div>

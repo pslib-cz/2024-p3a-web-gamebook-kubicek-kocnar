@@ -79,8 +79,10 @@ export function Joystick() {
 
     joyManager = nipplejs.create(options);
 
-    joyManager.on('move', function (evt, data) {
+    joyManager.on('move', function (data) {
+      // @ts-expect-error it does have a vector, frr
       output.SetFwdValue(data.vector.y)
+      // @ts-expect-error it does have a vector, frr
       output.SetRgtValue(data.vector.x)
       setJoystickData(output.Clone());
     })

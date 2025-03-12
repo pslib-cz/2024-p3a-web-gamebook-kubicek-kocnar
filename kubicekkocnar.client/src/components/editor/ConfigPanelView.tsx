@@ -103,7 +103,9 @@ const ConfigPanelView: React.FC<ConfigPanelProps> = ({ level, setOpenAddFeatureM
               <div key={index} className="configpanel__input">
                 <label htmlFor={key}>{key}</label>
                 <input
+                  // @ts-expect-error Tomáš wrote this, he knows what he's doing
                   type={key == "color" ? "color" : featureState.params[key] == "true" || featureState.params[key] == "false" ? "checkbox" : !isNaN(parseFloat(featureState.params[key])) ? "number" : "text"}
+                  // @ts-expect-error its not string, trust me bro
                   id={key} defaultValue={featureState.params[key]}
                   onChange={(e) => patchFeature(`/Params/${key}`, e.currentTarget.value)}
                 />

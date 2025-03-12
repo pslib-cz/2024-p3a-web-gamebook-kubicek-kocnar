@@ -8,7 +8,6 @@ import { Tool } from "../editor/ToolBar";
 import Level from "../../lib/Level";
 import MapEditor from "../../lib/MapEditor";
 import FirstPersonControllerComponent from "../FirstPersonController";
-import Model from "./Model";
 import { useNavigate } from "react-router-dom";
 import {
   PathFindingVisual,

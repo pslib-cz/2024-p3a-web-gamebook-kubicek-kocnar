@@ -2,9 +2,7 @@ import GenericFeature from "../../types/Feature";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 export interface Potator extends GenericFeature {
-  params: {
-    
-  };
+  
 }
 
 const path = "/models/statue.glb"
@@ -13,7 +11,7 @@ const loader = new GLTFLoader();
 
 async function render(potator: Potator) {
   return new Promise<void>((resolve) => {
-    convert(potator);
+    //convert(potator);
     loader.load(path, function (gltf) {
 
       potator.object = gltf.scene.clone();
@@ -30,8 +28,10 @@ async function render(potator: Potator) {
   });
 }
 
+/*
 function convert(potator: Potator) {
   //return chest.params.inventory = JSON.parse(chest.params.inventory as string);
 }
+*/
 
 export default render;
