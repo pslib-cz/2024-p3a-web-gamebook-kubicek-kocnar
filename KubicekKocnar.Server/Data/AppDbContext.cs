@@ -32,7 +32,7 @@ namespace KubicekKocnar.Server.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlite("Data Source=app.db");
+            optionsBuilder.UseSqlite("Data Source=../data/app.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
