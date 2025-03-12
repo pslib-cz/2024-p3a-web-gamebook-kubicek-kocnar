@@ -83,11 +83,13 @@ namespace KubicekKocnar.Server.Controllers
             if (file.ContentType == "image/svg+xml") return BadRequest("SVG format is not supported.");
 
             // get width of this image 
+            /*
             using (var image = System.Drawing.Image.FromStream(file.OpenReadStream())) {
                 width = image.Width;
                 height = image.Height;
                 size = (int)file.Length;
             }
+            */
 
             using (var memoryStream = new MemoryStream()) {
                 await file.CopyToAsync(memoryStream);
