@@ -34,7 +34,7 @@ function LevelEditor() {
       return;
     }
     if (!gameid || !levelid) {
-      console.error("Invalid URLd");
+      console.error("Invalid URL");
       return;
     }
 
