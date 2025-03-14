@@ -79,6 +79,9 @@ Hráč je jedním z posledních přeživších světa zasaženého Korupcí. Pro
 ## **Figma**
 https://www.figma.com/design/XSkCP23QGliY0u9oEQlrGf/KubicekKocnar?node-id=0-1&t=eR2HrG2fi05V3VoA-1
 
+## **Admin**
+Overall editor: /editor
+Level editor: game/:gId/level/:lId/editor
 
 
 
