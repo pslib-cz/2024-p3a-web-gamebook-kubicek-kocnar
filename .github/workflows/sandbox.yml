@@ -22,8 +22,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: . # změň cestu podle toho, kde se nachází složka s řešením (soubor .sln)
-          file: Dockerfile # změň cestu podle toho, kde se nachází Dockerfile
+          file: ./KubicekKocnar.Server/Dockerfile # změň cestu podle toho, kde se nachází Dockerfile
           push: true
-          tags: registry.pslib.cloud/sandbox/app-34:latest
+          tags: registry.pslib.cloud/sandbox/app-39:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
