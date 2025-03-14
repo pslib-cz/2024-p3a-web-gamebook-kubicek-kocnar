@@ -81,6 +81,7 @@ https://www.figma.com/design/XSkCP23QGliY0u9oEQlrGf/KubicekKocnar?node-id=0-1&t=
 
 ## **Admin**
 Overall editor: /editor
+
 Level editor: game/:gId/level/:lId/editor
 
 
