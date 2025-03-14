@@ -9,7 +9,7 @@ ARG BUILD_CONFIGURATION=Release
 RUN apt update && apt install nodejs npm -y
 WORKDIR /src
 COPY ["KubicekKocnar.Server/KubicekKocnar.Server.csproj", "KubicekKocnar.Server/"]
-COPY ["kubicekKocnar.client/kubicekkocnar.client.esproj", "kubicekKocnar.client/"]
+COPY ["kubicekkocnar.client/kubicekkocnar.client.esproj", "kubicekkocnar.client/"]
 RUN dotnet restore "KubicekKocnar.Server/KubicekKocnar.Server.csproj"
 COPY . .
 WORKDIR "/src/KubicekKocnar.Server"
