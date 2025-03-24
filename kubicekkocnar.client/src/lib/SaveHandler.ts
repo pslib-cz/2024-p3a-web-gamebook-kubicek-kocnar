@@ -2,6 +2,7 @@ import { Quaternion, Vector3 } from "three";
 import { Inventory } from "./Player/Inventory";
 import { Player } from "./Player/Player";
 import { StoryController } from "./Player/StoryController";
+import { apiURL } from "../env";
 
 export interface Save {
   auth: {
@@ -34,7 +35,7 @@ export default class SaveHandler {
     if (auth) {
       if (auth.expiresAt <= Date.now()) {
         try {
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/account/refresh`, {
+          const response = await fetch(`${apiURL}/account/refresh`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

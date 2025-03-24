@@ -1,8 +1,9 @@
 import SaveHandler from "../lib/SaveHandler";
+import { apiURL } from "../env";
 
 export type objTypes = "Items" | "Blocks" | "Enemies" | "Coinages" | "Games" | "Games/1/Levels" | "Textures" | "ItemUpgrades"
 
-const URL: (obj: string) => string = (obj) => `${import.meta.env.VITE_API_URL}/${obj}`;
+const URL: (obj: string) => string = (obj) => `${apiURL}/${obj}`;
 
 export async function GET(obj: objTypes): Promise<unknown> {
   try {

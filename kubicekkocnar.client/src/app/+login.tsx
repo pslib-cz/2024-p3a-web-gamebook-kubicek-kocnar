@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import React, { FormEvent, useEffect, useState } from 'react';
 import SaveHandler from '../lib/SaveHandler';
+import { apiURL } from "../env";
 
 function useQuery() {
   const { search } = useLocation();
@@ -28,7 +29,7 @@ export default function AuthForm() {
     event.preventDefault();
     // Perform login logic here (get the token and save it to the local storage)
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/account/login`, {
+      const response = await fetch(`${apiURL}/account/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

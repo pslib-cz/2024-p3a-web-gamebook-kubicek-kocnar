@@ -1,7 +1,8 @@
 import Block from "../types/Block";
 import { POST } from "./API";
+import { apiURL } from "../env";
 
-const URL = `${import.meta.env.VITE_API_URL}/Blocks`;
+const URL = `${apiURL}/Blocks`;
 
 export async function FetchBlocks(): Promise<Block[]> {
   try {

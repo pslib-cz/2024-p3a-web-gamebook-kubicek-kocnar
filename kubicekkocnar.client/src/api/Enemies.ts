@@ -1,5 +1,6 @@
 import { EnemyType } from "../types/Enemy";
 import { DELETE, GET, POST } from "./API";
+import { apiURL } from "../env";
 
 export async function FetchEnemies(): Promise<EnemyType[]> {
   return await GET("Enemies") as EnemyType[];
@@ -8,7 +9,7 @@ export async function FetchEnemies(): Promise<EnemyType[]> {
 export async function FetchLevelEnemies(gameId: number, levelId: number): Promise<EnemyType[]> {
 
   try {
-    const blocksResponse = await fetch(`${import.meta.env.VITE_API_URL}/Games/${gameId}/Levels/${levelId}/Enemies`);
+    const blocksResponse = await fetch(`${apiURL}/Games/${gameId}/Levels/${levelId}/Enemies`);
     if (!blocksResponse.ok) {
       throw new Error(`Response status: ${blocksResponse.status}`);
     }

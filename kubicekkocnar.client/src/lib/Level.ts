@@ -6,17 +6,13 @@ import GenericFeature from "../types/Feature";
 import FeatureRenderer from "./features/FeatureRenderer";
 import { FetchLevel } from "../api/Levels";
 import { EnemyRenderer } from "./Enemy";
-//import { EnemyType } from "../types/Enemy";
 import SaveHandler from "./SaveHandler";
 import { Item } from "../types/Item";
 import { Coinage } from "../types/Coinage";
 import CorruptionHandler from "./CorruptionHandler";
+import { apiURL } from "../env";
 
-// interface LevelOptions {
-//   name: string
-// }
-
-const APIROUTE = (gameId: number, levelId?: number) => `${import.meta.env.VITE_API_URL}/Games/${gameId}/Levels${levelId ? `/${levelId}` : ''}`;
+const APIROUTE = (gameId: number, levelId?: number) => `${apiURL}/Games/${gameId}/Levels${levelId ? `/${levelId}` : ''}`;
 class Level {
 
   type: LevelType = {
@@ -106,14 +102,14 @@ class Level {
         await this.featureRenderer.addFeature(this.features[i]);
       }
 
-      const levelItemsResponse = await fetch(import.meta.env.VITE_API_URL + '/Items');
+      const levelItemsResponse = await fetch(apiURL + '/Items');
       if (!levelItemsResponse.ok) {
         throw new Error(`Response status: ${levelItemsResponse.status}`);
       }
 
       this.items = await levelItemsResponse.json();
 
-      const levelCoinagesResponse = await fetch(import.meta.env.VITE_API_URL + '/Coinages');
+      const levelCoinagesResponse = await fetch(apiURL + '/Coinages');
       if (!levelCoinagesResponse.ok) {
         throw new Error(`Response status: ${levelCoinagesResponse.status}`);
       }

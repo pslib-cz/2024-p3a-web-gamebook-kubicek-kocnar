@@ -1,6 +1,7 @@
 import Level from "../types/Level";
+import { apiURL } from "../env";
 
-function URL(gameid: number): string { return `${import.meta.env.VITE_API_URL}/Games/${gameid}/Levels`; }
+function URL(gameid: number): string { return `${apiURL}/Games/${gameid}/Levels`; }
 
 export async function FetchLevels(gameid: number): Promise<Level[]> {
   try {

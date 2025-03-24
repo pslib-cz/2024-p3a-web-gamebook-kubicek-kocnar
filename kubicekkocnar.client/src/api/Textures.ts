@@ -1,7 +1,8 @@
 import Texture from "../types/Texture";
 import { DELETE, PATCH, POST } from "./API";
+import { apiURL } from "../env";
 
-const URL = `${import.meta.env.VITE_API_URL}/Textures`;
+const URL = `${apiURL}/Textures`;
 
 export async function FetchTextures(): Promise<Texture[]> {
   try {
