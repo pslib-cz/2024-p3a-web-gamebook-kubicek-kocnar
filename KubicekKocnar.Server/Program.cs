@@ -1,5 +1,6 @@
 using KubicekKocnar.Server.Data;
 using KubicekKocnar.Server.Models;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -95,6 +96,17 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+var provider = new FileExtensionContentTypeProvider();
+
+// add avif and glb
+provider.Mappings[".avif"] = "image/avif";
+provider.Mappings[".glb"] = "model/gltf-binary";
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    ContentTypeProvider = provider
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
